@@ -1,0 +1,32 @@
+{
+	"name"			: "ipub/mobile-detect",
+	"type"			: "library",
+	"description"	: "Nette extension for detect mobile devices, managing mobile view types, redirect to mobile version on iPublikuj framework",
+	"keywords"		: ["mobile", "mobile detect", "nette mobile", "mobile view managing", "mobile redirect", "nette", "ipub", "framework", "tools"],
+	"homepage"		: "https://github.com/ipublikuj-eu/MobileDetect",
+	"license"		: ["BSD-3-Clause", "GPL-2.0", "GPL-3.0"],
+
+	"authors": [
+		{
+			"name"		: "Adam Kadlec",
+			"homepage"	: "http://www.ipublikuj.eu/"
+		}
+	],
+
+	"support":{
+		"email"		:"support@ipublikuj.eu",
+		"issues"	:"https://github.com/ipublikuj-eu/MobileDetect/issues"
+	},
+
+	"require": {
+		"php"							: ">=5.3.0",
+		"nette/nette"					: "2.1.*",
+		"mobiledetect/mobiledetectlib"	: "2.8.*"
+	},
+
+	"autoload": {
+		"psr-0": {
+			"IPub\\MobileDetect\\": "src/"
+		}
+	}
+}
