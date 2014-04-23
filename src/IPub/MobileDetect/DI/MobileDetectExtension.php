@@ -69,15 +69,30 @@ class MobileDetectExtension extends Nette\DI\CompilerExtension
 		$builder->getDefinition('nette.latte')
 			->addSetup($install . '(?->compiler)', array('@self'));
 
-		$builder->addDefinition($this->prefix('deviceDetection'))
+		$builder->addDefinition($this->prefix('mobileDetect'))
 			->setClass('IPub\MobileDetect\MobileDetect');
+
+		$builder->addDefinition($this->prefix('deviceView'))
+			->setClass('IPub\MobileDetect\Helpers\DeviceView');
+
+		$builder->addDefinition($this->prefix('onRequestHandler'))
+			->setClass('IPub\MobileDetect\Events\OnRequestHandler')
+			->addSetup('$redirectConf', array($config['redirect']))
+			->addSetup('$isFullPath', array($config['switchDeviceView']['saveRefererPath']));
+
+		$builder->addDefinition($this->prefix('onResponseHandler'))
+			->setClass('IPub\MobileDetect\Events\OnResponseHandler');
+
+		$application = $builder->getDefinition('application');
+		$application->addSetup('$service->onRequest[] = ?', array('@' . $this->prefix('onRequestHandler')));
+		$application->addSetup('$service->onResponse[] = ?', array('@' . $this->prefix('onResponseHandler')));
 	}
 
 	/**
 	 * @param \Nette\Configurator $config
 	 * @param string $extensionName
 	 */
-	public static function register(Nette\Configurator $config, $extensionName = 'deviceDetectionExtension')
+	public static function register(Nette\Configurator $config, $extensionName = 'mobileDetectExtension')
 	{
 		$config->onCompile[] = function (Configurator $config, Compiler $compiler) use ($extensionName) {
 			$compiler->addExtension($extensionName, new MobileDetectExtension());
