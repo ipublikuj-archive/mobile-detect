@@ -43,13 +43,13 @@ class MobileDetectExtension extends Nette\DI\CompilerExtension
 				'isEnabled'		=> FALSE,
 				'host'			=> NULL,
 				'statusCode'	=> 301,
-				'action'		=> 'redirect',	// redirect/noRedirect/redirectWithoutPath
+				'action'		=> 'noRedirect',	// redirect/noRedirect/redirectWithoutPath
 			),
 			'tablet'	=> array(
 				'isEnabled'		=> FALSE,
 				'host'			=> NULL,
 				'statusCode'	=> 301,
-				'action'		=> 'redirect',	// redirect/noRedirect/redirectWithoutPath
+				'action'		=> 'noRedirect',	// redirect/noRedirect/redirectWithoutPath
 			),
 			'detectTabletAsMobile'	=> FALSE,
 		),
@@ -92,7 +92,7 @@ class MobileDetectExtension extends Nette\DI\CompilerExtension
 	 * @param \Nette\Configurator $config
 	 * @param string $extensionName
 	 */
-	public static function register(Nette\Configurator $config, $extensionName = 'mobileDetectExtension')
+	public static function register(Nette\Configurator $config, $extensionName = 'mobileDetect')
 	{
 		$config->onCompile[] = function (Configurator $config, Compiler $compiler) use ($extensionName) {
 			$compiler->addExtension($extensionName, new MobileDetectExtension());
