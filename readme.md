@@ -64,11 +64,38 @@ class BasePresenter extends Nette\Application\UI\Presenter
 }
 ```
 
-## Usage
+## Configuration
 
-### PHP examles
+You can change default behaviour of your redirects with action parameter:
 
-#### Switch device view
+- `redirect`: redirects to appropriate host with your current path
+- `noRedirect`: no redirection (default behaviour)
+- `redirectWithoutPath`: redirects to appropriate host index page
+
+```php
+	# Mobile detector
+	mobileDetect:
+		redirect:
+			mobile:
+				isEnabled: true				# default false
+				host: http://m.site.com		# with scheme (http|https), default null, url validate
+				statusCode: 301				# default 302
+				action: redirect			# redirect, noRedirect, redirectWithoutPath
+			tablet:
+				isEnabled: false			# default false
+				host: http://t.site.com		# with scheme (http|https), default null, url validate
+				statusCode: 301				# default 302
+				action: redirect			# redirect, noRedirect, redirectWithoutPath
+			detectTabletAsMobile: true		# default false
+		switchDeviceView:
+			saveRefererPath: false			# default true
+											# true	=> redirectUrl = http://site.com/current/path
+											# false	=> redirectUrl = http://site.com
+```
+
+## Usage in PHP files
+
+### Switch device view
 
 For switch device view, use `device_view` GET parameter:
 
@@ -76,7 +103,7 @@ For switch device view, use `device_view` GET parameter:
 http://site.com?device_view={full/mobile/tablet}
 ````
 
-#### How to use in presenter etc.
+### How to use in presenter etc.
 
 In presenters or other services where you import mobile detector you could create calls like this
 
@@ -86,70 +113,70 @@ class SomePresenter extends Nette\Application\UI\Presenter
 	/**
 	 * @var \IPub\MobileDetect\MobileDetect
 	 */
-	protected $mobileDetector;
+	protected $mobileDetect
 
 	/**
 	 * Some action with mobile detection
 	 */
 	public function someAction()
 	{
-		if ($this->mobileDetector->isMobile()) {
+		if ($this->mobileDetect->isMobile()) {
 			//...do whatever
 		}
 	}
 }
 ```
 
-#### Check type device
+### Check type device
 
 ```php
-$mobileDetector->isMobile();
-$mobileDetector->isTablet();
+$mobileDetect->isMobile();
+$mobileDetect->isTablet();
 ```
 
-#### Check phone
+### Check phone
 
 is[iPhone|HTC|Nexus|Dell|Motorola|Samsung|Sony|Asus|Palm|Vertu|GenericPhone]
 
 ```php
-$mobileDetector->isIphone();
-$mobileDetector->isHTC();
+$mobileDetect->isIphone();
+$mobileDetect->isHTC();
 // etc.
 ```
 
-#### Check tablet
+### Check tablet
 
 is[BlackBerryTablet|iPad|Kindle|SamsungTablet|HTCtablet|MotorolaTablet|AsusTablet|NookTablet|AcerTablet| YarvikTablet|GenericTablet]
 
 ```php
-$mobileDetector->isIpad();
-$mobileDetector->isMotorolaTablet();
+$mobileDetect->isIpad();
+$mobileDetect->isMotorolaTablet();
 // etc.
 ```
 
-#### Check mobile OS
+### Check mobile OS
 
 is[AndroidOS|BlackBerryOS|PalmOS|SymbianOS|WindowsMobileOS|iOS|badaOS]
 
 ```php
-$mobileDetector->isAndroidOS();
-$mobileDetector->isIOS();
+$mobileDetect->isAndroidOS();
+$mobileDetect->isIOS();
 // etc.
 ```
 
-#### Check mobile browser User-Agent
+### Check mobile browser User-Agent
 
 is[Chrome|Dolfin|Opera|Skyfire|IE|Firefox|Bolt|TeaShark|Blazer|Safari|Midori|GenericBrowser]
 
 ```php
-$mobileDetector->isChrome();
-$mobileDetector->isSafari();
+$mobileDetect->isChrome();
+$mobileDetect->isSafari();
 // etc.
 ```
 
-### Using in Latte
+## Using in Latte
 
-#### Check device type
+### Check device type
 
 ```html
 {isMobile}
@@ -171,7 +198,7 @@ Available Latte macros:
 {isNotTablet}....{/isNotTablet}
 ```
 
-#### Check device type by provided name
+### Check device type by provided name
 
 ```html
 {isMobileDevice 'iPhone'}
@@ -183,7 +210,7 @@ Available Latte macros:
 </div>
 ```
 
-#### Check device OS by provided name
+### Check device OS by provided name
 
 ```html
 {isMobileOs 'iOS'}
@@ -195,7 +222,7 @@ Available Latte macros:
 </div>
 ```
 
-#### Check view type set by helper
+### Check view type set by helper
 
 With view type detector you could change your default layout in templates.
 
@@ -216,4 +243,3 @@ With view type detector you could change your default layout in templates.
 	{layout '../Path/To/Your/Not/Mobile/Device/@layout.latte'}
 {/isNotMobileView}
 ```
-
