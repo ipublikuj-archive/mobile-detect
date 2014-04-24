@@ -16,7 +16,7 @@ namespace IPub\MobileDetect;
 
 use Nette;
 
-use IPub\MobileDetect\Helpers
+use IPub\MobileDetect\Helpers;
 
 trait TMobileDetect
 {
