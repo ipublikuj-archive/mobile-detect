@@ -288,7 +288,7 @@ class OnRequestHandler
 		} else {
 			$redirectUrl = $this->getCurrentHost();
 		}
-var_dump($this->getCurrentHost() . $url->getPathInfo());die;
+
 		return $this->deviceView->getRedirectResponseBySwitchParam($redirectUrl);
 	}
 
