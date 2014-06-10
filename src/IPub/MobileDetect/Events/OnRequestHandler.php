@@ -222,7 +222,7 @@ class OnRequestHandler
 	 */
 	protected function needTabletResponseModify()
 	{
-		if (($this->deviceView->getViewType() === NULL || !$this->deviceView->isTabletView()) && $this->mobileDetect->isTablet()) {
+		if (($this->deviceView->getViewType() === NULL || $this->deviceView->isTabletView()) && $this->mobileDetect->isTablet()) {
 			$this->onResponseHandler->modifyResponseClosure = function($deviceView) {
 				return $deviceView->modifyTabletResponse();
 			};
@@ -240,7 +240,7 @@ class OnRequestHandler
 	 */
 	protected function needMobileResponseModify()
 	{
-		if (($this->deviceView->getViewType() === NULL || !$this->deviceView->isMobileView()) && $this->mobileDetect->isMobile()) {
+		if (($this->deviceView->getViewType() === NULL || $this->deviceView->isMobileView()) && $this->mobileDetect->isMobile()) {
 			$this->onResponseHandler->modifyResponseClosure = function($deviceView) {
 				return $deviceView->modifyMobileResponse();
 			};
@@ -258,7 +258,7 @@ class OnRequestHandler
 	 */
 	protected function needNotMobileResponseModify()
 	{
-		if ($this->deviceView->getViewType() === NULL || !$this->deviceView->isNotMobileView()) {
+		if ($this->deviceView->getViewType() === NULL || $this->deviceView->isNotMobileView()) {
 			$this->onResponseHandler->modifyResponseClosure = function($deviceView) {
 				return $deviceView->modifyNotMobileResponse();
 			};
@@ -282,7 +282,7 @@ class OnRequestHandler
 			$url = $this->httpRequest->getUrl();
 
 			// Create full path url
-			$redirectUrl = rtrim($url->getBaseUrl(), '/') . $url->getScriptPath() . $url->getPathInfo();
+			$redirectUrl = $this->getCurrentHost() . $url->getPathInfo();
 
 		// Generate only domain path
 		} else {
@@ -381,6 +381,6 @@ class OnRequestHandler
 	 */
 	protected function getCurrentHost()
 	{
-		return $this->httpRequest->getUrl()->getHostUrl();
+		return $this->httpRequest->getUrl()->getHostUrl() . $this->httpRequest->getUrl()->getScriptPath();
 	}
 }
