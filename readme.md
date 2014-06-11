@@ -18,9 +18,15 @@ The best way to install ipub/mobile-detect is using  [Composer](http://getcompos
 ```json
 {
 	"require": {
-		"ipub/mobile-detect": "dev-master"
+		"ipub/mobile-detect": "dev-nette-2.1"
 	}
 }
+```
+
+or
+
+```sh
+$ composer require ipub/mobile-detect:@dev-nette-2.1
 ```
 
 After that you have to register extension in config.neon.
