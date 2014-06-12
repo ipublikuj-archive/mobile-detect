@@ -14,25 +14,20 @@
 
 namespace IPub\MobileDetect\Latte;
 
-use IPub\MobileDetect\Helpers\DeviceView;
 use Nette;
-use Nette\Latte\Compiler,
-	Nette\Latte\MacroNode,
-	Nette\Latte\PhpWriter;
 
-use IPub\MobileDetect\MobileDetect;
+use Latte;
+use Latte\Compiler;
+use Latte\MacroNode;
+use Latte\PhpWriter;
+use Latte\Macros\MacroSet;
 
-class Macros extends Nette\Latte\Macros\MacroSet
+use IPub;
+
+class Macros extends MacroSet
 {
 	/**
-	 * @var bool
-	 */
-	private $isUsed = FALSE;
-
-	/**
-	 * @param Compiler $compiler
-	 *
-	 * @return \Nette\Latte\Macros\MacroSet
+	 * Register latte macros
 	 */
 	public static function install(Compiler $compiler)
 	{
@@ -81,9 +76,7 @@ class Macros extends Nette\Latte\Macros\MacroSet
 	 */
 	public function macroIsMobile(MacroNode $node, PhpWriter $writer)
 	{
-		$this->isUsed = TRUE;
-
-		return $writer->write('if ($_mobileDetect->isMobile()) {');
+		return $writer->write('if ($template->getMobileDetectService()->isMobile()) {');
 	}
 
 	/**
@@ -96,9 +89,7 @@ class Macros extends Nette\Latte\Macros\MacroSet
 	 */
 	public function macroIsNotMobile(MacroNode $node, PhpWriter $writer)
 	{
-		$this->isUsed = TRUE;
-
-		return $writer->write('if (!$_mobileDetect->isMobile()) {');
+		return $writer->write('if (!$template->getMobileDetectService()->isMobile()) {');
 	}
 
 	/**
@@ -111,9 +102,7 @@ class Macros extends Nette\Latte\Macros\MacroSet
 	 */
 	public function macroIsTablet(MacroNode $node, PhpWriter $writer)
 	{
-		$this->isUsed = TRUE;
-
-		return $writer->write('if ($_mobileDetect->isTablet()) {');
+		return $writer->write('if ($template->getMobileDetectService()->isTablet()) {');
 	}
 
 	/**
@@ -126,9 +115,7 @@ class Macros extends Nette\Latte\Macros\MacroSet
 	 */
 	public function macroIsNotTablet(MacroNode $node, PhpWriter $writer)
 	{
-		$this->isUsed = TRUE;
-
-		return $writer->write('if (!$_mobileDetect->isTablet()) {');
+		return $writer->write('if (!$template->getMobileDetectService()->isTablet()) {');
 	}
 
 	/**
@@ -141,8 +128,6 @@ class Macros extends Nette\Latte\Macros\MacroSet
 	 */
 	public function macroIsDevice(MacroNode $node, PhpWriter $writer)
 	{
-		$this->isUsed = TRUE;
-
 		$arguments = self::prepareMacroArguments($node->args);
 
 		if ($arguments["device"] === NULL) {
@@ -152,7 +137,7 @@ class Macros extends Nette\Latte\Macros\MacroSet
 		// Create magic method name
 		$magicMethodName = 'is' . ucfirst(strtolower((string) $arguments["device"]));
 
-		return $writer->write('if ($_mobileDetect->'. $magicMethodName.'()) {');
+		return $writer->write('if ($template->getMobileDetectService()->'. $magicMethodName.'()) {');
 	}
 
 	/**
@@ -165,8 +150,6 @@ class Macros extends Nette\Latte\Macros\MacroSet
 	 */
 	public function macroIsOS(MacroNode $node, PhpWriter $writer)
 	{
-		$this->isUsed = TRUE;
-
 		$arguments = self::prepareMacroArguments($node->args);
 
 		if ($arguments["os"] === NULL) {
@@ -176,7 +159,7 @@ class Macros extends Nette\Latte\Macros\MacroSet
 		// Create magic method name
 		$magicMethodName = 'is' . ucfirst(strtolower((string) $arguments["os"]));
 
-		return $writer->write('if ($_mobileDetect->'. $magicMethodName.'()) {');
+		return $writer->write('if ($template->getMobileDetectService()->'. $magicMethodName.'()) {');
 	}
 
 	/**
@@ -189,9 +172,7 @@ class Macros extends Nette\Latte\Macros\MacroSet
 	 */
 	public function macroIsFullView(MacroNode $node, PhpWriter $writer)
 	{
-		$this->isUsed = TRUE;
-
-		return $writer->write('if ($_deviceView->isFullView()) {');
+		return $writer->write('if ($template->getDeviceViewService()->isFullView()) {');
 	}
 
 	/**
@@ -204,9 +185,7 @@ class Macros extends Nette\Latte\Macros\MacroSet
 	 */
 	public function macroIsMobileView(MacroNode $node, PhpWriter $writer)
 	{
-		$this->isUsed = TRUE;
-
-		return $writer->write('if ($_deviceView->isMobileView()) {');
+		return $writer->write('if ($template->getDeviceViewService()->isMobileView()) {');
 	}
 
 	/**
@@ -219,9 +198,7 @@ class Macros extends Nette\Latte\Macros\MacroSet
 	 */
 	public function macroIsTabletView(MacroNode $node, PhpWriter $writer)
 	{
-		$this->isUsed = TRUE;
-
-		return $writer->write('if ($_deviceView->isTabletView()) {');
+		return $writer->write('if ($template->getDeviceViewService()->isTabletView()) {');
 	}
 
 	/**
@@ -234,66 +211,7 @@ class Macros extends Nette\Latte\Macros\MacroSet
 	 */
 	public function macroIsNotMobileView(MacroNode $node, PhpWriter $writer)
 	{
-		$this->isUsed = TRUE;
-
-		return $writer->write('if ($_deviceView->isNotMobileView()) {');
-	}
-
-	/**
-	 *
-	 */
-	public function initialize()
-	{
-		$this->isUsed = FALSE;
-	}
-
-	/**
-	 * Finishes template parsing.
-	 *
-	 * @return array(prolog, epilog)
-	 */
-	public function finalize()
-	{
-		if (!$this->isUsed) {
-			return array();
-		}
-
-		return array(
-			get_called_class() . '::validateTemplateParams($template);',
-			NULL
-		);
-	}
-
-	/**
-	 * @param \Nette\Templating\Template $template
-	 *
-	 * @throws \Nette\InvalidStateException
-	 */
-	public static function validateTemplateParams(Nette\Templating\Template $template)
-	{
-		$params = $template->getParameters();
-
-		if (!isset($params['_mobileDetect']) || !$params['_mobileDetect'] instanceof MobileDetect) {
-			$where = isset($params['control']) ?
-				" of component " . get_class($params['control']) . '(' . $params['control']->getName() . ')'
-				: NULL;
-
-			throw new Nette\InvalidStateException(
-				'Please provide an instanceof IPub\\MobileDetect\\MobileDetect ' .
-				'as a parameter $_mobileDetect to template' . $where
-			);
-		}
-
-		if (!isset($params['_deviceView']) || !$params['_deviceView'] instanceof DeviceView) {
-			$where = isset($params['control']) ?
-				" of component " . get_class($params['control']) . '(' . $params['control']->getName() . ')'
-				: NULL;
-
-			throw new Nette\InvalidStateException(
-				'Please provide an instanceof IPub\\MobileDetect\\Helpers\\DeviceView ' .
-				'as a parameter $_deviceView to template' . $where
-			);
-		}
+		return $writer->write('if ($template->getDeviceViewService()->isNotMobileView()) {');
 	}
 
 	/**

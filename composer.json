@@ -20,8 +20,17 @@
 
 	"require": {
 		"php"							: ">=5.3.0",
-		"nette/nette"					: "2.2@dev",
+		"nette/application"				: "~2.2",
+		"nette/di"						: "~2.2",
+		"nette/http"					: "~2.2",
+		"nette/utils"					: "~2.2",
+		"latte/latte"					: "~2.2",
 		"mobiledetect/mobiledetectlib"	: "2.8.*"
+	},
+
+	"require-dev": {
+		"nette/tester"		: "@dev",
+		"janmarek/mockista"	: "@dev"
 	},
 
 	"autoload": {

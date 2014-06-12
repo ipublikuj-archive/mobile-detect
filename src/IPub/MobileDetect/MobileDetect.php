@@ -15,14 +15,29 @@
 namespace IPub\MobileDetect;
 
 use Nette;
+use Nette\Http;
+
+use IPub;
+use IPub\MobileDetect\Helpers;
+use IPub\MobileDetect\Templating;
 
 class MobileDetect extends \Detection\MobileDetect
 {
 	/**
-	 * @param Nette\Http\Request $httpRequest
+	 * @var Helpers\DeviceView
 	 */
-	public function __construct(Nette\Http\Request $httpRequest)
-	{
+	private $deviceView;
+
+	/**
+	 * @param Helpers\DeviceView $deviceView
+	 * @param Http\Request $httpRequest
+	 */
+	public function __construct(
+		Helpers\DeviceView $deviceView,
+		Http\Request $httpRequest
+	) {
+		$this->deviceView = $deviceView;
+
 		// Get http headers
 		$httpHeaders = $httpRequest->getHeaders();
 
@@ -34,5 +49,13 @@ class MobileDetect extends \Detection\MobileDetect
 			// ...set user agent details
 			$this->setUserAgent($httpHeaders['user-agent']);
 		}
+	}
+
+	/**
+	 * @return Templating\Helpers
+	 */
+	public function createTemplateHelpers()
+	{
+		return new Templating\Helpers($this, $this->deviceView);
 	}
 }

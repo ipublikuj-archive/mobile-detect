@@ -58,17 +58,12 @@ class MobileDetectExtension extends Nette\DI\CompilerExtension
 		)
 	);
 
-
 	public function loadConfiguration()
 	{
 		$config = $this->getConfig($this->defaults);
 		$builder = $this->getContainerBuilder();
 
-		// Install extension latte macros
-		$install = 'IPub\MobileDetect\Latte\Macros::install';
-		$builder->getDefinition('nette.latte')
-			->addSetup($install . '(?->compiler)', array('@self'));
-
+		// Install mobile detect service
 		$builder->addDefinition($this->prefix('mobileDetect'))
 			->setClass('IPub\MobileDetect\MobileDetect');
 
@@ -82,6 +77,22 @@ class MobileDetectExtension extends Nette\DI\CompilerExtension
 
 		$builder->addDefinition($this->prefix('onResponseHandler'))
 			->setClass('IPub\MobileDetect\Events\OnResponseHandler');
+
+		// Register template helpers
+		$builder->addDefinition($this->prefix('helpers'))
+			->setClass('IPub\MobileDetect\Templating\Helpers')
+			->setFactory($this->prefix('@mobileDetect') . '::createTemplateHelpers')
+			->setInject(FALSE);
+
+		// Install extension latte macros
+		$latteFactory = $builder->hasDefinition('nette.latteFactory')
+			? $builder->getDefinition('nette.latteFactory')
+			: $builder->getDefinition('nette.latte');
+
+		$latteFactory
+			->addSetup('IPub\MobileDetect\Latte\Macros::install(?->getCompiler())', array('@self'))
+			->addSetup('addFilter', array('getMobileDetectService', array($this->prefix('@helpers'), 'getMobileDetectService')))
+			->addSetup('addFilter', array('getDeviceViewService', array($this->prefix('@helpers'), 'getDeviceViewService')));
 
 		$application = $builder->getDefinition('application');
 		$application->addSetup('$service->onRequest[] = ?', array('@' . $this->prefix('onRequestHandler')));

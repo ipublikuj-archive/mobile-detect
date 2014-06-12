@@ -15,8 +15,8 @@
 namespace IPub\MobileDetect\Helpers;
 
 use Nette;
+use Nette\Application;
 use Nette\Http;
-use Nette\Application\Responses;
 
 class DeviceView extends Nette\Object
 {
@@ -172,7 +172,7 @@ class DeviceView extends Nette\Object
 	 *
 	 * @param string $redirectUrl
 	 *
-	 * @return Responses\RedirectResponse
+	 * @return Application\Responses\RedirectResponse
 	 */
 	public function getRedirectResponseBySwitchParam($redirectUrl)
 	{
@@ -193,7 +193,7 @@ class DeviceView extends Nette\Object
 				break;
 		}
 
-		return new Responses\RedirectResponse($redirectUrl, $statusCode);
+		return new Application\Responses\RedirectResponse($redirectUrl, $statusCode);
 	}
 
 	/**
@@ -241,14 +241,14 @@ class DeviceView extends Nette\Object
 	 * @param string	$host			Uri host
 	 * @param int		$statusCode		Status code
 	 *
-	 * @return Responses\RedirectResponse
+	 * @return Application\Responses\RedirectResponse
 	 */
 	public function getTabletRedirectResponse($host, $statusCode)
 	{
 		// Create cookie
 		$this->createCookie(self::VIEW_TABLET);
 
-		return new Responses\RedirectResponse($host, $statusCode);
+		return new Application\Responses\RedirectResponse($host, $statusCode);
 	}
 
 	/**
@@ -257,14 +257,14 @@ class DeviceView extends Nette\Object
 	 * @param string	$host			Uri host
 	 * @param int		$statusCode		Status code
 	 *
-	 * @return Responses\RedirectResponse
+	 * @return Application\Responses\RedirectResponse
 	 */
 	public function getMobileRedirectResponse($host, $statusCode)
 	{
 		// Create cookie
 		$this->createCookie(self::VIEW_MOBILE);
 
-		return new Responses\RedirectResponse($host, $statusCode);
+		return new Application\Responses\RedirectResponse($host, $statusCode);
 	}
 
 	/**
