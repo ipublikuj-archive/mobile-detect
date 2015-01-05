@@ -40,6 +40,11 @@ class Macros extends MacroSet
 		$me->addMacro('isNotMobile', array($me, 'macroIsNotMobile'), '}');
 
 		/**
+		 * {isPhone /}
+		 */
+		$me->addMacro('isPhone', array($me, 'macroIsPhone'), '}');
+
+		/**
 		 * {isTablet /}, {isNotTablet /}
 		 */
 		$me->addMacro('isTablet', array($me, 'macroIsTablet'), '}');
@@ -90,6 +95,19 @@ class Macros extends MacroSet
 	public function macroIsNotMobile(MacroNode $node, PhpWriter $writer)
 	{
 		return $writer->write('if (!$template->getMobileDetectService()->isMobile()) {');
+	}
+
+	/**
+	 * {isPhone /}
+	 *
+	 * @param MacroNode $node
+	 * @param PhpWriter $writer
+	 *
+	 * @return string
+	 */
+	public function macroIsPhone(MacroNode $node, PhpWriter $writer)
+	{
+		return $writer->write('if ($template->getMobileDetectService()->isMobile() && !$template->getMobileDetectService()->isTablet()) {');
 	}
 
 	/**
