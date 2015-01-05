@@ -151,6 +151,13 @@ class OnRequestHandler
 			return;
 		}
 
+		// Checking the need to modify the Response and set closure
+		if ($this->needPhoneResponseModify()) {
+			$this->deviceView->setPhoneView();
+
+			return;
+		}
+
 		// Sets the closure modifier mobile Response
 		if ($this->needMobileResponseModify()) {
 			$this->deviceView->setMobileView();
@@ -225,6 +232,24 @@ class OnRequestHandler
 		if (($this->deviceView->getViewType() === NULL || $this->deviceView->isTabletView()) && $this->mobileDetect->isTablet()) {
 			$this->onResponseHandler->modifyResponseClosure = function($deviceView) {
 				return $deviceView->modifyTabletResponse();
+			};
+
+			return TRUE;
+		}
+
+		return FALSE;
+	}
+
+	/**
+	 * If a modified Response for phone devices is needed
+	 *
+	 * @return boolean
+	 */
+	protected function needPhoneResponseModify()
+	{
+		if (($this->deviceView->getViewType() === NULL || $this->deviceView->isPhoneView()) && $this->mobileDetect->isMobile() && !$this->mobileDetect->isTablet()) {
+			$this->onResponseHandler->modifyResponseClosure = function($deviceView) {
+				return $deviceView->modifyPhoneResponse();
 			};
 
 			return TRUE;

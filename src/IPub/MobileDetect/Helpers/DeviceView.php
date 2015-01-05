@@ -25,6 +25,7 @@ class DeviceView extends Nette\Object
 	const SWITCH_PARAM		= 'device_view';
 
 	const VIEW_MOBILE		= 'mobile';
+	const VIEW_PHONE		= 'phone';
 	const VIEW_TABLET		= 'tablet';
 	const VIEW_FULL			= 'full';
 	const VIEW_NOT_MOBILE	= 'not_mobile';
@@ -92,6 +93,16 @@ class DeviceView extends Nette\Object
 	}
 
 	/**
+	 * Is the device a phone view type
+	 *
+	 * @return boolean
+	 */
+	public function isPhoneView()
+	{
+		return $this->viewType === self::VIEW_PHONE;
+	}
+
+	/**
 	 * Is the device a mobile view type
 	 *
 	 * @return boolean
@@ -129,6 +140,18 @@ class DeviceView extends Nette\Object
 	public function setTabletView()
 	{
 		$this->viewType = self::VIEW_TABLET;
+
+		return $this;
+	}
+
+	/**
+	 * Sets the phone view type
+	 *
+	 * @return $this
+	 */
+	public function setPhoneView()
+	{
+		$this->viewType = self::VIEW_PHONE;
 
 		return $this;
 	}
@@ -218,6 +241,19 @@ class DeviceView extends Nette\Object
 	{
 		// Create cookie
 		$this->createCookie(self::VIEW_TABLET);
+
+		return $this->httpResponse;
+	}
+
+	/**
+	 * Modifies the Response for phone devices
+	 *
+	 * @return Http\IResponse
+	 */
+	public function modifyPhoneResponse()
+	{
+		// Create cookie
+		$this->createCookie(self::VIEW_PHONE);
 
 		return $this->httpResponse;
 	}

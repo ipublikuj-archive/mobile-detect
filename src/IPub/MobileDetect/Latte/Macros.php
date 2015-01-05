@@ -40,9 +40,10 @@ class Macros extends MacroSet
 		$me->addMacro('isNotMobile', array($me, 'macroIsNotMobile'), '}');
 
 		/**
-		 * {isPhone /}
+		 * {isPhone /}, {isNotPhone /}
 		 */
 		$me->addMacro('isPhone', array($me, 'macroIsPhone'), '}');
+		$me->addMacro('isNotPhone', array($me, 'macroIsNotPhone'), '}');
 
 		/**
 		 * {isTablet /}, {isNotTablet /}
@@ -65,6 +66,7 @@ class Macros extends MacroSet
 		 */
 		$me->addMacro('isFullView', array($me, 'macroIsFullView'), '}');
 		$me->addMacro('isMobileView', array($me, 'macroIsMobileView'), '}');
+		$me->addMacro('isPhoneView', array($me, 'macroIsPhoneView'), '}');
 		$me->addMacro('isTabletView', array($me, 'macroIsTabletView'), '}');
 		$me->addMacro('isNotMobileView', array($me, 'macroIsNotMobileView'), '}');
 
@@ -108,6 +110,19 @@ class Macros extends MacroSet
 	public function macroIsPhone(MacroNode $node, PhpWriter $writer)
 	{
 		return $writer->write('if ($template->getMobileDetectService()->isMobile() && !$template->getMobileDetectService()->isTablet()) {');
+	}
+
+	/**
+	 * {isNotPhone /}
+	 *
+	 * @param MacroNode $node
+	 * @param PhpWriter $writer
+	 *
+	 * @return string
+	 */
+	public function macroIsNotPhone(MacroNode $node, PhpWriter $writer)
+	{
+		return $writer->write('if (($template->getMobileDetectService()->isMobile() && $template->getMobileDetectService()->isTablet()) || !$template->getMobileDetectService()->isMobile()) {');
 	}
 
 	/**
@@ -194,7 +209,7 @@ class Macros extends MacroSet
 	}
 
 	/**
-	 * {isFullView /}
+	 * {isMobileView /}
 	 *
 	 * @param MacroNode $node
 	 * @param PhpWriter $writer
@@ -207,7 +222,20 @@ class Macros extends MacroSet
 	}
 
 	/**
-	 * {isFullView /}
+	 * {isPhoneView /}
+	 *
+	 * @param MacroNode $node
+	 * @param PhpWriter $writer
+	 *
+	 * @return string
+	 */
+	public function macroIsPhoneView(MacroNode $node, PhpWriter $writer)
+	{
+		return $writer->write('if ($template->getDeviceViewService()->isPhoneView()) {');
+	}
+
+	/**
+	 * {isTabletView /}
 	 *
 	 * @param MacroNode $node
 	 * @param PhpWriter $writer
@@ -220,7 +248,7 @@ class Macros extends MacroSet
 	}
 
 	/**
-	 * {isFullView /}
+	 * {isNotMobileView /}
 	 *
 	 * @param MacroNode $node
 	 * @param PhpWriter $writer
