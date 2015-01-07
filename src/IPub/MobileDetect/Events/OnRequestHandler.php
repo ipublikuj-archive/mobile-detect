@@ -111,6 +111,7 @@ class OnRequestHandler
 		if ($this->deviceView->hasSwitchParam()) {
 			if ($response = $this->getRedirectResponseBySwitchParam()) {
 				$response->send($this->httpRequest, $this->httpResponse);
+				exit();
 			}
 
 			return;
@@ -125,6 +126,7 @@ class OnRequestHandler
 		if ($this->hasTabletRedirect()) {
 			if ($response = $this->getTabletRedirectResponse()) {
 				$response->send($this->httpRequest, $this->httpResponse);
+				exit();
 			}
 
 			return;
@@ -134,6 +136,7 @@ class OnRequestHandler
 		if ($this->hasMobileRedirect()) {
 			if ($response = $this->getMobileRedirectResponse()) {
 				$response->send($this->httpRequest, $this->httpResponse);
+				exit();
 			}
 
 			return;
