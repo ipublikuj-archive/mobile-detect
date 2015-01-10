@@ -1,10 +1,14 @@
 # MobileDetect
 
+[![Build Status](https://img.shields.io/travis/iPublikuj/mobile-detect.svg?style=flat-square)](https://travis-ci.org/iPublikuj/mobile-detect)
+[![Latest Stable Version](https://img.shields.io/packagist/v/ipub/mobile-detect.svg?style=flat-square)](https://packagist.org/packages/ipub/mobile-detect)
+[![Composer Downloads](https://img.shields.io/packagist/dt/ipub/mobile-detect.svg?style=flat-square)](https://packagist.org/packages/ipub/mobile-detect)
+
 Detect mobile devices, manage mobile view and redirect to the mobile and tablet version for [Nette Framework](http://nette.org/)
 
 ## Introduction
 
-This Bundle use [Mobile_Detect](https://github.com/serbanghita/Mobile-Detect) class and provides the following features:
+This extension use [Mobile_Detect](https://github.com/serbanghita/Mobile-Detect) class and provides the following features:
 
 * Detect the various mobile devices by name, OS, browser User-Agent
 * Manages site views for the variuos mobile devices (`mobile`, `tablet`, `full`)
