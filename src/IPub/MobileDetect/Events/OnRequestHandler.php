@@ -20,6 +20,7 @@ use Nette\Http;
 
 use IPub\MobileDetect\MobileDetect;
 use IPub\MobileDetect\Helpers\DeviceView;
+use Tracy\Debugger;
 
 class OnRequestHandler
 {
@@ -309,8 +310,11 @@ class OnRequestHandler
 			// Get actual url
 			$url = $this->httpRequest->getUrl();
 
+			// Remove switch param
+			$url->setQueryParameter(DeviceView::SWITCH_PARAM, NULL);
+
 			// Create full path url
-			$redirectUrl = $this->getCurrentHost() . $url->getPathInfo();
+			$redirectUrl = $this->getCurrentHost() . $url->getRelativeUrl();
 
 		// Generate only domain path
 		} else {
