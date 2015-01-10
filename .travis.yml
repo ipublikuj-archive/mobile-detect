@@ -1,0 +1,22 @@
+language: php
+
+env:
+  - NETTE=default
+  - NETTE=~2.2.0
+
+php:
+  - 5.4
+  - 5.5
+  - 5.6
+  - hhvm
+
+matrix:
+  allow_failures:
+    - php: hhvm
+
+before_script:
+  - php .travis.composer.php
+  - composer self-update
+  - composer install --no-interaction --prefer-source --dev
+
+script: ./vendor/bin/tester tests

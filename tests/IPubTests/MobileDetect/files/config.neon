@@ -1,0 +1,15 @@
+mobileDetect:
+	redirect:
+		mobile:
+			isEnabled	: true
+			host		: http://m.site.com
+			statusCode	: 301
+			action		: redirect
+		tablet:
+			isEnabled	: true
+			host		: http://t.site.com
+			statusCode	: 301
+			action		: redirect
+		detectTabletAsMobile: true
+	switchDeviceView:
+		saveRefererPath: true
