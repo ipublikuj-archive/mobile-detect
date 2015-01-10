@@ -22,11 +22,6 @@ use IPub\MobileDetect\Helpers\DeviceView;
 class OnResponseHandler
 {
 	/**
-	 * @var Http\IRequest
-	 */
-	private $httpRequest;
-
-	/**
 	 * @var bool
 	 */
 	private $needModifyResponse = FALSE;
@@ -42,13 +37,10 @@ class OnResponseHandler
 	public $modifyResponseClosure;
 
 	/**
-	 * @param Http\IRequest $httpRequest
 	 * @param DeviceView $deviceView
 	 */
-	public function __construct(Http\IRequest $httpRequest, DeviceView $deviceView)
+	public function __construct(DeviceView $deviceView)
 	{
-		$this->httpRequest	= $httpRequest;
-
 		$this->deviceView = $deviceView;
 	}
 
