@@ -100,12 +100,12 @@ class MobileDetectExtension extends Nette\DI\CompilerExtension
 	}
 
 	/**
-	 * @param \Nette\Configurator $config
+	 * @param Nette\Configurator $config
 	 * @param string $extensionName
 	 */
 	public static function register(Nette\Configurator $config, $extensionName = 'mobileDetect')
 	{
-		$config->onCompile[] = function (Configurator $config, Compiler $compiler) use ($extensionName) {
+		$config->onCompile[] = function (Nette\Configurator $config, Nette\DI\Compiler $compiler) use ($extensionName) {
 			$compiler->addExtension($extensionName, new MobileDetectExtension());
 		};
 	}
