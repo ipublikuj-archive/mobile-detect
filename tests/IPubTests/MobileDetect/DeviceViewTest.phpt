@@ -13,7 +13,7 @@
  * @date		10.01.15
  */
 
-namespace IPub\Forms\Slug;
+namespace IPub\MobileDetect;
 
 use Nette;
 
