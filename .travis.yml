@@ -21,3 +21,6 @@ before_script:
 
 script:
   - vendor/bin/tester -s -p php -c tests/IPubTests/php.ini tests
+
+after_failure:
+  - 'for i in $(find ./tests -name \*.actual); do echo "--- $i"; cat $i; echo; echo; done'
