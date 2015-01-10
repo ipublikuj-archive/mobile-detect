@@ -30,6 +30,7 @@
 
 	"require-dev": {
 		"nette/bootstrap"	: "~2.2",
+		"nette/mail"		: "~2.2",
 		"nette/tester"		: "@dev",
 		"janmarek/mockista"	: "@dev"
 	},
