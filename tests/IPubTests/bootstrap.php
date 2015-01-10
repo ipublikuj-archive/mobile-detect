@@ -12,7 +12,6 @@ Tester\Environment::setup();
 // Create temporary directory
 define('TEMP_DIR', __DIR__ . '/../tmp/' . (isset($_SERVER['argv']) ? md5(serialize($_SERVER['argv'])) : getmypid()));
 Tester\Helpers::purge(TEMP_DIR);
-\Tracy\Debugger::$logDirectory = TEMP_DIR;
 
 function id($val) {
 	return $val;
