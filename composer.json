@@ -30,6 +30,7 @@
 
 	"require-dev": {
 		"nette/tester"		: "@dev",
+		"tracy/tracy"		: "~2.2",
 		"janmarek/mockista"	: "@dev"
 	},
 
