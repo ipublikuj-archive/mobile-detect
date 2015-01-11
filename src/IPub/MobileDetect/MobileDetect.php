@@ -52,6 +52,26 @@ class MobileDetect extends \Detection\MobileDetect
 	}
 
 	/**
+	 * Check if the device is mobile phone
+	 *
+	 * @return bool
+	 */
+	public function isPhone()
+	{
+		return $this->isMobile() && !$this->isTablet();
+	}
+
+	/**
+	 * Check if the device is not mobile phone
+	 *
+	 * @return bool
+	 */
+	public function isNotPhone()
+	{
+		return (($this->isMobile() && $this->isTablet()) || !$this->isMobile());
+	}
+
+	/**
 	 * @return Templating\Helpers
 	 */
 	public function createTemplateHelpers()
