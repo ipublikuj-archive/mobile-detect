@@ -136,6 +136,7 @@ class SomePresenter extends Nette\Application\UI\Presenter
 ```php
 $mobileDetect->isMobile();
 $mobileDetect->isTablet();
+$mobileDetect->isPhone();
 ```
 
 ### Check phone
@@ -190,6 +191,10 @@ $mobileDetect->isSafari();
 {isTablet}
 	<span>This content will be only on tablet devices....</span>
 {/isTablet}
+
+{isPhone}
+	<span>This content will be only on phone devices....</span>
+{/isPhone}
 ```
 
 Available Latte macros:
@@ -200,6 +205,9 @@ Available Latte macros:
 
 {isTablet}....{/isTablet}
 {isNotTablet}....{/isNotTablet}
+
+{isPhone}....{/isPhone}
+{isNotPhone}....{/isNotPhone}
 ```
 
 ### Check device type by provided name
@@ -238,6 +246,10 @@ With view type detector you could change your default layout in templates.
 {isTabletView}
 	{layout '../Path/To/Your/Tablet/Device/@layout.latte'}
 {/isTabletView}
+
+{isPhoneView}
+	{layout '../Path/To/Your/Phone/Device/@layout.latte'}
+{/isPhoneView}
 
 {isFullView}
 	{layout '../Path/To/Your/Full/View/@layout.latte'}
