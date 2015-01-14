@@ -13,7 +13,7 @@
  * @date		10.01.15
  */
 
-namespace IPub\MobileDetect;
+namespace IPubTests\MobileDetect;
 
 use Nette;
 
