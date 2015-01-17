@@ -14,10 +14,9 @@ This extension use [Mobile_Detect](https://github.com/serbanghita/Mobile-Detect)
 * Manages site views for the variuos mobile devices (`mobile`, `tablet`, `full`)
 * Redirects to mobile and tablet sites
 
-## Instalation
+## Installation
 
 The best way to install ipub/mobile-detect is using  [Composer](http://getcomposer.org/):
-
 
 ```json
 {
