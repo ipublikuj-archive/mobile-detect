@@ -33,7 +33,7 @@ extensions:
 	mobileDetect: IPub\MobileDetect\DI\MobileDetectExtension
 ```
 
-Package contains trait, which you will have to use in class, where you want to use mobile detector. This works only for PHP 5.3+, for older version you can simply copy trait content and paste it into class where you want to use it.
+Package contains trait, which you will have to use in class, where you want to use mobile detector. This works only for PHP 5.4+, for older version you can simply copy trait content and paste it into class where you want to use it.
 
 ```php
 <?php
