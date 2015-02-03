@@ -368,11 +368,9 @@ class OnRequestHandler
 			{
 				case self::REDIRECT:
 					return rtrim($this->redirectConf[$platform]['host'], '/') .'/'. ltrim($this->httpRequest->getUrl()->getRelativeUrl(), '/');
-					break;
 
 				case self::REDIRECT_WITHOUT_PATH:
 					return  $this->redirectConf[$platform]['host'];
-					break;
 			}
 		}
 	}
@@ -389,10 +387,11 @@ class OnRequestHandler
 		$option = NULL;
 
 		// Get actual route
-		$route = $this->router->match($this->httpRequest);
+		$request = $this->router->match($this->httpRequest);
 
-		if ($route instanceof Route) {
-			$option = $route->getOption($name);
+		if ($request instanceof Application\Request) {
+			$params = $request->getParameters();
+			$option = isset($params[$name]) ? $params[$name] : NULL;
 		}
 
 		if (!$option) {
