@@ -72,19 +72,22 @@ class MobileDetectExtension extends DI\CompilerExtension
 			->setFactory($this->prefix('@mobileDetect') . '::createTemplateHelpers')
 			->setInject(FALSE);
 
-		// Install extension latte macros
-		$latteFactory = $builder->hasDefinition('nette.latteFactory')
-			? $builder->getDefinition('nette.latteFactory')
-			: $builder->getDefinition('nette.latte');
+		$application = $builder->getDefinition('application');
+		$application->addSetup('$service->onRequest[] = ?', array('@' . $this->prefix('onRequestHandler')));
+		$application->addSetup('$service->onResponse[] = ?', array('@' . $this->prefix('onResponseHandler')));
+	}
 
+	public function beforeCompile()
+	{
+		$builder = $this->getContainerBuilder();
+
+		// Install extension latte macros
+		$latteFactory = $builder->getDefinition($builder->getByType('\Nette\Bridges\ApplicationLatte\ILatteFactory') ?: 'nette.latteFactory');
+		
 		$latteFactory
 			->addSetup('IPub\MobileDetect\Latte\Macros::install(?->getCompiler())', array('@self'))
 			->addSetup('addFilter', array('getMobileDetectService', array($this->prefix('@helpers'), 'getMobileDetectService')))
 			->addSetup('addFilter', array('getDeviceViewService', array($this->prefix('@helpers'), 'getDeviceViewService')));
-
-		$application = $builder->getDefinition('application');
-		$application->addSetup('$service->onRequest[] = ?', array('@' . $this->prefix('onRequestHandler')));
-		$application->addSetup('$service->onResponse[] = ?', array('@' . $this->prefix('onResponseHandler')));
 	}
 
 	/**
