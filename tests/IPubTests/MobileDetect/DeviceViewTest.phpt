@@ -94,7 +94,7 @@ class DeviceViewTest extends Tester\TestCase
 	 */
 	private function getHelper($query = [])
 	{
-		$httpRequest	= new Nette\Http\Request(new Nette\Http\UrlScript('http://www.ipublikuj.eu');
+		$httpRequest	= new Nette\Http\Request(new Nette\Http\UrlScript('http://www.ipublikuj.eu'));
 		$httpRequest->setQuery($query);
 		$httpResponse	= new Nette\Http\Response();
 
