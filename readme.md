@@ -4,7 +4,7 @@
 [![Latest Stable Version](https://img.shields.io/packagist/v/ipub/mobile-detect.svg?style=flat-square)](https://packagist.org/packages/ipub/mobile-detect)
 [![Composer Downloads](https://img.shields.io/packagist/dt/ipub/mobile-detect.svg?style=flat-square)](https://packagist.org/packages/ipub/mobile-detect)
 
-Detect mobile devices, manage mobile view and redirect to the mobile and tablet version for [Nette Framework](http://nette.org/)
+Extension for detecting mobile devices, managing mobile view types, redirect to mobile version for [Nette Framework](http://nette.org/)
 
 ## Introduction
 
