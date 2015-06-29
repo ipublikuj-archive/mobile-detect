@@ -310,7 +310,7 @@ class DeviceView extends Nette\Object
 	 */
 	protected function createCookie($cookieValue)
 	{
-		$currentDate = new Nette\DateTime('+1 month');
+		$currentDate = new \DateTime('+1 month');
 
 		// Create cookie object
 		$cookie = new Cookie(self::COOKIE_KEY, $cookieValue, $currentDate->format('Y-m-d'));
