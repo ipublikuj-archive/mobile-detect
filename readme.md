@@ -1,6 +1,8 @@
 # MobileDetect
 
 [![Build Status](https://img.shields.io/travis/iPublikuj/mobile-detect.svg?style=flat-square)](https://travis-ci.org/iPublikuj/mobile-detect)
+[![Scrutinizer Code Coverage](https://img.shields.io/scrutinizer/coverage/g/iPublikuj/mobile-detect.svg?style=flat-square)](https://scrutinizer-ci.com/g/iPublikuj/mobile-detect/?branch=master)
+[![Scrutinizer Code Quality](https://img.shields.io/scrutinizer/g/iPublikuj/mobile-detect.svg?style=flat-square)](https://scrutinizer-ci.com/g/iPublikuj/mobile-detect/?branch=master)
 [![Latest Stable Version](https://img.shields.io/packagist/v/ipub/mobile-detect.svg?style=flat-square)](https://packagist.org/packages/ipub/mobile-detect)
 [![Composer Downloads](https://img.shields.io/packagist/dt/ipub/mobile-detect.svg?style=flat-square)](https://packagist.org/packages/ipub/mobile-detect)
 
