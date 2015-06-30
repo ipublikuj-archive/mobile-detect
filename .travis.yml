@@ -8,15 +8,21 @@ php:
   - 5.4
   - 5.5
   - 5.6
+  - 7.0
   - hhvm
+  - hhvm-nightly
 
 matrix:
   allow_failures:
+    - php: 7.0
     - php: hhvm
+    - php: hhvm-nightly
+
+before_install:
+  - composer self-update
 
 before_script:
   - php .travis.composer.php
-  - composer self-update
   - composer install --no-interaction --prefer-source --dev
 
 script:
