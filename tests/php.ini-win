@@ -1,0 +1,5 @@
+date.timezone = Europe/Prague
+
+[PHP]
+extension_dir = "./ext"
+extension=php_xdebug.dll
