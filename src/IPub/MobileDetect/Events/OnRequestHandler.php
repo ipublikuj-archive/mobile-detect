@@ -189,10 +189,20 @@ class OnRequestHandler
 		}
 
 		$isTablet = $this->mobileDetect->isTablet();
-		$isTabletHost = ($this->getCurrentHost() === $this->redirectConf['tablet']['host']);
 
-		if ($isTablet && !$isTabletHost && ($this->getRoutingOption(self::TABLET) != self::NO_REDIRECT)) {
-			return TRUE;
+		if ($this->redirectConf['detectTabletAsMobile'] === FALSE) {
+			$isTabletHost = ($this->getCurrentHost() === $this->redirectConf['tablet']['host']);
+
+			if ($isTablet && !$isTabletHost && ($this->getRoutingOption(self::TABLET) != self::NO_REDIRECT)) {
+				return TRUE;
+			}
+
+		} else {
+			$isMobileHost = ($this->getCurrentHost() === $this->redirectConf['mobile']['host']);
+
+			if ($isTablet && !$isMobileHost && ($this->getRoutingOption(self::TABLET) != self::NO_REDIRECT)) {
+				return TRUE;
+			}
 		}
 
 		return FALSE;
@@ -205,13 +215,12 @@ class OnRequestHandler
 	 */
 	protected function hasMobileRedirect()
 	{
-
 		if (!$this->redirectConf['mobile']['isEnabled']) {
-			return false;
+			return FALSE;
 		}
 
 		if ($this->redirectConf['detectTabletAsMobile'] === FALSE) {
-			$isMobile = $this->mobileDetect->isMobile() && !$this->mobileDetect->isTablet();
+			$isMobile = ($this->mobileDetect->isPhone() || ($this->mobileDetect->isMobile()) && !$this->mobileDetect->isTablet());
 
 		} else {
 			$isMobile = $this->mobileDetect->isMobile();
