@@ -20,8 +20,6 @@ use Nette\Http;
 
 class DeviceView extends Nette\Object
 {
-	const COOKIE_KEY		= 'device_view';
-
 	const SWITCH_PARAM		= 'device_view';
 
 	const VIEW_MOBILE		= 'mobile';
@@ -44,6 +42,11 @@ class DeviceView extends Nette\Object
 	 * @var string
 	 */
 	private $viewType;
+	
+	/**
+	 * @var array
+	 */
+	private $cookieConfiguration;
 
 	/**
 	 * @param Http\IRequest $httpRequest
@@ -53,15 +56,20 @@ class DeviceView extends Nette\Object
 	{
 		$this->httpRequest	= $httpRequest;
 		$this->httpResponse	= $httpResponse;
-
-		if ($this->httpRequest->getQuery(self::SWITCH_PARAM)) {
-			$this->viewType = $this->httpRequest->getQuery(self::SWITCH_PARAM);
-
-		} else if ($this->httpRequest->getCookie(self::COOKIE_KEY)) {
-			$this->viewType = $this->httpRequest->getCookie(self::COOKIE_KEY);
-		}
 	}
 
+	public function setCookieConfiguration(array $cookieConfiguration){
+		$this->cookieConfiguration = $cookieConfiguration;
+	}
+	
+	public function detectViewType(){
+		if ($this->httpRequest->getQuery(self::SWITCH_PARAM)) {
+			$this->viewType = $this->httpRequest->getQuery(self::SWITCH_PARAM);
+		} else if ($this->httpRequest->getCookie($this->cookieConfiguration['name'])) {
+			$this->viewType = $this->httpRequest->getCookie($this->cookieConfiguration['name']);
+		}
+	}
+	
 	/**
 	 * Gets the view type for a device
 	 *
@@ -313,21 +321,16 @@ class DeviceView extends Nette\Object
 	 * @param string $cookieValue
 	 */
 	protected function createCookie($cookieValue)
-	{
-		$currentDate = new \DateTime('+1 month');
-
-		// Create cookie object
-		$cookie = new Cookie(self::COOKIE_KEY, $cookieValue, $currentDate->format('Y-m-d'));
-
+	{		
 		// Store cookie in response
 		$this->httpResponse->setCookie(
-			$cookie->getName(),
-			$cookie->getValue(),
-			$cookie->getExpiresTime(),
-			$cookie->getPath(),
-			$cookie->getDomain(),
-			$cookie->isSecure(),
-			$cookie->isHttpOnly()
+			$this->cookieConfiguration['name'],
+			$cookieValue,
+			\Nette\Utils\DateTime::from($this->cookieConfiguration['expirationAfter'])->format('U'),
+			$this->cookieConfiguration['path'],
+			$this->cookieConfiguration['domain'],
+			$this->cookieConfiguration['secure'],
+			$this->cookieConfiguration['httpOnly']
 		);
 	}
 }
