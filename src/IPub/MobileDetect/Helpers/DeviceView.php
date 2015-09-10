@@ -207,6 +207,10 @@ class DeviceView extends Nette\Object
 				$this->createCookie(self::VIEW_MOBILE);
 				break;
 
+			case self::VIEW_PHONE:
+				$this->createCookie(self::VIEW_PHONE);
+				break;
+
 			case self::VIEW_TABLET:
 				$this->createCookie(self::VIEW_TABLET);
 				break;
