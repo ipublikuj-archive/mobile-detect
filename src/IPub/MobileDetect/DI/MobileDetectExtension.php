@@ -87,7 +87,9 @@ class MobileDetectExtension extends DI\CompilerExtension
 		$latteFactory
 			->addSetup('IPub\MobileDetect\Latte\Macros::install(?->getCompiler())', array('@self'))
 			->addSetup('addFilter', array('getMobileDetectService', array($this->prefix('@helpers'), 'getMobileDetectService')))
-			->addSetup('addFilter', array('getDeviceViewService', array($this->prefix('@helpers'), 'getDeviceViewService')));
+			->addSetup('addFilter', array('getDeviceViewService', array($this->prefix('@helpers'), 'getDeviceViewService')))
+			->addSetup('addFilter', array('isMobile', array($this->prefix('@helpers'), 'isMobile')))
+			->addSetup('addFilter', array('isTablet', array($this->prefix('@helpers'), 'isTablet')));
 	}
 
 	/**

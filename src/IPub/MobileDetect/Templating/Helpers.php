@@ -65,4 +65,14 @@ class Helpers extends Nette\Object
 	{
 		return $this->deviceView;
 	}
+
+	public function isMobile()
+	{
+		return $this->mobileDetect->isMobile();
+	}
+
+	public function isTablet()
+	{
+		return $this->mobileDetect->isTablet();
+	}
 }
