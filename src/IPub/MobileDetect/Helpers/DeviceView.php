@@ -55,23 +55,20 @@ final class DeviceView extends Nette\Object
 	private $switchParameterName = 'device_view';
 
 	/**
+	 * @param string $setSwitchParameterName
 	 * @param CookieSettings $cookieSettings
 	 * @param Http\IRequest $httpRequest
 	 * @param Http\IResponse $httpResponse
 	 */
-	public function __construct(CookieSettings $cookieSettings, Http\IRequest $httpRequest, Http\IResponse $httpResponse)
+	public function __construct(string $setSwitchParameterName, CookieSettings $cookieSettings, Http\IRequest $httpRequest, Http\IResponse $httpResponse)
 	{
 		$this->cookieSettings = $cookieSettings;
 		$this->httpRequest = $httpRequest;
 		$this->httpResponse = $httpResponse;
-	}
 
-	/**
-	 * @return void
-	 */
-	public function detectViewType()
-	{
-		if ($this->httpRequest->getQuery($this->switchParameterName)) {
+		$this->switchParameterName = $setSwitchParameterName;
+
+		if ($this->httpRequest->getQuery($this->switchParameterName, FALSE)) {
 			$this->viewType = $this->httpRequest->getQuery($this->switchParameterName);
 
 		} elseif ($this->httpRequest->getCookie($this->cookieSettings->getName())) {
@@ -177,16 +174,6 @@ final class DeviceView extends Nette\Object
 	public function setNotMobileView()
 	{
 		$this->viewType = self::VIEW_NOT_MOBILE;
-	}
-
-	/**
-	 * @param string $name
-	 *
-	 * @return void
-	 */
-	public function setSwitchParameterName(string $name)
-	{
-		$this->switchParameterName = $name;
 	}
 
 	/**

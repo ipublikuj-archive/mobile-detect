@@ -85,8 +85,7 @@ final class MobileDetectExtension extends DI\CompilerExtension
 
 		$builder->addDefinition($this->prefix('deviceView'))
 			->setClass(Helpers\DeviceView::class)
-			->addSetup('setSwitchParameterName', [$configuration['switchParameterName']])
-			->addSetup('detectViewType');
+			->setArguments(['setSwitchParameterName' => $configuration['switchParameterName']]);
 
 		$builder->addDefinition($this->prefix('cookieSettings'))
 			->setClass(Helpers\CookieSettings::class)
