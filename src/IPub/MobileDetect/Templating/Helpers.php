@@ -54,6 +54,22 @@ final class Helpers extends Nette\Object
 	}
 
 	/**
+	 * @return MobileDetect\MobileDetect
+	 */
+	public function getMobileDetectService() : MobileDetect\MobileDetect
+	{
+		return $this->mobileDetect;
+	}
+
+	/**
+	 * @return MobileDetect\Helpers\DeviceView
+	 */
+	public function getDeviceViewService() : MobileDetect\Helpers\DeviceView
+	{
+		return $this->deviceView;
+	}
+
+	/**
 	 * @return bool
 	 */
 	public function isMobile() : bool

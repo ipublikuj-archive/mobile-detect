@@ -98,7 +98,10 @@ final class Macros extends MacroSet
 	 */
 	public function macroIsMobile(MacroNode $node, PhpWriter $writer) : string
 	{
-		return $writer->write('if (%escape(call_user_func($this->filters->isMobile))) {');
+		return $writer->write('
+			$_resultMD = %escape(property_exists($this, "filters")) ? %escape(call_user_func($this->filters->isMobile)) : $template->getMobileDetectService()->isMobile() && !$template->getMobileDetectService()->isTablet();
+			if ($_resultMD) {
+			');
 	}
 
 	/**
@@ -111,7 +114,10 @@ final class Macros extends MacroSet
 	 */
 	public function macroIsNotMobile(MacroNode $node, PhpWriter $writer) : string
 	{
-		return $writer->write('if (%escape(!call_user_func($this->filters->isMobile))) {');
+		return $writer->write('
+			$_resultMD = %escape(property_exists($this, "filters")) ? %escape(!call_user_func($this->filters->isMobile)) : ;
+			if ($_resultMD) {
+			');
 	}
 
 	/**
