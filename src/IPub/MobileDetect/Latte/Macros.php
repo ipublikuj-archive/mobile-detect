@@ -182,7 +182,7 @@ final class Macros extends MacroSet
 			throw new Exceptions\CompileException('Please provide device name.');
 		}
 
-		return $writer->write('if (%escape(call_user_func($this->filters->isDevice, ' . $arguments['device'] . '))) {');
+		return $writer->write('if (%escape(call_user_func($this->filters->isDevice, "' . $arguments['device'] . '"))) {');
 	}
 
 	/**
@@ -201,7 +201,7 @@ final class Macros extends MacroSet
 			throw new Exceptions\CompileException('Please provide OS name.');
 		}
 
-		return $writer->write('if (%escape(call_user_func($this->filters->isOs, ' . $arguments['os'] . '))) {');
+		return $writer->write('if (%escape(call_user_func($this->filters->isOs, "' . $arguments['os'] . '"))) {');
 	}
 
 	/**
