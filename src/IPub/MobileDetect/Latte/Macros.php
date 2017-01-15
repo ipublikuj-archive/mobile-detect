@@ -2,15 +2,17 @@
 /**
  * Macros.php
  *
- * @copyright	More in license.md
- * @license		http://www.ipublikuj.eu
- * @author		Adam Kadlec http://www.ipublikuj.eu
- * @package		iPublikuj:MobileDetect!
- * @subpackage	Latte
- * @since		5.0
+ * @copyright      More in license.md
+ * @license        http://www.ipublikuj.eu
+ * @author         Adam Kadlec http://www.ipublikuj.eu
+ * @package        iPublikuj:MobileDetect!
+ * @subpackage     Latte
+ * @since          1.0.0
  *
- * @date		22.04.14
+ * @date           22.04.14
  */
+
+declare(strict_types = 1);
 
 namespace IPub\MobileDetect\Latte;
 
@@ -23,11 +25,24 @@ use Latte\PhpWriter;
 use Latte\Macros\MacroSet;
 
 use IPub;
+use IPub\MobileDetect\Exceptions;
 
-class Macros extends MacroSet
+/**
+ * Mobile detect latte macros definition
+ *
+ * @package        iPublikuj:MobileDetect!
+ * @subpackage     Latte
+ *
+ * @author         Adam Kadlec <adam.kadlec@ipublikuj.eu>
+ */
+final class Macros extends MacroSet
 {
 	/**
 	 * Register latte macros
+	 *
+	 * @param Compiler $compiler
+	 *
+	 * @return static
 	 */
 	public static function install(Compiler $compiler)
 	{
@@ -36,39 +51,39 @@ class Macros extends MacroSet
 		/**
 		 * {isMobile /}, {isNotMobile /}
 		 */
-		$me->addMacro('isMobile', array($me, 'macroIsMobile'), '}');
-		$me->addMacro('isNotMobile', array($me, 'macroIsNotMobile'), '}');
+		$me->addMacro('isMobile', [$me, 'macroIsMobile'], '}');
+		$me->addMacro('isNotMobile', [$me, 'macroIsNotMobile'], '}');
 
 		/**
 		 * {isPhone /}, {isNotPhone /}
 		 */
-		$me->addMacro('isPhone', array($me, 'macroIsPhone'), '}');
-		$me->addMacro('isNotPhone', array($me, 'macroIsNotPhone'), '}');
+		$me->addMacro('isPhone', [$me, 'macroIsPhone'], '}');
+		$me->addMacro('isNotPhone', [$me, 'macroIsNotPhone'], '}');
 
 		/**
 		 * {isTablet /}, {isNotTablet /}
 		 */
-		$me->addMacro('isTablet', array($me, 'macroIsTablet'), '}');
-		$me->addMacro('isNotTablet', array($me, 'macroIsNotTablet'), '}');
+		$me->addMacro('isTablet', [$me, 'macroIsTablet'], '}');
+		$me->addMacro('isNotTablet', [$me, 'macroIsNotTablet'], '}');
 
 		/**
 		 * {isMobileDevice 'device_name'}
 		 */
-		$me->addMacro('isMobileDevice', array($me, 'macroIsDevice'), '}');
+		$me->addMacro('isMobileDevice', [$me, 'macroIsDevice'], '}');
 
 		/**
 		 * {isMobileOs 'device_name'}
 		 */
-		$me->addMacro('isMobileOs', array($me, 'macroIsOS'), '}');
+		$me->addMacro('isMobileOs', [$me, 'macroIsOS'], '}');
 
 		/**
 		 * {isFullView /}, {isMobileView /}, {isTabletView /}, {isNotMobileView /}
 		 */
-		$me->addMacro('isFullView', array($me, 'macroIsFullView'), '}');
-		$me->addMacro('isMobileView', array($me, 'macroIsMobileView'), '}');
-		$me->addMacro('isPhoneView', array($me, 'macroIsPhoneView'), '}');
-		$me->addMacro('isTabletView', array($me, 'macroIsTabletView'), '}');
-		$me->addMacro('isNotMobileView', array($me, 'macroIsNotMobileView'), '}');
+		$me->addMacro('isFullView', [$me, 'macroIsFullView'], '}');
+		$me->addMacro('isMobileView', [$me, 'macroIsMobileView'], '}');
+		$me->addMacro('isPhoneView', [$me, 'macroIsPhoneView'], '}');
+		$me->addMacro('isTabletView', [$me, 'macroIsTabletView'], '}');
+		$me->addMacro('isNotMobileView', [$me, 'macroIsNotMobileView'], '}');
 
 		return $me;
 	}
@@ -81,7 +96,7 @@ class Macros extends MacroSet
 	 *
 	 * @return string
 	 */
-	public function macroIsMobile(MacroNode $node, PhpWriter $writer)
+	public function macroIsMobile(MacroNode $node, PhpWriter $writer) : string
 	{
 		return $writer->write('if ($template->getMobileDetectService()->isMobile()) {');
 	}
@@ -94,7 +109,7 @@ class Macros extends MacroSet
 	 *
 	 * @return string
 	 */
-	public function macroIsNotMobile(MacroNode $node, PhpWriter $writer)
+	public function macroIsNotMobile(MacroNode $node, PhpWriter $writer) : string
 	{
 		return $writer->write('if (!$template->getMobileDetectService()->isMobile()) {');
 	}
@@ -107,7 +122,7 @@ class Macros extends MacroSet
 	 *
 	 * @return string
 	 */
-	public function macroIsPhone(MacroNode $node, PhpWriter $writer)
+	public function macroIsPhone(MacroNode $node, PhpWriter $writer) : string
 	{
 		return $writer->write('if ($template->getMobileDetectService()->isMobile() && !$template->getMobileDetectService()->isTablet()) {');
 	}
@@ -120,7 +135,7 @@ class Macros extends MacroSet
 	 *
 	 * @return string
 	 */
-	public function macroIsNotPhone(MacroNode $node, PhpWriter $writer)
+	public function macroIsNotPhone(MacroNode $node, PhpWriter $writer) : string
 	{
 		return $writer->write('if (($template->getMobileDetectService()->isMobile() && $template->getMobileDetectService()->isTablet()) || !$template->getMobileDetectService()->isMobile()) {');
 	}
@@ -133,7 +148,7 @@ class Macros extends MacroSet
 	 *
 	 * @return string
 	 */
-	public function macroIsTablet(MacroNode $node, PhpWriter $writer)
+	public function macroIsTablet(MacroNode $node, PhpWriter $writer) : string
 	{
 		return $writer->write('if ($template->getMobileDetectService()->isTablet()) {');
 	}
@@ -146,7 +161,7 @@ class Macros extends MacroSet
 	 *
 	 * @return string
 	 */
-	public function macroIsNotTablet(MacroNode $node, PhpWriter $writer)
+	public function macroIsNotTablet(MacroNode $node, PhpWriter $writer) : string
 	{
 		return $writer->write('if (!$template->getMobileDetectService()->isTablet()) {');
 	}
@@ -157,20 +172,20 @@ class Macros extends MacroSet
 	 *
 	 * @return string
 	 *
-	 * @throws \Nette\Latte\CompileException
+	 * @throws Exceptions\CompileException
 	 */
-	public function macroIsDevice(MacroNode $node, PhpWriter $writer)
+	public function macroIsDevice(MacroNode $node, PhpWriter $writer) : string
 	{
 		$arguments = self::prepareMacroArguments($node->args);
 
-		if ($arguments["device"] === NULL) {
-			throw new Nette\Latte\CompileException("Please provide device name.");
+		if ($arguments['device'] === NULL) {
+			throw new Exceptions\CompileException('Please provide device name.');
 		}
 
 		// Create magic method name
-		$magicMethodName = 'is' . ucfirst(strtolower((string) $arguments["device"]));
+		$magicMethodName = 'is' . ucfirst(strtolower((string) $arguments['device']));
 
-		return $writer->write('if ($template->getMobileDetectService()->'. $magicMethodName.'()) {');
+		return $writer->write('if ($template->getMobileDetectService()->' . $magicMethodName . '()) {');
 	}
 
 	/**
@@ -179,20 +194,20 @@ class Macros extends MacroSet
 	 *
 	 * @return string
 	 *
-	 * @throws \Nette\Latte\CompileException
+	 * @throws Exceptions\CompileException
 	 */
-	public function macroIsOS(MacroNode $node, PhpWriter $writer)
+	public function macroIsOS(MacroNode $node, PhpWriter $writer) : string
 	{
 		$arguments = self::prepareMacroArguments($node->args);
 
-		if ($arguments["os"] === NULL) {
-			throw new Nette\Latte\CompileException("Please provide OS name.");
+		if ($arguments['os'] === NULL) {
+			throw new Exceptions\CompileException('Please provide OS name.');
 		}
 
 		// Create magic method name
-		$magicMethodName = 'is' . ucfirst(strtolower((string) $arguments["os"]));
+		$magicMethodName = 'is' . ucfirst(strtolower((string) $arguments['os']));
 
-		return $writer->write('if ($template->getMobileDetectService()->'. $magicMethodName.'()) {');
+		return $writer->write('if ($template->getMobileDetectService()->' . $magicMethodName . '()) {');
 	}
 
 	/**
@@ -203,7 +218,7 @@ class Macros extends MacroSet
 	 *
 	 * @return string
 	 */
-	public function macroIsFullView(MacroNode $node, PhpWriter $writer)
+	public function macroIsFullView(MacroNode $node, PhpWriter $writer) : string
 	{
 		return $writer->write('if ($template->getDeviceViewService()->isFullView()) {');
 	}
@@ -216,7 +231,7 @@ class Macros extends MacroSet
 	 *
 	 * @return string
 	 */
-	public function macroIsMobileView(MacroNode $node, PhpWriter $writer)
+	public function macroIsMobileView(MacroNode $node, PhpWriter $writer) : string
 	{
 		return $writer->write('if ($template->getDeviceViewService()->isMobileView()) {');
 	}
@@ -229,7 +244,7 @@ class Macros extends MacroSet
 	 *
 	 * @return string
 	 */
-	public function macroIsPhoneView(MacroNode $node, PhpWriter $writer)
+	public function macroIsPhoneView(MacroNode $node, PhpWriter $writer) : string
 	{
 		return $writer->write('if ($template->getDeviceViewService()->isPhoneView()) {');
 	}
@@ -242,7 +257,7 @@ class Macros extends MacroSet
 	 *
 	 * @return string
 	 */
-	public function macroIsTabletView(MacroNode $node, PhpWriter $writer)
+	public function macroIsTabletView(MacroNode $node, PhpWriter $writer) : string
 	{
 		return $writer->write('if ($template->getDeviceViewService()->isTabletView()) {');
 	}
@@ -255,7 +270,7 @@ class Macros extends MacroSet
 	 *
 	 * @return string
 	 */
-	public function macroIsNotMobileView(MacroNode $node, PhpWriter $writer)
+	public function macroIsNotMobileView(MacroNode $node, PhpWriter $writer) : string
 	{
 		return $writer->write('if ($template->getDeviceViewService()->isNotMobileView()) {');
 	}
@@ -265,17 +280,17 @@ class Macros extends MacroSet
 	 *
 	 * @return array
 	 */
-	public static function prepareMacroArguments($macro)
+	public static function prepareMacroArguments($macro) : array
 	{
 		$arguments = array_map(function ($value) {
 			return trim($value);
-		}, explode(",", $macro));
+		}, explode(',', $macro));
 
-		$device	= $os = $arguments[0];
+		$device = $os = $arguments[0];
 
-		return array(
-			"device"	=> $device,
-			"os"		=> $os,
-		);
+		return [
+			'device' => $device,
+			'os'     => $os,
+		];
 	}
 }

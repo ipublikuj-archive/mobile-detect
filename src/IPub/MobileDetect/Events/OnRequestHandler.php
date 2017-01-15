@@ -2,15 +2,17 @@
 /**
  * OnRequestHandler.php
  *
- * @copyright	More in license.md
- * @license		http://www.ipublikuj.eu
- * @author		Adam Kadlec http://www.ipublikuj.eu
- * @package		iPublikuj:MobileDetect!
- * @subpackage	Events
- * @since		5.0
+ * @copyright      More in license.md
+ * @license        http://www.ipublikuj.eu
+ * @author         Adam Kadlec http://www.ipublikuj.eu
+ * @package        iPublikuj:MobileDetect!
+ * @subpackage     Events
+ * @since          1.0.0
  *
- * @date		22.04.14
+ * @date           22.04.14
  */
+
+declare(strict_types = 1);
 
 namespace IPub\MobileDetect\Events;
 
@@ -18,23 +20,23 @@ use Nette\Application;
 use Nette\Application\Responses;
 use Nette\Http;
 
-use IPub\MobileDetect\MobileDetect;
-use IPub\MobileDetect\Helpers\DeviceView;
-use Tracy\Debugger;
+use IPub\MobileDetect;
+use IPub\MobileDetect\Helpers;
 
-class OnRequestHandler
+final class OnRequestHandler
 {
-	const REDIRECT				= 'redirect';
-	const NO_REDIRECT			= 'noRedirect';
-	const REDIRECT_WITHOUT_PATH	= 'redirectWithoutPath';
+	const REDIRECT = 'redirect';
+	const NO_REDIRECT = 'noRedirect';
+	const REDIRECT_WITHOUT_PATH = 'redirectWithoutPath';
 
-	const MOBILE	= 'mobile';
-	const TABLET	= 'tablet';
+	const MOBILE = 'mobile';
+	const TABLET = 'tablet';
+	const PHONE = 'phone';
 
 	/**
-	 * @var array()
+	 * @var array
 	 */
-	public $redirectConf = array();
+	public $redirectConf = [];
 
 	/**
 	 * @var bool
@@ -57,12 +59,12 @@ class OnRequestHandler
 	private $router;
 
 	/**
-	 * @var MobileDetect
+	 * @var MobileDetect\MobileDetect
 	 */
 	private $mobileDetect;
 
 	/**
-	 * @var DeviceView
+	 * @var Helpers\DeviceView
 	 */
 	private $deviceView;
 
@@ -76,30 +78,32 @@ class OnRequestHandler
 	 * @param Http\IResponse $httpResponse
 	 * @param Application\IRouter $router
 	 * @param OnResponseHandler $onResponseHandler
-	 * @param MobileDetect $mobileDetect
-	 * @param DeviceView $deviceView
+	 * @param MobileDetect\MobileDetect $mobileDetect
+	 * @param Helpers\DeviceView $deviceView
 	 */
 	public function __construct(
 		Http\IRequest $httpRequest,
 		Http\IResponse $httpResponse,
 		Application\IRouter $router,
 		OnResponseHandler $onResponseHandler,
-		MobileDetect $mobileDetect,
-		DeviceView $deviceView
+		MobileDetect\MobileDetect $mobileDetect,
+		Helpers\DeviceView $deviceView
 	) {
-		$this->httpRequest	= $httpRequest;
-		$this->httpResponse	= $httpResponse;
+		$this->httpRequest = $httpRequest;
+		$this->httpResponse = $httpResponse;
 
 		$this->router = $router;
 
 		$this->onResponseHandler = $onResponseHandler;
 
-		$this->mobileDetect	= $mobileDetect;
-		$this->deviceView	= $deviceView;
+		$this->mobileDetect = $mobileDetect;
+		$this->deviceView = $deviceView;
 	}
 
 	/**
 	 * @param Application\Application $application
+	 *
+	 * @return void
 	 */
 	public function __invoke(Application\Application $application)
 	{
@@ -109,7 +113,7 @@ class OnRequestHandler
 		}
 
 		// Sets the flag for the response handled by the GET switch param and the type of the view.
-		if ($this->deviceView->hasSwitchParam()) {
+		if ($this->deviceView->hasSwitchParameter()) {
 			if ($response = $this->getRedirectResponseBySwitchParam()) {
 				$response->send($this->httpRequest, $this->httpResponse);
 				exit();
@@ -123,9 +127,19 @@ class OnRequestHandler
 			return;
 		}
 
+		// Redirects to the phone version and set the 'phone' device view in a cookie.
+		if ($this->hasPhoneRedirect()) {
+			if ($response = $this->getDeviceRedirectResponse(self::PHONE)) {
+				$response->send($this->httpRequest, $this->httpResponse);
+				exit();
+			}
+
+			return;
+		}
+
 		// Redirects to the tablet version and set the 'tablet' device view in a cookie.
 		if ($this->hasTabletRedirect()) {
-			if ($response = $this->getTabletRedirectResponse()) {
+			if ($response = $this->getDeviceRedirectResponse(self::TABLET)) {
 				$response->send($this->httpRequest, $this->httpResponse);
 				exit();
 			}
@@ -135,7 +149,7 @@ class OnRequestHandler
 
 		// Redirects to the mobile version and set the 'mobile' device view in a cookie.
 		if ($this->hasMobileRedirect()) {
-			if ($response = $this->getMobileRedirectResponse()) {
+			if ($response = $this->getDeviceRedirectResponse(self::MOBILE)) {
 				$response->send($this->httpRequest, $this->httpResponse);
 				exit();
 			}
@@ -149,15 +163,15 @@ class OnRequestHandler
 		$this->onResponseHandler->needModifyResponse();
 
 		// Checking the need to modify the Response and set closure
-		if ($this->needTabletResponseModify()) {
-			$this->deviceView->setTabletView();
+		if ($this->needPhoneResponseModify()) {
+			$this->deviceView->setPhoneView();
 
 			return;
 		}
 
 		// Checking the need to modify the Response and set closure
-		if ($this->needPhoneResponseModify()) {
-			$this->deviceView->setPhoneView();
+		if ($this->needTabletResponseModify()) {
+			$this->deviceView->setTabletView();
 
 			return;
 		}
@@ -178,11 +192,42 @@ class OnRequestHandler
 	}
 
 	/**
+	 * Detects phone redirections
+	 *
+	 * @return bool
+	 */
+	private function hasPhoneRedirect() : bool
+	{
+		if (!$this->redirectConf['phone']['isEnabled']) {
+			return FALSE;
+		}
+
+		$isPhone = $this->mobileDetect->isPhone();
+
+		if ($this->redirectConf['detectPhoneAsMobile'] === FALSE) {
+			$isPhoneHost = ($this->getCurrentHost() === $this->redirectConf['phone']['host']);
+
+			if ($isPhone && !$isPhoneHost && ($this->getRoutingOption(self::PHONE) != self::NO_REDIRECT)) {
+				return TRUE;
+			}
+
+		} else {
+			$isMobileHost = ($this->getCurrentHost() === $this->redirectConf['mobile']['host']);
+
+			if ($isPhone && !$isMobileHost && ($this->getRoutingOption(self::PHONE) != self::NO_REDIRECT)) {
+				return TRUE;
+			}
+		}
+
+		return FALSE;
+	}
+
+	/**
 	 * Detects tablet redirections
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
-	protected function hasTabletRedirect()
+	private function hasTabletRedirect() : bool
 	{
 		if (!$this->redirectConf['tablet']['isEnabled']) {
 			return FALSE;
@@ -211,15 +256,18 @@ class OnRequestHandler
 	/**
 	 * Detects mobile redirections
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
-	protected function hasMobileRedirect()
+	private function hasMobileRedirect() : bool
 	{
 		if (!$this->redirectConf['mobile']['isEnabled']) {
 			return FALSE;
 		}
 
-		if ($this->redirectConf['detectTabletAsMobile'] === FALSE) {
+		if ($this->redirectConf['detectPhoneAsMobile'] === FALSE) {
+			$isMobile = ($this->mobileDetect->isTablet() || ($this->mobileDetect->isMobile()) && !$this->mobileDetect->isPhone());
+
+		} elseif ($this->redirectConf['detectTabletAsMobile'] === FALSE) {
 			$isMobile = ($this->mobileDetect->isPhone() || ($this->mobileDetect->isMobile()) && !$this->mobileDetect->isTablet());
 
 		} else {
@@ -236,15 +284,15 @@ class OnRequestHandler
 	}
 
 	/**
-	 * If a modified Response for tablet devices is needed
+	 * If a modified Response for phone devices is needed
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
-	protected function needTabletResponseModify()
+	private function needPhoneResponseModify() : bool
 	{
-		if (($this->deviceView->getViewType() === NULL || $this->deviceView->isTabletView()) && $this->mobileDetect->isTablet()) {
-			$this->onResponseHandler->modifyResponseClosure = function($deviceView) {
-				return $deviceView->modifyTabletResponse();
+		if (($this->deviceView->getViewType() === NULL || $this->deviceView->isPhoneView()) && $this->mobileDetect->isMobile() && !$this->mobileDetect->isTablet()) {
+			$this->onResponseHandler->modifyResponseClosure = function ($deviceView) {
+				return $deviceView->modifyPhoneResponse();
 			};
 
 			return TRUE;
@@ -254,15 +302,15 @@ class OnRequestHandler
 	}
 
 	/**
-	 * If a modified Response for phone devices is needed
+	 * If a modified Response for tablet devices is needed
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
-	protected function needPhoneResponseModify()
+	private function needTabletResponseModify() : bool
 	{
-		if (($this->deviceView->getViewType() === NULL || $this->deviceView->isPhoneView()) && $this->mobileDetect->isMobile() && !$this->mobileDetect->isTablet()) {
-			$this->onResponseHandler->modifyResponseClosure = function($deviceView) {
-				return $deviceView->modifyPhoneResponse();
+		if (($this->deviceView->getViewType() === NULL || $this->deviceView->isTabletView()) && $this->mobileDetect->isTablet()) {
+			$this->onResponseHandler->modifyResponseClosure = function (Helpers\DeviceView $deviceView) {
+				return $deviceView->modifyTabletResponse();
 			};
 
 			return TRUE;
@@ -274,12 +322,12 @@ class OnRequestHandler
 	/**
 	 * If a modified Response for mobile devices is needed
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
-	protected function needMobileResponseModify()
+	private function needMobileResponseModify() : bool
 	{
 		if (($this->deviceView->getViewType() === NULL || $this->deviceView->isMobileView()) && $this->mobileDetect->isMobile()) {
-			$this->onResponseHandler->modifyResponseClosure = function($deviceView) {
+			$this->onResponseHandler->modifyResponseClosure = function (Helpers\DeviceView $deviceView) {
 				return $deviceView->modifyMobileResponse();
 			};
 
@@ -292,12 +340,12 @@ class OnRequestHandler
 	/**
 	 * If a modified Response for non-mobile devices is needed
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
-	protected function needNotMobileResponseModify()
+	private function needNotMobileResponseModify() : bool
 	{
 		if ($this->deviceView->getViewType() === NULL || $this->deviceView->isNotMobileView()) {
-			$this->onResponseHandler->modifyResponseClosure = function($deviceView) {
+			$this->onResponseHandler->modifyResponseClosure = function (Helpers\DeviceView $deviceView) {
 				return $deviceView->modifyNotMobileResponse();
 			};
 
@@ -312,7 +360,7 @@ class OnRequestHandler
 	 *
 	 * @return Responses\RedirectResponse
 	 */
-	protected function getRedirectResponseBySwitchParam()
+	private function getRedirectResponseBySwitchParam() : Responses\RedirectResponse
 	{
 		// Generate full url path
 		if ($this->isFullPath === TRUE) {
@@ -320,12 +368,12 @@ class OnRequestHandler
 			$url = $this->httpRequest->getUrl();
 
 			// Remove switch param
-			$url->setQueryParameter(DeviceView::SWITCH_PARAM, NULL);
+			$url->setQueryParameter($this->deviceView->getSwitchParameterName(), NULL);
 
 			// Create full path url
 			$redirectUrl = $this->getCurrentHost() . $url->getRelativeUrl();
 
-		// Generate only domain path
+			// Generate only domain path
 		} else {
 			$redirectUrl = $this->getCurrentHost();
 		}
@@ -334,31 +382,18 @@ class OnRequestHandler
 	}
 
 	/**
-	 * Gets the mobile RedirectResponse
+	 * Gets the device RedirectResponse
+	 * 
+	 * @param string $device
 	 *
 	 * @return Responses\RedirectResponse
 	 */
-	protected function getMobileRedirectResponse()
+	private function getDeviceRedirectResponse(string $device) : Responses\RedirectResponse
 	{
-		if ($host = $this->getRedirectUrl(self::MOBILE)) {
+		if ($host = $this->getRedirectUrl($device)) {
 			return $this->deviceView->getMobileRedirectResponse(
 				$host,
-				$this->redirectConf[self::MOBILE]['statusCode']
-			);
-		}
-	}
-
-	/**
-	 * Gets the tablet RedirectResponse
-	 *
-	 * @return Responses\RedirectResponse
-	 */
-	protected function getTabletRedirectResponse()
-	{
-		if ($host = $this->getRedirectUrl(self::TABLET)) {
-			return $this->deviceView->getTabletRedirectResponse(
-				$host,
-				$this->redirectConf[self::TABLET]['statusCode']
+				$this->redirectConf[$device]['statusCode']
 			);
 		}
 	}
@@ -370,16 +405,15 @@ class OnRequestHandler
 	 *
 	 * @return string
 	 */
-	protected function getRedirectUrl($platform)
+	private function getRedirectUrl(string $platform) : string
 	{
 		if ($routingOption = $this->getRoutingOption($platform)) {
-			switch ($routingOption)
-			{
+			switch ($routingOption) {
 				case self::REDIRECT:
-					return rtrim($this->redirectConf[$platform]['host'], '/') .'/'. ltrim($this->httpRequest->getUrl()->getRelativeUrl(), '/');
+					return rtrim($this->redirectConf[$platform]['host'], '/') . '/' . ltrim($this->httpRequest->getUrl()->getRelativeUrl(), '/');
 
 				case self::REDIRECT_WITHOUT_PATH:
-					return  $this->redirectConf[$platform]['host'];
+					return $this->redirectConf[$platform]['host'];
 			}
 		}
 	}
@@ -389,9 +423,9 @@ class OnRequestHandler
 	 *
 	 * @param string $name
 	 *
-	 * @return string|null
+	 * @return string|NULL
 	 */
-	protected function getRoutingOption($name)
+	private function getRoutingOption(string $name)
 	{
 		$option = NULL;
 
@@ -407,11 +441,11 @@ class OnRequestHandler
 			$option = $this->redirectConf[$name]['action'];
 		}
 
-		if (in_array($option, array(self::REDIRECT, self::REDIRECT_WITHOUT_PATH, self::NO_REDIRECT))) {
+		if (in_array($option, [self::REDIRECT, self::REDIRECT_WITHOUT_PATH, self::NO_REDIRECT])) {
 			return $option;
 		}
 
-		return null;
+		return NULL;
 	}
 
 	/**
@@ -419,7 +453,7 @@ class OnRequestHandler
 	 *
 	 * @return string
 	 */
-	protected function getCurrentHost()
+	private function getCurrentHost() : string
 	{
 		return $this->httpRequest->getUrl()->getHostUrl() . $this->httpRequest->getUrl()->getScriptPath();
 	}

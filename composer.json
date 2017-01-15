@@ -4,7 +4,7 @@
 	"description"	: "Extension for detecting mobile devices, managing mobile view types, redirect to mobile version for Nette Framework",
 	"keywords"		: ["nette", "mobile", "mobile detect", "mobile view managing", "mobile redirect", "ipub", "ipublikuj", "framework", "tools"],
 	"homepage"		: "https://github.com/iPublikuj/mobile-detect",
-	"license"		: ["BSD-3-Clause", "GPL-2.0", "GPL-3.0"],
+	"license"		: ["GPL-2.0", "GPL-3.0"],
 
 	"authors": [
 		{
@@ -19,24 +19,64 @@
 		"issues"	:"https://github.com/iPublikuj/mobile-detect/issues"
 	},
 
+	"extra": {
+		"ipub"	: {
+			"configuration" : {
+				"extensions" : {
+					"mobileDetect" : "IPub\\MobileDetect\\DI\\MobileDetectExtension"
+				}
+			},
+			"mobileDetect" : {
+				"redirect" : {
+					"mobile" : {
+						"isEnabled" : false,
+						"host" : null,
+						"statusCode" : 301,
+						"action" : "noRedirect"
+					},
+					"phone" : {
+						"isEnabled" : false,
+						"host" : null,
+						"statusCode" : 301,
+						"action" : "noRedirect"
+					},
+					"tablet" : {
+						"isEnabled" : false,
+						"host" : null,
+						"statusCode" : 301,
+						"action" : "noRedirect"
+					},
+					"detectPhoneAsMobile" : false,
+					"detectTabletAsMobile" : false
+				},
+				"switchDeviceView" : {
+					"saveRefererPath" : true
+				}
+			}
+		}
+	},
+
 	"require": {
-		"php"							: ">=5.3.0",
-		"nette/application"				: "~2.2",
-		"nette/di"						: "~2.2",
-		"nette/http"					: "~2.2",
-		"nette/utils"					: "~2.2",
-		"latte/latte"					: "~2.2",
+		"php"	: ">=7.0.0",
+
+		"nette/application"	: "~2.3",
+		"nette/di"			: "~2.3",
+		"nette/http"		: "~2.3",
+		"nette/utils"		: "~2.3",
+
+		"latte/latte"	: "~2.3",
+
 		"mobiledetect/mobiledetectlib"	: "2.8.*"
 	},
 
 	"require-dev": {
-		"nette/bootstrap"	: "~2.2",
-		"nette/mail"		: "~2.2",
-		"nette/robot-loader"	: "~2.2",
-		"nette/safe-stream"	: "~2.2",
-		"nette/tester"		: "@dev",
-		"tracy/tracy"		: "@dev",
-		"janmarek/mockista"	: "@dev"
+		"nette/bootstrap"		: "~2.3",
+		"nette/mail"			: "~2.3",
+		"nette/robot-loader"	: "~2.3",
+		"nette/safe-stream"		: "~2.3",
+		"nette/tester"			: "@dev",
+
+		"tracy/tracy"	: "@dev"
 	},
 
 	"autoload": {

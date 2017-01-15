@@ -2,15 +2,17 @@
 /**
  * MobileDetect.php
  *
- * @copyright	More in license.md
- * @license		http://www.ipublikuj.eu
- * @author		Adam Kadlec http://www.ipublikuj.eu
- * @package		iPublikuj:MobileDetect!
- * @subpackage	common
- * @since		5.0
+ * @copyright      More in license.md
+ * @license        http://www.ipublikuj.eu
+ * @author         Adam Kadlec http://www.ipublikuj.eu
+ * @package        iPublikuj:MobileDetect!
+ * @subpackage     common
+ * @since          1.0.0
  *
- * @date		21.04.14
+ * @date           21.04.14
  */
+
+declare(strict_types = 1);
 
 namespace IPub\MobileDetect;
 
@@ -21,7 +23,15 @@ use IPub;
 use IPub\MobileDetect\Helpers;
 use IPub\MobileDetect\Templating;
 
-class MobileDetect extends \Detection\MobileDetect
+/**
+ * Mobile detect detector service
+ *
+ * @package        iPublikuj:MobileDetect!
+ * @subpackage     common
+ *
+ * @author         Adam Kadlec <adam.kadlec@ipublikuj.eu>
+ */
+final class MobileDetect extends \Detection\MobileDetect
 {
 	/**
 	 * @var Helpers\DeviceView
@@ -36,19 +46,20 @@ class MobileDetect extends \Detection\MobileDetect
 		Helpers\DeviceView $deviceView,
 		Http\Request $httpRequest
 	) {
-		$this->deviceView = $deviceView;
-
 		// Get http headers
 		$httpHeaders = $httpRequest->getHeaders();
 
-		// Set http headers
-		$this->setHttpHeaders($httpHeaders);
+		$userAgent = NULL;
 
 		// If user agent info is set in headers...
 		if (isset($httpHeaders['user-agent'])) {
 			// ...set user agent details
-			$this->setUserAgent($httpHeaders['user-agent']);
+			$userAgent = $httpHeaders['user-agent'];
 		}
+
+		parent::__construct($httpHeaders, $userAgent);
+
+		$this->deviceView = $deviceView;
 	}
 
 	/**
@@ -56,7 +67,7 @@ class MobileDetect extends \Detection\MobileDetect
 	 *
 	 * @return bool
 	 */
-	public function isPhone()
+	public function isPhone() : bool
 	{
 		return $this->isMobile() && !$this->isTablet();
 	}
@@ -66,7 +77,7 @@ class MobileDetect extends \Detection\MobileDetect
 	 *
 	 * @return bool
 	 */
-	public function isNotPhone()
+	public function isNotPhone() : bool
 	{
 		return (($this->isMobile() && $this->isTablet()) || !$this->isMobile());
 	}
@@ -74,7 +85,7 @@ class MobileDetect extends \Detection\MobileDetect
 	/**
 	 * @return Templating\Helpers
 	 */
-	public function createTemplateHelpers()
+	public function createTemplateHelpers() : Templating\Helpers
 	{
 		return new Templating\Helpers($this, $this->deviceView);
 	}

@@ -2,15 +2,17 @@
 /**
  * OnResponseHandler.php
  *
- * @copyright	More in license.md
- * @license		http://www.ipublikuj.eu
- * @author		Adam Kadlec http://www.ipublikuj.eu
- * @package		iPublikuj:MobileDetect!
- * @subpackage	Events
- * @since		5.0
+ * @copyright      More in license.md
+ * @license        http://www.ipublikuj.eu
+ * @author         Adam Kadlec http://www.ipublikuj.eu
+ * @package        iPublikuj:MobileDetect!
+ * @subpackage     Events
+ * @since          1.0.0
  *
- * @date		23.04.14
+ * @date           23.04.14
  */
+
+declare(strict_types = 1);
 
 namespace IPub\MobileDetect\Events;
 
@@ -19,7 +21,7 @@ use Nette\Http;
 
 use IPub\MobileDetect\Helpers\DeviceView;
 
-class OnResponseHandler
+final class OnResponseHandler
 {
 	/**
 	 * @var bool
@@ -46,6 +48,8 @@ class OnResponseHandler
 
 	/**
 	 * Stores information about modifying response
+	 *
+	 * @return void
 	 */
 	public function needModifyResponse()
 	{
@@ -54,6 +58,8 @@ class OnResponseHandler
 
 	/**
 	 * @param Application\Application $application
+	 *
+	 * @return void
 	 */
 	public function __invoke(Application\Application $application)
 	{

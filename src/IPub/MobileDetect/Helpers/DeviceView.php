@@ -2,33 +2,32 @@
 /**
  * DeviceView.php
  *
- * @copyright	More in license.md
- * @license		http://www.ipublikuj.eu
- * @author		Adam Kadlec http://www.ipublikuj.eu
- * @package		iPublikuj:MobileDetect!
- * @subpackage	Helpers
- * @since		5.0
+ * @copyright      More in license.md
+ * @license        http://www.ipublikuj.eu
+ * @author         Adam Kadlec http://www.ipublikuj.eu
+ * @package        iPublikuj:MobileDetect!
+ * @subpackage     Helpers
+ * @since          1.0.0
  *
- * @date		23.04.14
+ * @date           23.04.14
  */
+
+declare(strict_types = 1);
 
 namespace IPub\MobileDetect\Helpers;
 
 use Nette;
 use Nette\Application;
 use Nette\Http;
+use Nette\Utils;
 
-class DeviceView extends Nette\Object
+final class DeviceView extends Nette\Object
 {
-	const COOKIE_KEY		= 'device_view';
-
-	const SWITCH_PARAM		= 'device_view';
-
-	const VIEW_MOBILE		= 'mobile';
-	const VIEW_PHONE		= 'phone';
-	const VIEW_TABLET		= 'tablet';
-	const VIEW_FULL			= 'full';
-	const VIEW_NOT_MOBILE	= 'not_mobile';
+	const VIEW_MOBILE = 'mobile';
+	const VIEW_PHONE = 'phone';
+	const VIEW_TABLET = 'tablet';
+	const VIEW_FULL = 'full';
+	const VIEW_NOT_MOBILE = 'not_mobile';
 
 	/**
 	 * @var Http\IRequest
@@ -46,19 +45,37 @@ class DeviceView extends Nette\Object
 	private $viewType;
 
 	/**
+	 * @var CookieSettings
+	 */
+	private $cookieSettings;
+
+	/**
+	 * @var string
+	 */
+	private $switchParameterName = 'device_view';
+
+	/**
+	 * @param CookieSettings $cookieSettings
 	 * @param Http\IRequest $httpRequest
 	 * @param Http\IResponse $httpResponse
 	 */
-	public function __construct(Http\IRequest $httpRequest, Http\IResponse $httpResponse)
+	public function __construct(CookieSettings $cookieSettings, Http\IRequest $httpRequest, Http\IResponse $httpResponse)
 	{
-		$this->httpRequest	= $httpRequest;
-		$this->httpResponse	= $httpResponse;
+		$this->cookieSettings = $cookieSettings;
+		$this->httpRequest = $httpRequest;
+		$this->httpResponse = $httpResponse;
+	}
 
-		if ($this->httpRequest->getQuery(self::SWITCH_PARAM)) {
-			$this->viewType = $this->httpRequest->getQuery(self::SWITCH_PARAM);
+	/**
+	 * @return void
+	 */
+	public function detectViewType()
+	{
+		if ($this->httpRequest->getQuery($this->switchParameterName)) {
+			$this->viewType = $this->httpRequest->getQuery($this->switchParameterName);
 
-		} else if ($this->httpRequest->getCookie(self::COOKIE_KEY)) {
-			$this->viewType = $this->httpRequest->getCookie(self::COOKIE_KEY);
+		} elseif ($this->httpRequest->getCookie($this->cookieSettings->getName())) {
+			$this->viewType = $this->httpRequest->getCookie($this->cookieSettings->getName());
 		}
 	}
 
@@ -67,7 +84,7 @@ class DeviceView extends Nette\Object
 	 *
 	 * @return string
 	 */
-	public function getViewType()
+	public function getViewType() : string
 	{
 		return $this->viewType;
 	}
@@ -75,9 +92,9 @@ class DeviceView extends Nette\Object
 	/**
 	 * Is the device in full view
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
-	public function isFullView()
+	public function isFullView() : bool
 	{
 		return $this->viewType === self::VIEW_FULL;
 	}
@@ -85,9 +102,9 @@ class DeviceView extends Nette\Object
 	/**
 	 * Is the device a tablet view type
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
-	public function isTabletView()
+	public function isTabletView() : bool
 	{
 		return $this->viewType === self::VIEW_TABLET;
 	}
@@ -95,9 +112,9 @@ class DeviceView extends Nette\Object
 	/**
 	 * Is the device a phone view type
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
-	public function isPhoneView()
+	public function isPhoneView() : bool
 	{
 		return $this->viewType === self::VIEW_PHONE;
 	}
@@ -105,79 +122,79 @@ class DeviceView extends Nette\Object
 	/**
 	 * Is the device a mobile view type
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
-	public function isMobileView()
+	public function isMobileView() : bool
 	{
-		return $this->viewType === self::VIEW_MOBILE;
+		return $this->viewType === self::VIEW_MOBILE || $this->isPhoneView() || $this->isTabletView();
 	}
 
 	/**
 	 * Is not the device a mobile view type (PC, Mac, etc.)
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
-	public function isNotMobileView()
+	public function isNotMobileView() : bool
 	{
 		return $this->viewType === self::VIEW_NOT_MOBILE;
 	}
 
 	/**
-	 * Has the Request the switch param in the query string (GET header).
-	 *
-	 * @return boolean
-	 */
-	public function hasSwitchParam()
-	{
-		return $this->httpRequest->getQuery(self::SWITCH_PARAM);
-	}
-
-	/**
 	 * Sets the tablet view type
 	 *
-	 * @return $this
+	 * @return void
 	 */
 	public function setTabletView()
 	{
 		$this->viewType = self::VIEW_TABLET;
-
-		return $this;
 	}
 
 	/**
 	 * Sets the phone view type
 	 *
-	 * @return $this
+	 * @return void
 	 */
 	public function setPhoneView()
 	{
 		$this->viewType = self::VIEW_PHONE;
-
-		return $this;
 	}
 
 	/**
 	 * Sets the mobile view type
 	 *
-	 * @return $this
+	 * @return void
 	 */
 	public function setMobileView()
 	{
 		$this->viewType = self::VIEW_MOBILE;
-
-		return $this;
 	}
 
 	/**
 	 * Sets the not mobile view type
 	 *
-	 * @return $this
+	 * @return void
 	 */
 	public function setNotMobileView()
 	{
 		$this->viewType = self::VIEW_NOT_MOBILE;
+	}
 
-		return $this;
+	/**
+	 * @param string $name
+	 *
+	 * @return void
+	 */
+	public function setSwitchParameterName(string $name)
+	{
+		$this->switchParameterName = $name;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getSwitchParameterName() : string
+	{
+		$this->switchParameterName;
 	}
 
 	/**
@@ -185,24 +202,33 @@ class DeviceView extends Nette\Object
 	 *
 	 * @return string
 	 */
-	public function getSwitchParamValue()
+	public function getSwitchParameterValue() : string
 	{
-		return $this->httpRequest->getQuery(self::SWITCH_PARAM, self::VIEW_FULL);
+		return $this->httpRequest->getQuery($this->switchParameterName, self::VIEW_FULL);
 	}
 
 	/**
-	 * Gets the RedirectResponse by switch param value.
+	 * Has the Request the switch param in the query string (GET header)
+	 *
+	 * @return bool
+	 */
+	public function hasSwitchParameter() : bool
+	{
+		return $this->httpRequest->getQuery($this->switchParameterName, FALSE) ? TRUE : FALSE;
+	}
+
+	/**
+	 * Gets the RedirectResponse by switch param value
 	 *
 	 * @param string $redirectUrl
 	 *
 	 * @return Application\Responses\RedirectResponse
 	 */
-	public function getRedirectResponseBySwitchParam($redirectUrl)
+	public function getRedirectResponseBySwitchParam(string $redirectUrl) : Application\Responses\RedirectResponse
 	{
 		$statusCode = 302;
 
-		switch ($this->getSwitchParamValue())
-		{
+		switch ($this->getSwitchParameterValue()) {
 			case self::VIEW_MOBILE:
 				$this->createCookie(self::VIEW_MOBILE);
 				break;
@@ -228,7 +254,7 @@ class DeviceView extends Nette\Object
 	 *
 	 * @return Http\IResponse
 	 */
-	public function modifyNotMobileResponse()
+	public function modifyNotMobileResponse() : Http\IResponse
 	{
 		// Create cookie
 		$this->createCookie(self::VIEW_NOT_MOBILE);
@@ -241,7 +267,7 @@ class DeviceView extends Nette\Object
 	 *
 	 * @return Http\IResponse
 	 */
-	public function modifyTabletResponse()
+	public function modifyTabletResponse() : Http\IResponse
 	{
 		// Create cookie
 		$this->createCookie(self::VIEW_TABLET);
@@ -254,7 +280,7 @@ class DeviceView extends Nette\Object
 	 *
 	 * @return Http\IResponse
 	 */
-	public function modifyPhoneResponse()
+	public function modifyPhoneResponse() : Http\IResponse
 	{
 		// Create cookie
 		$this->createCookie(self::VIEW_PHONE);
@@ -267,7 +293,7 @@ class DeviceView extends Nette\Object
 	 *
 	 * @return Http\IResponse
 	 */
-	public function modifyMobileResponse()
+	public function modifyMobileResponse() : Http\IResponse
 	{
 		// Create cookie
 		$this->createCookie(self::VIEW_MOBILE);
@@ -276,14 +302,30 @@ class DeviceView extends Nette\Object
 	}
 
 	/**
-	 * Gets the RedirectResponse for tablet devices.
+	 * Gets the RedirectResponse for phone devices
 	 *
-	 * @param string	$host			Uri host
-	 * @param int		$statusCode		Status code
+	 * @param string $host    Uri host
+	 * @param int $statusCode Status code
 	 *
 	 * @return Application\Responses\RedirectResponse
 	 */
-	public function getTabletRedirectResponse($host, $statusCode)
+	public function getPhoneRedirectResponse(string $host, int $statusCode) : Application\Responses\RedirectResponse
+	{
+		// Create cookie
+		$this->createCookie(self::VIEW_PHONE);
+
+		return new Application\Responses\RedirectResponse($host, $statusCode);
+	}
+
+	/**
+	 * Gets the RedirectResponse for tablet devices
+	 *
+	 * @param string $host    Uri host
+	 * @param int $statusCode Status code
+	 *
+	 * @return Application\Responses\RedirectResponse
+	 */
+	public function getTabletRedirectResponse(string $host, int $statusCode) : Application\Responses\RedirectResponse
 	{
 		// Create cookie
 		$this->createCookie(self::VIEW_TABLET);
@@ -292,14 +334,14 @@ class DeviceView extends Nette\Object
 	}
 
 	/**
-	 * Gets the RedirectResponse for mobile devices.
+	 * Gets the RedirectResponse for mobile devices
 	 *
-	 * @param string	$host			Uri host
-	 * @param int		$statusCode		Status code
+	 * @param string $host    Uri host
+	 * @param int $statusCode Status code
 	 *
 	 * @return Application\Responses\RedirectResponse
 	 */
-	public function getMobileRedirectResponse($host, $statusCode)
+	public function getMobileRedirectResponse(string $host, int $statusCode) : Application\Responses\RedirectResponse
 	{
 		// Create cookie
 		$this->createCookie(self::VIEW_MOBILE);
@@ -312,22 +354,17 @@ class DeviceView extends Nette\Object
 	 *
 	 * @param string $cookieValue
 	 */
-	protected function createCookie($cookieValue)
+	private function createCookie(string $cookieValue)
 	{
-		$currentDate = new \DateTime('+1 month');
-
-		// Create cookie object
-		$cookie = new Cookie(self::COOKIE_KEY, $cookieValue, $currentDate->format('Y-m-d'));
-
 		// Store cookie in response
 		$this->httpResponse->setCookie(
-			$cookie->getName(),
-			$cookie->getValue(),
-			$cookie->getExpiresTime(),
-			$cookie->getPath(),
-			$cookie->getDomain(),
-			$cookie->isSecure(),
-			$cookie->isHttpOnly()
+			$this->cookieSettings->getName(),
+			$cookieValue,
+			$this->cookieSettings->getExpiresTime(),
+			$this->cookieSettings->getPath(),
+			$this->cookieSettings->getDomain(),
+			$this->cookieSettings->isSecure(),
+			$this->cookieSettings->isHttpOnly()
 		);
 	}
 }

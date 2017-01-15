@@ -2,15 +2,17 @@
 /**
  * Helpers.php
  *
- * @copyright	More in license.md
- * @license		http://www.ipublikuj.eu
- * @author		Adam Kadlec http://www.ipublikuj.eu
- * @package		iPublikuj:MobileDetect!
- * @subpackage	Templating
- * @since		5.0
+ * @copyright      More in license.md
+ * @license        http://www.ipublikuj.eu
+ * @author         Adam Kadlec http://www.ipublikuj.eu
+ * @package        iPublikuj:MobileDetect!
+ * @subpackage     Templating
+ * @since          1.0.0
  *
- * @date		16.06.14
+ * @date           16.06.14
  */
+
+declare(strict_types = 1);
 
 namespace IPub\MobileDetect\Templating;
 
@@ -19,7 +21,15 @@ use Nette;
 use IPub;
 use IPub\MobileDetect;
 
-class Helpers extends Nette\Object
+/**
+ * Mobile detect template helpers
+ *
+ * @package        iPublikuj:MobileDetect!
+ * @subpackage     Templating
+ *
+ * @author         Adam Kadlec <adam.kadlec@ipublikuj.eu>
+ */
+final class Helpers extends Nette\Object
 {
 	/**
 	 * @var MobileDetect\MobileDetect
@@ -39,21 +49,14 @@ class Helpers extends Nette\Object
 		MobileDetect\MobileDetect $mobileDetect,
 		MobileDetect\Helpers\DeviceView $deviceView
 	) {
-		$this->mobileDetect	= $mobileDetect;
-		$this->deviceView	= $deviceView;
-	}
-
-	public function loader($method)
-	{
-		if ( method_exists($this, $method) ) {
-			return callback($this, $method);
-		}
+		$this->mobileDetect = $mobileDetect;
+		$this->deviceView = $deviceView;
 	}
 
 	/**
 	 * @return MobileDetect\MobileDetect
 	 */
-	public function getMobileDetectService()
+	public function getMobileDetectService() : MobileDetect\MobileDetect
 	{
 		return $this->mobileDetect;
 	}
@@ -61,17 +64,23 @@ class Helpers extends Nette\Object
 	/**
 	 * @return MobileDetect\Helpers\DeviceView
 	 */
-	public function getDeviceViewService()
+	public function getDeviceViewService() : MobileDetect\Helpers\DeviceView
 	{
 		return $this->deviceView;
 	}
 
-	public function isMobile()
+	/**
+	 * @return bool
+	 */
+	public function isMobile() : bool
 	{
 		return $this->mobileDetect->isMobile();
 	}
 
-	public function isTablet()
+	/**
+	 * @return bool
+	 */
+	public function isTablet() : bool
 	{
 		return $this->mobileDetect->isTablet();
 	}

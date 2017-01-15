@@ -39,8 +39,8 @@ class DeviceViewTest extends Tester\TestCase
 		// Get helper
 		$deviceView = $this->getHelper($query);
 
-		Assert::equal(MobileDetect\Helpers\DeviceView::VIEW_MOBILE, $deviceView->hasSwitchParam());
-		Assert::equal(MobileDetect\Helpers\DeviceView::VIEW_MOBILE, $deviceView->getSwitchParamValue());
+		Assert::equal(MobileDetect\Helpers\DeviceView::VIEW_MOBILE, $deviceView->hasSwitchParameter());
+		Assert::equal(MobileDetect\Helpers\DeviceView::VIEW_MOBILE, $deviceView->getSwitchParameterValue());
 	}
 
 	public function testDeviceIsMobile()

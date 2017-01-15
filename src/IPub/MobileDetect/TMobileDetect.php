@@ -2,22 +2,30 @@
 /**
  * TMobileDetect.php
  *
- * @copyright	More in license.md
- * @license		http://www.ipublikuj.eu
- * @author		Adam Kadlec http://www.ipublikuj.eu
- * @package		iPublikuj:MobileDetect!
- * @subpackage	common
- * @since		5.0
+ * @copyright      More in license.md
+ * @license        http://www.ipublikuj.eu
+ * @author         Adam Kadlec http://www.ipublikuj.eu
+ * @package        iPublikuj:MobileDetect!
+ * @subpackage     common
+ * @since          1.0.0
  *
- * @date		24.04.14
+ * @date           24.04.14
  */
+
+declare(strict_types = 1);
 
 namespace IPub\MobileDetect;
 
-use Nette;
-
 use IPub\MobileDetect\Helpers;
 
+/**
+ * Mobile detect trait for presenters & components
+ *
+ * @package        iPublikuj:MobileDetect!
+ * @subpackage     common
+ *
+ * @author         Adam Kadlec <adam.kadlec@ipublikuj.eu>
+ */
 trait TMobileDetect
 {
 	/**
@@ -33,10 +41,12 @@ trait TMobileDetect
 	/**
 	 * @param MobileDetect $mobileDetect
 	 * @param Helpers\DeviceView $deviceView
+	 *
+	 * @return void
 	 */
 	public function injectMobileDetector(MobileDetect $mobileDetect, Helpers\DeviceView $deviceView)
 	{
-		$this->mobileDetect	= $mobileDetect;
-		$this->deviceView	= $deviceView;
+		$this->mobileDetect = $mobileDetect;
+		$this->deviceView = $deviceView;
 	}
 }
