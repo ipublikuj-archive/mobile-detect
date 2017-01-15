@@ -81,6 +81,7 @@ class DeviceViewTest extends Tester\TestCase
 
 		// Get helper
 		$deviceView = $this->getHelper($query);
+		$deviceView->setTabletView();
 
 		Assert::notEqual(Helpers\DeviceView::VIEW_MOBILE, $deviceView->getViewType());
 	}
