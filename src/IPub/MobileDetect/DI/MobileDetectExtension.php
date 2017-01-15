@@ -109,8 +109,7 @@ final class MobileDetectExtension extends DI\CompilerExtension
 		// Register template helpers
 		$builder->addDefinition($this->prefix('helpers'))
 			->setClass(Templating\Helpers::class)
-			->setFactory($this->prefix('@mobileDetect') . '::createTemplateHelpers')
-			->setInject(FALSE);
+			->setAutowired(FALSE);
 
 		$application = $builder->getDefinition('application');
 		$application->addSetup('$service->onRequest[] = ?', ['@' . $this->prefix('onRequestHandler')]);
@@ -131,10 +130,16 @@ final class MobileDetectExtension extends DI\CompilerExtension
 
 		$latteFactory
 			->addSetup('IPub\MobileDetect\Latte\Macros::install(?->getCompiler())', ['@self'])
-			->addSetup('addFilter', ['getMobileDetectService', [$this->prefix('@helpers'), 'getMobileDetectService']])
-			->addSetup('addFilter', ['getDeviceViewService', [$this->prefix('@helpers'), 'getDeviceViewService']])
 			->addSetup('addFilter', ['isMobile', [$this->prefix('@helpers'), 'isMobile']])
-			->addSetup('addFilter', ['isTablet', [$this->prefix('@helpers'), 'isTablet']]);
+			->addSetup('addFilter', ['isPhone', [$this->prefix('@helpers'), 'isPhone']])
+			->addSetup('addFilter', ['isTablet', [$this->prefix('@helpers'), 'isTablet']])
+			->addSetup('addFilter', ['isDevice', [$this->prefix('@helpers'), 'isDevice']])
+			->addSetup('addFilter', ['isOs', [$this->prefix('@helpers'), 'isOs']])
+			->addSetup('addFilter', ['isFullView', [$this->prefix('@helpers'), 'isFullView']])
+			->addSetup('addFilter', ['isMobileView', [$this->prefix('@helpers'), 'isMobileView']])
+			->addSetup('addFilter', ['isPhoneView', [$this->prefix('@helpers'), 'isPhoneView']])
+			->addSetup('addFilter', ['isTabletView', [$this->prefix('@helpers'), 'isTabletView']])
+			->addSetup('addFilter', ['isNotMobileView', [$this->prefix('@helpers'), 'isNotMobileView']]);
 	}
 
 	/**

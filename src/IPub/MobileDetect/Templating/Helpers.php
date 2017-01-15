@@ -54,22 +54,6 @@ final class Helpers extends Nette\Object
 	}
 
 	/**
-	 * @return MobileDetect\MobileDetect
-	 */
-	public function getMobileDetectService() : MobileDetect\MobileDetect
-	{
-		return $this->mobileDetect;
-	}
-
-	/**
-	 * @return MobileDetect\Helpers\DeviceView
-	 */
-	public function getDeviceViewService() : MobileDetect\Helpers\DeviceView
-	{
-		return $this->deviceView;
-	}
-
-	/**
 	 * @return bool
 	 */
 	public function isMobile() : bool
@@ -80,8 +64,76 @@ final class Helpers extends Nette\Object
 	/**
 	 * @return bool
 	 */
+	public function isPhone() : bool
+	{
+		return $this->mobileDetect->isPhone();
+	}
+
+	/**
+	 * @return bool
+	 */
 	public function isTablet() : bool
 	{
 		return $this->mobileDetect->isTablet();
+	}
+
+	/**
+	 * @param string $device
+	 *
+	 * @return bool
+	 */
+	public function isDevice(string $device) : bool
+	{
+		return $this->mobileDetect->is($device);
+	}
+
+	/**
+	 * @param string $os
+	 *
+	 * @return bool
+	 */
+	public function isOs(string $os) : bool
+	{
+		return $this->mobileDetect->is($os);
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function isFullView() : bool
+	{
+		return $this->deviceView->isFullView();
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function isMobileView() : bool
+	{
+		return $this->deviceView->isMobileView();
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function isPhoneView() : bool
+	{
+		return $this->deviceView->isPhoneView();
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function isTabletView() : bool
+	{
+		return $this->deviceView->isTabletView();
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function isNotMobileView() : bool
+	{
+		return $this->deviceView->isNotMobileView();
 	}
 }

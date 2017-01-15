@@ -81,12 +81,4 @@ final class MobileDetect extends \Detection\MobileDetect
 	{
 		return (($this->isMobile() && $this->isTablet()) || !$this->isMobile());
 	}
-
-	/**
-	 * @return Templating\Helpers
-	 */
-	public function createTemplateHelpers() : Templating\Helpers
-	{
-		return new Templating\Helpers($this, $this->deviceView);
-	}
 }

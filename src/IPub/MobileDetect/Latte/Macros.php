@@ -98,7 +98,7 @@ final class Macros extends MacroSet
 	 */
 	public function macroIsMobile(MacroNode $node, PhpWriter $writer) : string
 	{
-		return $writer->write('if ($template->getMobileDetectService()->isMobile()) {');
+		return $writer->write('if (%escape(call_user_func($this->filters->isMobile))) {');
 	}
 
 	/**
@@ -111,7 +111,7 @@ final class Macros extends MacroSet
 	 */
 	public function macroIsNotMobile(MacroNode $node, PhpWriter $writer) : string
 	{
-		return $writer->write('if (!$template->getMobileDetectService()->isMobile()) {');
+		return $writer->write('if (%escape(!call_user_func($this->filters->isMobile))) {');
 	}
 
 	/**
@@ -124,7 +124,7 @@ final class Macros extends MacroSet
 	 */
 	public function macroIsPhone(MacroNode $node, PhpWriter $writer) : string
 	{
-		return $writer->write('if ($template->getMobileDetectService()->isMobile() && !$template->getMobileDetectService()->isTablet()) {');
+		return $writer->write('if (%escape(call_user_func($this->filters->isMobile) && !call_user_func($this->filters->isTablet))) {');
 	}
 
 	/**
@@ -137,7 +137,7 @@ final class Macros extends MacroSet
 	 */
 	public function macroIsNotPhone(MacroNode $node, PhpWriter $writer) : string
 	{
-		return $writer->write('if (($template->getMobileDetectService()->isMobile() && $template->getMobileDetectService()->isTablet()) || !$template->getMobileDetectService()->isMobile()) {');
+		return $writer->write('if (%escape((call_user_func($this->filters->isMobile) && call_user_func($this->filters->isTablet)) || !call_user_func($this->filters->isMobile))) {');
 	}
 
 	/**
@@ -150,7 +150,7 @@ final class Macros extends MacroSet
 	 */
 	public function macroIsTablet(MacroNode $node, PhpWriter $writer) : string
 	{
-		return $writer->write('if ($template->getMobileDetectService()->isTablet()) {');
+		return $writer->write('if (%escape(call_user_func($this->filters->isTablet))) {');
 	}
 
 	/**
@@ -163,7 +163,7 @@ final class Macros extends MacroSet
 	 */
 	public function macroIsNotTablet(MacroNode $node, PhpWriter $writer) : string
 	{
-		return $writer->write('if (!$template->getMobileDetectService()->isTablet()) {');
+		return $writer->write('if (%escape(!call_user_func($this->filters->isTablet))) {');
 	}
 
 	/**
@@ -182,10 +182,7 @@ final class Macros extends MacroSet
 			throw new Exceptions\CompileException('Please provide device name.');
 		}
 
-		// Create magic method name
-		$magicMethodName = 'is' . ucfirst(strtolower((string) $arguments['device']));
-
-		return $writer->write('if ($template->getMobileDetectService()->' . $magicMethodName . '()) {');
+		return $writer->write('if (%escape(call_user_func($this->filters->isDevice, ' . $arguments['device'] . '))) {');
 	}
 
 	/**
@@ -204,10 +201,7 @@ final class Macros extends MacroSet
 			throw new Exceptions\CompileException('Please provide OS name.');
 		}
 
-		// Create magic method name
-		$magicMethodName = 'is' . ucfirst(strtolower((string) $arguments['os']));
-
-		return $writer->write('if ($template->getMobileDetectService()->' . $magicMethodName . '()) {');
+		return $writer->write('if (%escape(call_user_func($this->filters->isOs, ' . $arguments['os'] . '))) {');
 	}
 
 	/**
@@ -220,7 +214,7 @@ final class Macros extends MacroSet
 	 */
 	public function macroIsFullView(MacroNode $node, PhpWriter $writer) : string
 	{
-		return $writer->write('if ($template->getDeviceViewService()->isFullView()) {');
+		return $writer->write('if (%escape(!call_user_func($this->filters->isFullView))) {');
 	}
 
 	/**
@@ -233,7 +227,7 @@ final class Macros extends MacroSet
 	 */
 	public function macroIsMobileView(MacroNode $node, PhpWriter $writer) : string
 	{
-		return $writer->write('if ($template->getDeviceViewService()->isMobileView()) {');
+		return $writer->write('if (%escape(!call_user_func($this->filters->isMobileView))) {');
 	}
 
 	/**
@@ -246,7 +240,7 @@ final class Macros extends MacroSet
 	 */
 	public function macroIsPhoneView(MacroNode $node, PhpWriter $writer) : string
 	{
-		return $writer->write('if ($template->getDeviceViewService()->isPhoneView()) {');
+		return $writer->write('if (%escape(!call_user_func($this->filters->isPhoneView))) {');
 	}
 
 	/**
@@ -259,7 +253,7 @@ final class Macros extends MacroSet
 	 */
 	public function macroIsTabletView(MacroNode $node, PhpWriter $writer) : string
 	{
-		return $writer->write('if ($template->getDeviceViewService()->isTabletView()) {');
+		return $writer->write('if (%escape(!call_user_func($this->filters->isTabletView))) {');
 	}
 
 	/**
@@ -272,7 +266,7 @@ final class Macros extends MacroSet
 	 */
 	public function macroIsNotMobileView(MacroNode $node, PhpWriter $writer) : string
 	{
-		return $writer->write('if ($template->getDeviceViewService()->isNotMobileView()) {');
+		return $writer->write('if (%escape(!call_user_func($this->filters->isNotMobileView))) {');
 	}
 
 	/**

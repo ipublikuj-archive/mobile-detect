@@ -1,0 +1,11 @@
+nette:
+	application:
+		mapping:
+			*: IPubTests\MobileDetect\*Presenter
+
+services:
+	# Test presenter
+	presenters.test:
+		class: IPubTests\MobileDetect\TestPresenter
+
+	router: IPubTests\MobileDetect\Libs\RouterFactory::createRouter
