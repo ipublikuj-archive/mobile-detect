@@ -43,7 +43,15 @@ class MobileDetectExtension extends DI\CompilerExtension
 		),
 		'switchDeviceView'	=> array(
 			'saveRefererPath'	=> TRUE
-		)
+		),
+		'deviceViewCookie' => array(
+			'name' => 'device_view',
+			'domain' => NULL,
+			'expirationAfter' => '+1 month',
+			'path' => '/',
+			'secure' => FALSE,
+			'httpOnly' => TRUE,
+		),
 	);
 
 	public function loadConfiguration()
@@ -56,8 +64,10 @@ class MobileDetectExtension extends DI\CompilerExtension
 			->setClass('IPub\MobileDetect\MobileDetect');
 
 		$builder->addDefinition($this->prefix('deviceView'))
-			->setClass('IPub\MobileDetect\Helpers\DeviceView');
-
+			->setClass('IPub\MobileDetect\Helpers\DeviceView')
+			->addSetup('setCookieConfiguration', array($config['deviceViewCookie']))
+			->addSetup('detectViewType');
+		
 		$builder->addDefinition($this->prefix('onRequestHandler'))
 			->setClass('IPub\MobileDetect\Events\OnRequestHandler')
 			->addSetup('$redirectConf', array($config['redirect']))
