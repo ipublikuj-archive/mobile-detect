@@ -64,10 +64,7 @@ class TemplateTest extends Tester\TestCase
 
 		// Get device view service
 		$this->mobileDetector = $this->container->getByType(MobileDetect\MobileDetect::class);
-	}
 
-	public function testMobileVersion()
-	{
 		$this->mobileDetector->setHttpHeaders([
 			'SERVER_SOFTWARE'       => 'Apache/2.2.15 (Linux) Whatever/4.0 PHP/5.2.13',
 			'REQUEST_METHOD'        => 'POST',
@@ -86,6 +83,28 @@ class TemplateTest extends Tester\TestCase
 			'REMOTE_ADDR'           => '11.22.33.44',
 			'REQUEST_TIME'          => '01-10-2012 07:57'
 		]);
+	}
+
+	public function testMobileVersion()
+	{
+		// Create test presenter
+		$presenter = $this->createPresenter();
+
+		// Create GET request
+		$request = new Application\Request('Test', 'GET', ['action' => 'default']);
+		// & fire presenter & catch response
+		$response = $presenter->run($request);
+
+		$dq = Tester\DomQuery::fromHtml((string) $response->getSource());
+
+		Assert::true($dq->has('div[id*="mobileDevice"]'));
+		Assert::true($dq->has('div[id*="phoneDevice"]'));
+		Assert::false($dq->has('div[id*="tableDevice"]'));
+	}
+
+	public function testPhoneVersion()
+	{
+		$this->mobileDetector->setUserAgent('Mozilla/5.0 (iPhone; CPU iPhone OS 6_0_1 like Mac OS X) AppleWebKit/536.26 (KHTML, like Gecko) Version/6.0 Mobile/10A523 Safari/8536.25');
 
 		// Create test presenter
 		$presenter = $this->createPresenter();
@@ -98,6 +117,10 @@ class TemplateTest extends Tester\TestCase
 		$dq = Tester\DomQuery::fromHtml((string) $response->getSource());
 
 		Assert::true($dq->has('div[id*="mobileDevice"]'));
+		Assert::true($dq->has('div[id*="phoneDevice"]'));
+		Assert::true($dq->has('div[id*="mobileDevice"]'));
+		Assert::true($dq->has('div[id*="mobileOs"]'));
+		Assert::false($dq->has('div[id*="tableDevice"]'));
 	}
 
 	/**

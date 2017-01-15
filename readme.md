@@ -45,26 +45,6 @@ class BasePresenter extends Nette\Application\UI\Presenter
 }
 ```
 
-You have to add few lines in base presenter or base control in section createTemplate
-
-```php
-<?php
-
-class BasePresenter extends Nette\Application\UI\Presenter
-{
-	protected function createTemplate($class = NULL)
-	{
-		// Init template
-		$template = parent::createTemplate($class);
-
-		// Add mobile detect and its helper to template
-		$template->_mobileDetect	= $this->mobileDetect;
-		$template->_deviceView		= $this->deviceView;
-
-		return $template;
-	}
-}
-```
 
 ## Documentation
 
