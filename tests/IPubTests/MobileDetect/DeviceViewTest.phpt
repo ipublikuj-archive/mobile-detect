@@ -3,15 +3,17 @@
  * Test: IPub\MobileDetect\DeviceView
  * @testCase
  *
- * @copyright	More in license.md
- * @license		http://www.ipublikuj.eu
- * @author		Adam Kadlec http://www.ipublikuj.eu
- * @package		iPublikuj:MobileDetect!
- * @subpackage	Tests
- * @since		5.0
+ * @copyright      More in license.md
+ * @license        http://www.ipublikuj.eu
+ * @author         Adam Kadlec http://www.ipublikuj.eu
+ * @package        iPublikuj:MobileDetect!
+ * @subpackage     Tests
+ * @since          1.0.0
  *
- * @date		10.01.15
+ * @date           10.01.15
  */
+
+declare(strict_types = 1);
 
 namespace IPubTests\MobileDetect;
 
@@ -22,38 +24,37 @@ use Tester\Assert;
 
 use IPub;
 use IPub\MobileDetect;
+use IPub\MobileDetect\Helpers;
 
-require __DIR__ . '/../bootstrap.php';
+require __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'bootstrap.php';
 
 class DeviceViewTest extends Tester\TestCase
 {
-
-
 	public function testRequestHasSwitchParam()
 	{
 		$query = [
-			'myparam'		=> 'myvalue',
-			'device_view'	=> MobileDetect\Helpers\DeviceView::VIEW_MOBILE
+			'myparam'     => 'myvalue',
+			'device_view' => Helpers\DeviceView::VIEW_MOBILE
 		];
 
 		// Get helper
 		$deviceView = $this->getHelper($query);
 
-		Assert::equal(MobileDetect\Helpers\DeviceView::VIEW_MOBILE, $deviceView->hasSwitchParameter());
-		Assert::equal(MobileDetect\Helpers\DeviceView::VIEW_MOBILE, $deviceView->getSwitchParameterValue());
+		Assert::equal(Helpers\DeviceView::VIEW_MOBILE, $deviceView->hasSwitchParameter());
+		Assert::equal(Helpers\DeviceView::VIEW_MOBILE, $deviceView->getSwitchParameterValue());
 	}
 
 	public function testDeviceIsMobile()
 	{
 		$query = [
-			'myparam'		=> 'myvalue',
-			'device_view'	=> MobileDetect\Helpers\DeviceView::VIEW_MOBILE
+			'myparam'     => 'myvalue',
+			'device_view' => Helpers\DeviceView::VIEW_MOBILE
 		];
 
 		// Get helper
 		$deviceView = $this->getHelper($query);
 
-		Assert::equal(MobileDetect\Helpers\DeviceView::VIEW_MOBILE, $deviceView->getViewType());
+		Assert::equal(Helpers\DeviceView::VIEW_MOBILE, $deviceView->getViewType());
 		Assert::true($deviceView->isMobileView());
 		Assert::false($deviceView->isFullView());
 	}
@@ -61,28 +62,28 @@ class DeviceViewTest extends Tester\TestCase
 	public function testMobileViewType()
 	{
 		$query = [
-			'myparam'		=> 'myvalue',
-			'device_view'	=> MobileDetect\Helpers\DeviceView::VIEW_MOBILE
+			'myparam'     => 'myvalue',
+			'device_view' => Helpers\DeviceView::VIEW_MOBILE
 		];
 
 		// Get helper
 		$deviceView = $this->getHelper($query);
 
-		Assert::equal(MobileDetect\Helpers\DeviceView::VIEW_MOBILE, $deviceView->getViewType());
+		Assert::equal(Helpers\DeviceView::VIEW_MOBILE, $deviceView->getViewType());
 	}
 
 	public function testSetMobileViewType()
 	{
 		$query = [
-			'myparam'		=> 'myvalue',
-			'device_view'	=> MobileDetect\Helpers\DeviceView::VIEW_MOBILE
+			'myparam'     => 'myvalue',
+			'device_view' => Helpers\DeviceView::VIEW_MOBILE
 		];
 
 		// Get helper
 		$deviceView = $this->getHelper($query);
 
-		Assert::true($deviceView->setTabletView() instanceof MobileDetect\Helpers\DeviceView);
-		Assert::notEqual(MobileDetect\Helpers\DeviceView::VIEW_MOBILE, $deviceView->getViewType());
+		Assert::true($deviceView->setTabletView() instanceof Helpers\DeviceView);
+		Assert::notEqual(Helpers\DeviceView::VIEW_MOBILE, $deviceView->getViewType());
 	}
 
 	/**
@@ -90,18 +91,20 @@ class DeviceViewTest extends Tester\TestCase
 	 *
 	 * @param array $query
 	 *
-	 * @return MobileDetect\Helpers\DeviceView
+	 * @return Helpers\DeviceView
 	 */
-	private function getHelper($query = [])
+	private function getHelper($query = []) : Helpers\DeviceView
 	{
 		$url = new Nette\Http\UrlScript('http://www.ipublikuj.eu');
 		$url->setQuery($query);
 
-		$httpRequest	= new Nette\Http\Request($url);
-		$httpResponse	= new Nette\Http\Response();
+		$httpRequest = new Nette\Http\Request($url);
+		$httpResponse = new Nette\Http\Response();
+
+		$cookieSettings = new Helpers\CookieSettings('device_view', NULL, '+1 month', '/', FALSE, TRUE);
 
 		// Get helper
-		return new MobileDetect\Helpers\DeviceView($httpRequest, $httpResponse);
+		return new Helpers\DeviceView($cookieSettings, $httpRequest, $httpResponse);
 	}
 }
 

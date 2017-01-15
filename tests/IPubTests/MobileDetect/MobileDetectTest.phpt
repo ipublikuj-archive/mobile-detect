@@ -3,15 +3,17 @@
  * Test: IPub\MobileDetect\MobileDetect
  * @testCase
  *
- * @copyright	More in license.md
- * @license		http://www.ipublikuj.eu
- * @author		Adam Kadlec http://www.ipublikuj.eu
- * @package		iPublikuj:MobileDetect!
- * @subpackage	Tests
- * @since		5.0
+ * @copyright      More in license.md
+ * @license        http://www.ipublikuj.eu
+ * @author         Adam Kadlec http://www.ipublikuj.eu
+ * @package        iPublikuj:MobileDetect!
+ * @subpackage     Tests
+ * @since          1.0.0
  *
- * @date		10.01.15
+ * @date           10.01.15
  */
+
+declare(strict_types = 1);
 
 namespace IPubTests\MobileDetect;
 
@@ -23,7 +25,7 @@ use Tester\Assert;
 use IPub;
 use IPub\MobileDetect;
 
-require __DIR__ . '/../bootstrap.php';
+require __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'bootstrap.php';
 
 class MobileDetectTest extends Tester\TestCase
 {
@@ -33,7 +35,7 @@ class MobileDetectTest extends Tester\TestCase
 	private $mobileDetector;
 
 	/**
-	 * Set up
+	 * {@inheritdoc}
 	 */
 	public function setUp()
 	{
@@ -47,24 +49,24 @@ class MobileDetectTest extends Tester\TestCase
 
 	public function testBasicMethods()
 	{
-		$this->mobileDetector->setHttpHeaders(array(
-			'SERVER_SOFTWARE' => 'Apache/2.2.15 (Linux) Whatever/4.0 PHP/5.2.13',
-			'REQUEST_METHOD' => 'POST',
-			'HTTP_HOST' => 'home.ghita.org',
-			'HTTP_X_REAL_IP' => '1.2.3.4',
-			'HTTP_X_FORWARDED_FOR' => '1.2.3.5',
-			'HTTP_CONNECTION' => 'close',
-			'HTTP_USER_AGENT' => 'Mozilla/5.0 (iPhone; CPU iPhone OS 6_0_1 like Mac OS X) AppleWebKit/536.26 (KHTML, like Gecko) Version/6.0 Mobile/10A523 Safari/8536.25',
-			'HTTP_ACCEPT' => 'text/vnd.wap.wml, application/json, text/javascript, */*; q=0.01',
-			'HTTP_ACCEPT_LANGUAGE' => 'en-us,en;q=0.5',
-			'HTTP_ACCEPT_ENCODING' => 'gzip, deflate',
+		$this->mobileDetector->setHttpHeaders([
+			'SERVER_SOFTWARE'       => 'Apache/2.2.15 (Linux) Whatever/4.0 PHP/5.2.13',
+			'REQUEST_METHOD'        => 'POST',
+			'HTTP_HOST'             => 'home.ghita.org',
+			'HTTP_X_REAL_IP'        => '1.2.3.4',
+			'HTTP_X_FORWARDED_FOR'  => '1.2.3.5',
+			'HTTP_CONNECTION'       => 'close',
+			'HTTP_USER_AGENT'       => 'Mozilla/5.0 (iPhone; CPU iPhone OS 6_0_1 like Mac OS X) AppleWebKit/536.26 (KHTML, like Gecko) Version/6.0 Mobile/10A523 Safari/8536.25',
+			'HTTP_ACCEPT'           => 'text/vnd.wap.wml, application/json, text/javascript, */*; q=0.01',
+			'HTTP_ACCEPT_LANGUAGE'  => 'en-us,en;q=0.5',
+			'HTTP_ACCEPT_ENCODING'  => 'gzip, deflate',
 			'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest',
-			'HTTP_REFERER' => 'http://ipublikuj.eu',
-			'HTTP_PRAGMA' => 'no-cache',
-			'HTTP_CACHE_CONTROL' => 'no-cache',
-			'REMOTE_ADDR' => '11.22.33.44',
-			'REQUEST_TIME' => '01-10-2012 07:57'
-		));
+			'HTTP_REFERER'          => 'http://ipublikuj.eu',
+			'HTTP_PRAGMA'           => 'no-cache',
+			'HTTP_CACHE_CONTROL'    => 'no-cache',
+			'REMOTE_ADDR'           => '11.22.33.44',
+			'REQUEST_TIME'          => '01-10-2012 07:57'
+		]);
 
 		Assert::true($this->mobileDetector->isMobile());
 		Assert::false($this->mobileDetector->isTablet());
@@ -82,16 +84,16 @@ class MobileDetectTest extends Tester\TestCase
 	}
 
 	/**
-	 * @return \SystemContainer|\Nette\DI\Container
+	 * @return Nette\DI\Container
 	 */
-	protected function createContainer()
+	protected function createContainer() : Nette\DI\Container
 	{
 		$config = new Nette\Configurator();
 		$config->setTempDirectory(TEMP_DIR);
 
 		MobileDetect\DI\MobileDetectExtension::register($config);
 
-		$config->addConfig(__DIR__ . '/files/config.neon', $config::NONE);
+		$config->addConfig(__DIR__ . DS . 'files' . DS . 'config.neon');
 
 		return $config->createContainer();
 	}
