@@ -104,7 +104,7 @@ class DeviceViewTest extends Tester\TestCase
 		$cookieSettings = new Helpers\CookieSettings('device_view', NULL, '+1 month', '/', FALSE, TRUE);
 
 		// Get helper
-		return new Helpers\DeviceView($cookieSettings, $httpRequest, $httpResponse);
+		return new Helpers\DeviceView('device_view', $cookieSettings, $httpRequest, $httpResponse);
 	}
 }
 
