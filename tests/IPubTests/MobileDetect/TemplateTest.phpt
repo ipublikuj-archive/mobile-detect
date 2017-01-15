@@ -118,8 +118,8 @@ class TemplateTest extends Tester\TestCase
 
 		Assert::true($dq->has('div[id*="mobileDevice"]'));
 		Assert::true($dq->has('div[id*="phoneDevice"]'));
-		Assert::true($dq->has('div[id*="mobileDevice"]'));
-		Assert::true($dq->has('div[id*="mobileOs"]'));
+		Assert::true($dq->has('div[id*="mobileDeviceType"]'));
+		Assert::true($dq->has('div[id*="mobileDeviceOs"]'));
 		Assert::false($dq->has('div[id*="tableDevice"]'));
 	}
 

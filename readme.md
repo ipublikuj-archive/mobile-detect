@@ -14,7 +14,7 @@ Extension for detecting mobile devices, managing mobile view types, redirect to 
 This extension use [Mobile_Detect](https://github.com/serbanghita/Mobile-Detect) class and provides the following features:
 
 * Detect the various mobile devices by name, OS, browser User-Agent
-* Manages site views for the variuos mobile devices (`mobile`, `tablet`, `full`)
+* Manages site views for the variuos mobile devices (`mobile`, `phone`, `tablet`, `full`)
 * Redirects to mobile and tablet sites
 
 ## Installation
@@ -44,7 +44,6 @@ class BasePresenter extends Nette\Application\UI\Presenter
     // Rest of code...
 }
 ```
-
 
 ## Documentation
 

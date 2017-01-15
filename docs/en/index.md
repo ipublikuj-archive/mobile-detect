@@ -1,11 +1,5 @@
 # MobileDetect
 
-[![Build Status](https://img.shields.io/travis/iPublikuj/mobile-detect.svg?style=flat-square)](https://travis-ci.org/iPublikuj/mobile-detect)
-[![Scrutinizer Code Coverage](https://img.shields.io/scrutinizer/coverage/g/iPublikuj/mobile-detect.svg?style=flat-square)](https://scrutinizer-ci.com/g/iPublikuj/mobile-detect/?branch=master)
-[![Scrutinizer Code Quality](https://img.shields.io/scrutinizer/g/iPublikuj/mobile-detect.svg?style=flat-square)](https://scrutinizer-ci.com/g/iPublikuj/mobile-detect/?branch=master)
-[![Latest Stable Version](https://img.shields.io/packagist/v/ipub/mobile-detect.svg?style=flat-square)](https://packagist.org/packages/ipub/mobile-detect)
-[![Composer Downloads](https://img.shields.io/packagist/dt/ipub/mobile-detect.svg?style=flat-square)](https://packagist.org/packages/ipub/mobile-detect)
-
 Extension for detecting mobile devices, managing mobile view types, redirect to mobile version for [Nette Framework](http://nette.org/)
 
 ## Introduction
@@ -13,59 +7,34 @@ Extension for detecting mobile devices, managing mobile view types, redirect to 
 This extension use [Mobile_Detect](https://github.com/serbanghita/Mobile-Detect) class and provides the following features:
 
 * Detect the various mobile devices by name, OS, browser User-Agent
-* Manages site views for the variuos mobile devices (`mobile`, `tablet`, `full`)
+* Manages site views for the variuos mobile devices (`mobile`, `phone`, `tablet`, `full`)
 * Redirects to mobile and tablet sites
 
 ## Installation
 
 The best way to install ipub/mobile-detect is using  [Composer](http://getcomposer.org/):
 
-```json
-{
-	"require": {
-		"ipub/mobile-detect": "dev-master"
-	}
-}
+```sh
+$ composer require ipub/mobile-detect
 ```
 
 After that you have to register extension in config.neon.
 
 ```neon
 extensions:
-	mobileDetect: IPub\MobileDetect\DI\MobileDetectExtension
+    mobileDetect: IPub\MobileDetect\DI\MobileDetectExtension
 ```
 
-Package contains trait, which you will have to use in class, where you want to use mobile detector. This works only for PHP 5.4+, for older version you can simply copy trait content and paste it into class where you want to use it.
+Package contains trait, which you will have to use in class, where you want to use mobile detector.
 
 ```php
 <?php
 
 class BasePresenter extends Nette\Application\UI\Presenter
 {
-
-	use IPub\MobileDetect\TMobileDetect;
-
-}
-```
-
-You have to add few lines in base presenter or base control in section createTemplate
-
-```php
-<?php
-
-class BasePresenter extends Nette\Application\UI\Presenter
-{
-	protected function createTemplate($class = NULL)
-	{
-		// Init template
-		$template = parent::createTemplate($class);
-
-		// Add mobile detect and its helper to template
-		$template->_mobileDetect	= $this->mobileDetect;
-		$template->_deviceView		= $this->deviceView;
-
-		return $template;
-	}
+    use IPub\MobileDetect\TMobileDetect;
+    
+    // Rest of code...
 }
 ```
 
@@ -78,24 +47,31 @@ You can change default behaviour of your redirects with action parameter:
 - `redirectWithoutPath`: redirects to appropriate host index page
 
 ```php
-	# Mobile detector
-	mobileDetect:
-		redirect:
-			mobile:
-				isEnabled: true				# default false
-				host: http://m.site.com		# with scheme (http|https), default null, url validate
-				statusCode: 301				# default 302
-				action: redirect			# redirect, noRedirect, redirectWithoutPath
-			tablet:
-				isEnabled: false			# default false
-				host: http://t.site.com		# with scheme (http|https), default null, url validate
-				statusCode: 301				# default 302
-				action: redirect			# redirect, noRedirect, redirectWithoutPath
-			detectTabletAsMobile: true		# default false
-		switchDeviceView:
-			saveRefererPath: false			# default true
-											# true	=> redirectUrl = http://site.com/current/path
-											# false	=> redirectUrl = http://site.com
+    # Mobile detector
+    mobileDetect:
+        redirect:
+            mobile:
+                isEnabled: true             # default false
+                host: http://m.site.com     # with scheme (http|https), default null, url validate
+                statusCode: 301             # default 302
+                action: redirect            # redirect, noRedirect, redirectWithoutPath
+            phone:
+                isEnabled: false            # default false
+                host: http://t.site.com     # with scheme (http|https), default null, url validate
+                statusCode: 301             # default 302
+                action: redirect            # redirect, noRedirect, redirectWithoutPath
+            tablet:
+                isEnabled: false            # default false
+                host: http://t.site.com     # with scheme (http|https), default null, url validate
+                statusCode: 301             # default 302
+                action: redirect            # redirect, noRedirect, redirectWithoutPath
+            detectTabletAsMobile: true      # default false
+            detectPhoneAsMobile: true       # default false
+        switchParameterName: device_view    # url switch parameter name, default is device_view
+        switchDeviceView:
+            saveRefererPath: false          # default true
+                                            # true    => redirectUrl = http://site.com/current/path
+                                            # false    => redirectUrl = http://site.com
 ```
 
 ## Usage in PHP files
@@ -105,7 +81,7 @@ You can change default behaviour of your redirects with action parameter:
 For switch device view, use `device_view` GET parameter:
 
 ````
-http://site.com?device_view={full/mobile/tablet}
+http://site.com?device_view={full/mobile/phone/tablet}
 ````
 
 ### How to use in presenter etc.
@@ -115,20 +91,20 @@ In presenters or other services where you import mobile detector you could creat
 ```php
 class SomePresenter extends Nette\Application\UI\Presenter
 {
-	/**
-	 * @var \IPub\MobileDetect\MobileDetect
-	 */
-	protected $mobileDetect
+    /**
+     * @var \IPub\MobileDetect\MobileDetect
+     */
+    protected $mobileDetect
 
-	/**
-	 * Some action with mobile detection
-	 */
-	public function someAction()
-	{
-		if ($this->mobileDetect->isMobile()) {
-			//...do whatever
-		}
-	}
+    /**
+     * Some action with mobile detection
+     */
+    public function someAction()
+    {
+        if ($this->mobileDetect->isMobile()) {
+            //...do whatever
+        }
+    }
 }
 ```
 
@@ -186,15 +162,15 @@ $mobileDetect->isSafari();
 
 ```html
 {isMobile}
-	<span>This content will be only on mobile devices....</span>
+    <span>This content will be only on mobile devices....</span>
 {/isMobile}
 
 {isTablet}
-	<span>This content will be only on tablet devices....</span>
+    <span>This content will be only on tablet devices....</span>
 {/isTablet}
 
 {isPhone}
-	<span>This content will be only on phone devices....</span>
+    <span>This content will be only on phone devices....</span>
 {/isPhone}
 ```
 
@@ -214,24 +190,24 @@ Available Latte macros:
 ### Check device type by provided name
 
 ```html
-{isMobileDevice 'iPhone'}
-	<span>This content will be only on Apple iPhone devices....</span>
+{isMobileDevice iPhone}
+    <span>This content will be only on Apple iPhone devices....</span>
 {/isMobileDevice}
 
 <div n:isMobileDevice="iPhone">
-	<span>This content will be only on Apple iPhone devices....</span>
+    <span>This content will be only on Apple iPhone devices....</span>
 </div>
 ```
 
 ### Check device OS by provided name
 
 ```html
-{isMobileOs 'iOS'}
-	<span>This content will be only on mobile devices with iOS operating system....</span>
+{isMobileOs iOS}
+    <span>This content will be only on mobile devices with iOS operating system....</span>
 {/isMobileOs}
 
 <div n:isMobileOs="iOS">
-	<span>This content will be only on mobile devices with iOS operating system....</span>
+    <span>This content will be only on mobile devices with iOS operating system....</span>
 </div>
 ```
 
@@ -241,22 +217,22 @@ With view type detector you could change your default layout in templates.
 
 ```html
 {isMobileView}
-	{layout '../Path/To/Your/Mobile/Device/@layout.latte'}
+    {layout '../Path/To/Your/Mobile/Device/@layout.latte'}
 {/isMobileView}
 
 {isTabletView}
-	{layout '../Path/To/Your/Tablet/Device/@layout.latte'}
+    {layout '../Path/To/Your/Tablet/Device/@layout.latte'}
 {/isTabletView}
 
 {isPhoneView}
-	{layout '../Path/To/Your/Phone/Device/@layout.latte'}
+    {layout '../Path/To/Your/Phone/Device/@layout.latte'}
 {/isPhoneView}
 
 {isFullView}
-	{layout '../Path/To/Your/Full/View/@layout.latte'}
+    {layout '../Path/To/Your/Full/View/@layout.latte'}
 {/isFullView}
 
 {isNotMobileView}
-	{layout '../Path/To/Your/Not/Mobile/Device/@layout.latte'}
+    {layout '../Path/To/Your/Not/Mobile/Device/@layout.latte'}
 {/isNotMobileView}
 ```
