@@ -27,6 +27,14 @@ use IPub\MobileDetect\Events;
 use IPub\MobileDetect\Helpers;
 use IPub\MobileDetect\Templating;
 
+/**
+ * Mobile device detect extension container
+ *
+ * @package        iPublikuj:MobileDetect!
+ * @subpackage     DI
+ *
+ * @author         Adam Kadlec <adam.kadlec@ipublikuj.eu>
+ */
 final class MobileDetectExtension extends DI\CompilerExtension
 {
 	/**

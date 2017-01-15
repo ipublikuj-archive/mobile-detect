@@ -23,6 +23,14 @@ use Nette\Http;
 use IPub\MobileDetect;
 use IPub\MobileDetect\Helpers;
 
+/**
+ * On request event handler
+ *
+ * @package        iPublikuj:MobileDetect!
+ * @subpackage     Events
+ *
+ * @author         Adam Kadlec <adam.kadlec@ipublikuj.eu>
+ */
 final class OnRequestHandler
 {
 	const REDIRECT = 'redirect';

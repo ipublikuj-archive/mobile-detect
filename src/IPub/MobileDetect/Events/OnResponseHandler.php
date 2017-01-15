@@ -21,6 +21,14 @@ use Nette\Http;
 
 use IPub\MobileDetect\Helpers\DeviceView;
 
+/**
+ * On response event handler
+ *
+ * @package        iPublikuj:MobileDetect!
+ * @subpackage     Events
+ *
+ * @author         Adam Kadlec <adam.kadlec@ipublikuj.eu>
+ */
 final class OnResponseHandler
 {
 	/**

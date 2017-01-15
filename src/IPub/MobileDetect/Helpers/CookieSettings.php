@@ -21,6 +21,14 @@ use Nette;
 use IPub;
 use IPub\MobileDetect\Exceptions;
 
+/**
+ * Cookies creator helper
+ *
+ * @package        iPublikuj:MobileDetect!
+ * @subpackage     Helpers
+ *
+ * @author         Adam Kadlec <adam.kadlec@ipublikuj.eu>
+ */
 final class CookieSettings extends Nette\Object
 {
 	/**

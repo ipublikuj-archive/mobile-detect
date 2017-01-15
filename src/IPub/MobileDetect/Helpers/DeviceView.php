@@ -21,6 +21,14 @@ use Nette\Application;
 use Nette\Http;
 use Nette\Utils;
 
+/**
+ * Device view detector helper
+ *
+ * @package        iPublikuj:MobileDetect!
+ * @subpackage     Helpers
+ *
+ * @author         Adam Kadlec <adam.kadlec@ipublikuj.eu>
+ */
 final class DeviceView extends Nette\Object
 {
 	const VIEW_MOBILE = 'mobile';
