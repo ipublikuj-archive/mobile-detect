@@ -63,7 +63,7 @@ class TemplateTest extends Tester\TestCase
 		$this->presenterFactory = $this->container->getByType(Application\IPresenterFactory::class);
 
 		// Get device view service
-		$this->mobileDetector = $this->container->getService(MobileDetect\MobileDetect::class);
+		$this->mobileDetector = $this->container->getByType(MobileDetect\MobileDetect::class);
 	}
 
 	public function testMobileVersion()
