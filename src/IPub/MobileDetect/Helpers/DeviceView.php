@@ -42,7 +42,7 @@ final class DeviceView extends Nette\Object
 	/**
 	 * @var string
 	 */
-	private $viewType;
+	private $viewType = self::VIEW_FULL;
 
 	/**
 	 * @var CookieSettings
