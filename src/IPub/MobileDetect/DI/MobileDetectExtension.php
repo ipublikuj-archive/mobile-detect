@@ -108,10 +108,10 @@ final class MobileDetectExtension extends DI\CompilerExtension
 			]);
 
 		if ($configuration['debugger'] && interface_exists('Tracy\IBarPanel')) {
-            $builder->addDefinition($this->prefix('panel'))
+			$builder->addDefinition($this->prefix('panel'))
 				->setClass('IPub\MobileDetect\Diagnostics\Panel');
 
-            $mobileDetect->addSetup('?->register(?)', [$this->prefix('@panel'), '@self']);
+			$mobileDetect->addSetup('?->register(?)', [$this->prefix('@panel'), '@self']);
 		}
 
 		$builder->addDefinition($this->prefix('onRequestHandler'))
