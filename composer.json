@@ -1,5 +1,5 @@
 {
-	"name"			: "ipub/mobile-detect",
+	"name"			: "peldax/mobile-detect",
 	"type"			: "library",
 	"description"	: "Extension for detecting mobile devices, managing mobile view types, redirect to mobile version for Nette Framework",
 	"keywords"		: ["nette", "mobile", "mobile detect", "mobile view managing", "mobile redirect", "ipub", "ipublikuj", "framework", "tools"],
