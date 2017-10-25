@@ -72,18 +72,18 @@ final class MobileDetect extends \Jenssegers\Agent\Agent
 		return (($this->isMobile() && $this->isTablet()) || !$this->isMobile());
 	}
 
-    public function view()
-    {
-        return $this->deviceView->getViewType();
-    }
+	public function view()
+	{
+		return $this->deviceView->getViewType();
+	}
 
-    public function browserVersion()
-    {
-        return $this->version($this->browser());
-    }
+	public function browserVersion()
+	{
+		return $this->version($this->browser());
+	}
 
-    public function platformVersion()
-    {
-        return $this->version($this->platform());
-    }
+	public function platformVersion()
+	{
+		return $this->version($this->platform());
+	}
 }

@@ -75,7 +75,7 @@ final class MobileDetectExtension extends DI\CompilerExtension
 			'secure'      => FALSE,
 			'httpOnly'    => TRUE,
 		],
-        'debugger' => '%debugMode%'
+		'debugger' => '%debugMode%'
 	];
 
 	/**
@@ -107,12 +107,12 @@ final class MobileDetectExtension extends DI\CompilerExtension
 				'httpOnly'    => $configuration['deviceViewCookie']['httpOnly'],
 			]);
 
-        if ($configuration['debugger'] && interface_exists('Tracy\IBarPanel')) {
+		if ($configuration['debugger'] && interface_exists('Tracy\IBarPanel')) {
             $builder->addDefinition($this->prefix('panel'))
-                ->setClass('IPub\MobileDetect\Diagnostics\Panel');
+				->setClass('IPub\MobileDetect\Diagnostics\Panel');
 
             $mobileDetect->addSetup('?->register(?)', [$this->prefix('@panel'), '@self']);
-        }
+		}
 
 		$builder->addDefinition($this->prefix('onRequestHandler'))
 			->setClass(Events\OnRequestHandler::class)
