@@ -66,7 +66,7 @@
 
 		"latte/latte"	: "~2.3",
 
-		"mobiledetect/mobiledetectlib"	: "2.8.*"
+		"jenssegers/agent"	: "~2.5"
 	},
 
 	"require-dev": {

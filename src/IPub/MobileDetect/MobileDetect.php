@@ -31,7 +31,7 @@ use IPub\MobileDetect\Templating;
  *
  * @author         Adam Kadlec <adam.kadlec@ipublikuj.eu>
  */
-final class MobileDetect extends \Detection\MobileDetect
+final class MobileDetect extends \Jenssegers\Agent\Agent
 {
 	/**
 	 * @var Helpers\DeviceView
@@ -63,16 +63,6 @@ final class MobileDetect extends \Detection\MobileDetect
 	}
 
 	/**
-	 * Check if the device is mobile phone
-	 *
-	 * @return bool
-	 */
-	public function isPhone() : bool
-	{
-		return $this->isMobile() && !$this->isTablet();
-	}
-
-	/**
 	 * Check if the device is not mobile phone
 	 *
 	 * @return bool
@@ -80,5 +70,20 @@ final class MobileDetect extends \Detection\MobileDetect
 	public function isNotPhone() : bool
 	{
 		return (($this->isMobile() && $this->isTablet()) || !$this->isMobile());
+	}
+
+	public function view()
+	{
+		return $this->deviceView->getViewType();
+	}
+
+	public function browserVersion()
+	{
+		return $this->version($this->browser());
+	}
+
+	public function platformVersion()
+	{
+		return $this->version($this->platform());
 	}
 }
