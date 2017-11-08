@@ -37,7 +37,7 @@ final class CookieSettings extends Nette\Object
 	private $name;
 
 	/**
-	 * @var string
+	 * @var string|NULL
 	 */
 	private $domain;
 
@@ -109,9 +109,9 @@ final class CookieSettings extends Nette\Object
 	/**
 	 * Gets the domain that the cookie is available to
 	 *
-	 * @return string
+	 * @return string|NULL
 	 */
-	public function getDomain() : string
+	public function getDomain()
 	{
 		return $this->domain;
 	}
