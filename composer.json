@@ -57,26 +57,28 @@
 	},
 
 	"require": {
-		"php"	: ">=7.0.0",
+		"php"	: ">=7.1.0",
 
-		"nette/application"	: "~2.3",
-		"nette/di"			: "~2.3",
-		"nette/http"		: "~2.3",
-		"nette/utils"		: "~2.3",
+		"nette/application"	: "~2.4",
+		"nette/di"			: "~2.4",
+		"nette/http"		: "~2.4",
+		"nette/utils"		: "~2.4",
 
-		"latte/latte"	: "~2.3",
+		"latte/latte"	: "~2.4",
 
 		"jenssegers/agent"	: "~2.5"
 	},
 
 	"require-dev": {
-		"nette/bootstrap"		: "~2.3",
-		"nette/mail"			: "~2.3",
-		"nette/robot-loader"	: "~2.3",
+		"nette/bootstrap"		: "~2.4",
+		"nette/mail"			: "~2.4",
+		"nette/robot-loader"	: "~2.4",
 		"nette/safe-stream"		: "~2.3",
-		"nette/tester"			: "@dev",
+		"nette/tester"			: "~2.0",
 
-		"tracy/tracy"	: "@dev"
+		"tracy/tracy"	: "~2.4",
+
+		"pds/skeleton"	: "~1.0"
 	},
 
 	"autoload": {

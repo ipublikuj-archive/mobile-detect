@@ -44,7 +44,7 @@ trait TMobileDetect
 	 *
 	 * @return void
 	 */
-	public function injectMobileDetector(MobileDetect $mobileDetect, Helpers\DeviceView $deviceView)
+	public function injectMobileDetector(MobileDetect $mobileDetect, Helpers\DeviceView $deviceView) : void
 	{
 		$this->mobileDetect = $mobileDetect;
 		$this->deviceView = $deviceView;

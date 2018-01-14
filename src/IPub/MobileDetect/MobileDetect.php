@@ -23,6 +23,8 @@ use IPub;
 use IPub\MobileDetect\Helpers;
 use IPub\MobileDetect\Templating;
 
+use Jenssegers\Agent;
+
 /**
  * Mobile detect detector service
  *
@@ -31,7 +33,7 @@ use IPub\MobileDetect\Templating;
  *
  * @author         Adam Kadlec <adam.kadlec@ipublikuj.eu>
  */
-final class MobileDetect extends \Jenssegers\Agent\Agent
+final class MobileDetect extends Agent\Agent
 {
 	/**
 	 * @var Helpers\DeviceView
@@ -72,16 +74,25 @@ final class MobileDetect extends \Jenssegers\Agent\Agent
 		return (($this->isMobile() && $this->isTablet()) || !$this->isMobile());
 	}
 
-	public function view()
+	/**
+	 * @return string
+	 */
+	public function view() : string
 	{
 		return $this->deviceView->getViewType();
 	}
 
+	/**
+	 * @return float|string
+	 */
 	public function browserVersion()
 	{
 		return $this->version($this->browser());
 	}
 
+	/**
+	 * @return float|string
+	 */
 	public function platformVersion()
 	{
 		return $this->version($this->platform());

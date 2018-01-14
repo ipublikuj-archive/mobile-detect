@@ -1,12 +1,12 @@
 <?php
 /**
- * MobileDetectExtension.php
+ * Panel.php
  *
  * @copyright      More in license.md
  * @license        http://www.ipublikuj.eu
  * @author         Adam Kadlec http://www.ipublikuj.eu
  * @package        iPublikuj:MobileDetect!
- * @subpackage     DI
+ * @subpackage     Diagnostics
  * @since          1.0.0
  *
  * @date           21.04.14
@@ -16,6 +16,12 @@ declare(strict_types = 1);
 
 namespace IPub\MobileDetect\Diagnostics;
 
+use Nette;
+
+use Tracy;
+
+use IPub\MobileDetect;
+
 /**
  * Mobile device detect tracy panel
  *
@@ -24,23 +30,33 @@ namespace IPub\MobileDetect\Diagnostics;
  *
  * @author         Václav Pelíšek <info@peldax.com>
  */
-final class Panel extends \Nette\Object implements \Tracy\IBarPanel
+final class Panel implements Tracy\IBarPanel
 {
-	/** @var \IPub\MobileDetect\MobileDetect
+	/**
+	 * Implement nette smart magic
+	 */
+	use Nette\SmartObject;
+
+	/** @var MobileDetect\MobileDetect
 	 */
 	private $mobileDetect;
 
-	public function register(\IPub\MobileDetect\MobileDetect $mobileDetect)
+	/**
+	 * @param MobileDetect\MobileDetect $mobileDetect
+	 *
+	 * @return self
+	 */
+	public function register(MobileDetect\MobileDetect $mobileDetect) : self
 	{
 		$this->mobileDetect = $mobileDetect;
 
-		\Tracy\Debugger::getBar()->addPanel($this, 'ipub.mobileDetect');
+		Tracy\Debugger::getBar()->addPanel($this, 'ipub.mobileDetect');
 
 		return $this;
 	}
 
 	/**
-	 * Renders HTML code for custom tab.
+	 * Renders HTML code for custom tab
 	 *
 	 * @return string
 	 */
@@ -51,7 +67,7 @@ final class Panel extends \Nette\Object implements \Tracy\IBarPanel
 	}
 
 	/**
-	 * Renders HTML code for custom panel.
+	 * Renders HTML code for custom panel
 	 *
 	 * @return string
 	 */
@@ -67,14 +83,13 @@ final class Panel extends \Nette\Object implements \Tracy\IBarPanel
 		$properties = ['view', 'platform', 'platformVersion', 'device', 'browser', 'browserVersion'];
 
 		$panel[] = '<table style="width:100%">';
-		foreach ($properties as $property)
-		{
+		foreach ($properties as $property) {
 			$panel[] = '<tr><th>' . ucfirst($property) . '</th><td>' . $h($this->mobileDetect->{$property}() ?: '') . '</td></tr>';
 		}
 		$panel[] = '</table>';
 
 		return empty($panel) ? '' :
-			'<h1>View: '.$this->mobileDetect->view() . ', OS: ' . $this->mobileDetect->platform().'</h1>' .
+			'<h1>View: ' . $this->mobileDetect->view() . ', OS: ' . $this->mobileDetect->platform() . '</h1>' .
 			'<div class="nette-inner tracy-inner ipub-MobileDetectPanel" style="min-width:500px">' . implode($panel) . '</div>' .
 			'<style>
 				#nette-debug .ipub-MobileDetectPanel h2,

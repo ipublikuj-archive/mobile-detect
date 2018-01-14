@@ -81,7 +81,7 @@ final class MobileDetectExtension extends DI\CompilerExtension
 	/**
 	 * @return void
 	 */
-	public function loadConfiguration()
+	public function loadConfiguration() : void
 	{
 		// Get container builder
 		$builder = $this->getContainerBuilder();
@@ -135,7 +135,7 @@ final class MobileDetectExtension extends DI\CompilerExtension
 	/**
 	 * {@inheritdoc}
 	 */
-	public function beforeCompile()
+	public function beforeCompile() : void
 	{
 		parent::beforeCompile();
 
@@ -168,7 +168,7 @@ final class MobileDetectExtension extends DI\CompilerExtension
 	 */
 	public static function register(Nette\Configurator $config, string $extensionName = 'mobileDetect')
 	{
-		$config->onCompile[] = function (Nette\Configurator $config, Nette\DI\Compiler $compiler) use ($extensionName) {
+		$config->onCompile[] = function (Nette\Configurator $config, Nette\DI\Compiler $compiler) use ($extensionName) : void {
 			$compiler->addExtension($extensionName, new MobileDetectExtension());
 		};
 	}

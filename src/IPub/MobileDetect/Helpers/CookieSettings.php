@@ -29,8 +29,13 @@ use IPub\MobileDetect\Exceptions;
  *
  * @author         Adam Kadlec <adam.kadlec@ipublikuj.eu>
  */
-final class CookieSettings extends Nette\Object
+final class CookieSettings
 {
+	/**
+	 * Implement nette smart magic
+	 */
+	use Nette\SmartObject;
+
 	/**
 	 * @var string
 	 */

@@ -29,8 +29,13 @@ use IPub\MobileDetect;
  *
  * @author         Adam Kadlec <adam.kadlec@ipublikuj.eu>
  */
-final class Helpers extends Nette\Object
+final class Helpers
 {
+	/**
+	 * Implement nette smart magic
+	 */
+	use Nette\SmartObject;
+
 	/**
 	 * @var MobileDetect\MobileDetect
 	 */

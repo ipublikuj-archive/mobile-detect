@@ -59,7 +59,7 @@ final class OnResponseHandler
 	 *
 	 * @return void
 	 */
-	public function needModifyResponse()
+	public function needModifyResponse() : void
 	{
 		$this->needModifyResponse = TRUE;
 	}
@@ -69,7 +69,7 @@ final class OnResponseHandler
 	 *
 	 * @return void
 	 */
-	public function __invoke(Application\Application $application)
+	public function __invoke(Application\Application $application) : void
 	{
 		if ($this->needModifyResponse && $this->modifyResponseClosure instanceof \Closure) {
 			$modifyClosure = $this->modifyResponseClosure;

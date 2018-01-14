@@ -150,12 +150,7 @@ class TemplateTest extends Tester\TestCase
 
 		$version = getenv('NETTE');
 
-		if (!$version || $version == 'default') {
-			$config->addConfig(__DIR__ . DS . 'files' . DS . 'presenters.neon');
-
-		} else {
-			$config->addConfig(__DIR__ . DS . 'files' . DS . 'presenters_2.3.neon');
-		}
+		$config->addConfig(__DIR__ . DS . 'files' . DS . 'presenters.neon');
 
 		return $config->createContainer();
 	}

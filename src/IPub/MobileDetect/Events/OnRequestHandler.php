@@ -113,7 +113,7 @@ final class OnRequestHandler
 	 *
 	 * @return void
 	 */
-	public function __invoke(Application\Application $application)
+	public function __invoke(Application\Application $application) : void
 	{
 		// Redirect only normal request
 		if ($this->httpRequest->isAjax()) {
@@ -433,7 +433,7 @@ final class OnRequestHandler
 	 *
 	 * @return string|NULL
 	 */
-	private function getRoutingOption(string $name)
+	private function getRoutingOption(string $name) : ?string
 	{
 		$option = NULL;
 

@@ -29,8 +29,13 @@ use Nette\Utils;
  *
  * @author         Adam Kadlec <adam.kadlec@ipublikuj.eu>
  */
-final class DeviceView extends Nette\Object
+final class DeviceView
 {
+	/**
+	 * Implement nette smart magic
+	 */
+	use Nette\SmartObject;
+
 	const VIEW_MOBILE = 'mobile';
 	const VIEW_PHONE = 'phone';
 	const VIEW_TABLET = 'tablet';
@@ -149,7 +154,7 @@ final class DeviceView extends Nette\Object
 	 *
 	 * @return void
 	 */
-	public function setTabletView()
+	public function setTabletView() : void
 	{
 		$this->viewType = self::VIEW_TABLET;
 	}
@@ -159,7 +164,7 @@ final class DeviceView extends Nette\Object
 	 *
 	 * @return void
 	 */
-	public function setPhoneView()
+	public function setPhoneView() : void
 	{
 		$this->viewType = self::VIEW_PHONE;
 	}
@@ -169,7 +174,7 @@ final class DeviceView extends Nette\Object
 	 *
 	 * @return void
 	 */
-	public function setMobileView()
+	public function setMobileView() : void
 	{
 		$this->viewType = self::VIEW_MOBILE;
 	}
@@ -179,7 +184,7 @@ final class DeviceView extends Nette\Object
 	 *
 	 * @return void
 	 */
-	public function setNotMobileView()
+	public function setNotMobileView() : void
 	{
 		$this->viewType = self::VIEW_NOT_MOBILE;
 	}
@@ -348,8 +353,10 @@ final class DeviceView extends Nette\Object
 	 * Gets the cookie
 	 *
 	 * @param string $cookieValue
+	 *
+	 * @return void
 	 */
-	private function createCookie(string $cookieValue)
+	private function createCookie(string $cookieValue) : void
 	{
 		// Store cookie in response
 		$this->httpResponse->setCookie(
