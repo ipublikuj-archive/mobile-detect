@@ -10,10 +10,7 @@ echo "Nette version " . $version . PHP_EOL;
 
 $file = __DIR__ . '/composer.json';
 $content = file_get_contents($file);
-$composer  = json_decode($content, TRUE);
-if (!isset($composer['require']['mobiledetect/mobiledetectlib'])) {
-	exit(255);
-}
+$composer = json_decode($content, TRUE);
 $composer['require']['nette/application'] = $version;
 $composer['require']['nette/di'] = $version;
 $composer['require']['nette/http'] = $version;
