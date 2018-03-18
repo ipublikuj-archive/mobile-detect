@@ -4,8 +4,8 @@
  * @testCase
  *
  * @copyright      More in license.md
- * @license        http://www.ipublikuj.eu
- * @author         Adam Kadlec http://www.ipublikuj.eu
+ * @license        https://www.ipublikuj.eu
+ * @author         Adam Kadlec https://www.ipublikuj.eu
  * @package        iPublikuj:MobileDetect!
  * @subpackage     Tests
  * @since          1.0.0
@@ -22,21 +22,20 @@ use Nette;
 use Tester;
 use Tester\Assert;
 
-use IPub;
 use IPub\MobileDetect;
 
 require __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'bootstrap.php';
 
 class ExtensionTest extends Tester\TestCase
 {
-	public function testFunctional()
+	public function testFunctional() : void
 	{
 		$dic = $this->createContainer();
 
-		Assert::true($dic->getService('mobileDetect.mobileDetect') instanceof IPub\MobileDetect\MobileDetect);
-		Assert::true($dic->getService('mobileDetect.deviceView') instanceof IPub\MobileDetect\Helpers\DeviceView);
-		Assert::true($dic->getService('mobileDetect.onRequestHandler') instanceof IPub\MobileDetect\Events\OnRequestHandler);
-		Assert::true($dic->getService('mobileDetect.onResponseHandler') instanceof IPub\MobileDetect\Events\OnResponseHandler);
+		Assert::true($dic->getService('mobileDetect.mobileDetect') instanceof MobileDetect\MobileDetect);
+		Assert::true($dic->getService('mobileDetect.deviceView') instanceof MobileDetect\Helpers\DeviceView);
+		Assert::true($dic->getService('mobileDetect.onRequestHandler') instanceof MobileDetect\Events\OnRequestHandler);
+		Assert::true($dic->getService('mobileDetect.onResponseHandler') instanceof MobileDetect\Events\OnResponseHandler);
 	}
 
 	/**

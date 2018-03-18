@@ -4,8 +4,8 @@
  * @testCase
  *
  * @copyright      More in license.md
- * @license        http://www.ipublikuj.eu
- * @author         Adam Kadlec http://www.ipublikuj.eu
+ * @license        https://www.ipublikuj.eu
+ * @author         Adam Kadlec https://www.ipublikuj.eu
  * @package        iPublikuj:MobileDetect!
  * @subpackage     Tests
  * @since          1.0.0
@@ -26,7 +26,6 @@ use Nette\Utils;
 use Tester;
 use Tester\Assert;
 
-use IPub;
 use IPub\MobileDetect;
 use IPub\MobileDetect\Helpers;
 
@@ -53,7 +52,7 @@ class TemplateTest extends Tester\TestCase
 	/**
 	 * {@inheritdoc}
 	 */
-	public function setUp()
+	public function setUp() : void
 	{
 		parent::setUp();
 
@@ -85,7 +84,7 @@ class TemplateTest extends Tester\TestCase
 		]);
 	}
 
-	public function testMobileVersion()
+	public function testMobileVersion() : void
 	{
 		// Create test presenter
 		$presenter = $this->createPresenter();
@@ -102,7 +101,7 @@ class TemplateTest extends Tester\TestCase
 		Assert::false($dq->has('div[id*="tableDevice"]'));
 	}
 
-	public function testPhoneVersion()
+	public function testPhoneVersion() : void
 	{
 		$this->mobileDetector->setUserAgent('Mozilla/5.0 (iPhone; CPU iPhone OS 6_0_1 like Mac OS X) AppleWebKit/536.26 (KHTML, like Gecko) Version/6.0 Mobile/10A523 Safari/8536.25');
 
@@ -160,7 +159,7 @@ class TestPresenter extends UI\Presenter
 {
 	use MobileDetect\TMobileDetect;
 
-	public function renderDefault()
+	public function renderDefault() : void
 	{
 		// Set template for component testing
 		$this->template->setFile(__DIR__ . DIRECTORY_SEPARATOR . 'templates' . DIRECTORY_SEPARATOR . 'default.latte');

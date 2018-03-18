@@ -4,8 +4,8 @@
  * @testCase
  *
  * @copyright      More in license.md
- * @license        http://www.ipublikuj.eu
- * @author         Adam Kadlec http://www.ipublikuj.eu
+ * @license        https://www.ipublikuj.eu
+ * @author         Adam Kadlec https://www.ipublikuj.eu
  * @package        iPublikuj:MobileDetect!
  * @subpackage     Tests
  * @since          2.1.1
@@ -17,7 +17,6 @@ declare(strict_types = 1);
 
 namespace IPubTests\MobileDetect\Libs;
 
-use Nette;
 use Nette\Application;
 use Nette\Application\Routers;
 
@@ -34,7 +33,7 @@ class RouterFactory
 	/**
 	 * @return Application\IRouter
 	 */
-	public static function createRouter()
+	public static function createRouter() : Application\IRouter
 	{
 		$router = new Routers\RouteList();
 		$router[] = new Routers\Route('<presenter>/<action>[/<id>]', 'Test:default');

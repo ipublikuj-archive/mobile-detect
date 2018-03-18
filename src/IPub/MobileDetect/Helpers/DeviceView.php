@@ -3,8 +3,8 @@
  * DeviceView.php
  *
  * @copyright      More in license.md
- * @license        http://www.ipublikuj.eu
- * @author         Adam Kadlec http://www.ipublikuj.eu
+ * @license        https://www.ipublikuj.eu
+ * @author         Adam Kadlec https://www.ipublikuj.eu
  * @package        iPublikuj:MobileDetect!
  * @subpackage     Helpers
  * @since          1.0.0
@@ -36,11 +36,11 @@ final class DeviceView
 	 */
 	use Nette\SmartObject;
 
-	const VIEW_MOBILE = 'mobile';
-	const VIEW_PHONE = 'phone';
-	const VIEW_TABLET = 'tablet';
-	const VIEW_FULL = 'full';
-	const VIEW_NOT_MOBILE = 'not_mobile';
+	public const VIEW_MOBILE = 'mobile';
+	public const VIEW_PHONE = 'phone';
+	public const VIEW_TABLET = 'tablet';
+	public const VIEW_FULL = 'full';
+	public const VIEW_NOT_MOBILE = 'not_mobile';
 
 	/**
 	 * @var Http\IRequest

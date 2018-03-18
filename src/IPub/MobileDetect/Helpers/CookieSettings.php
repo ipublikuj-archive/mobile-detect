@@ -3,8 +3,8 @@
  * CookieSettings.php
  *
  * @copyright      More in license.md
- * @license        http://www.ipublikuj.eu
- * @author         Adam Kadlec http://www.ipublikuj.eu
+ * @license        https://www.ipublikuj.eu
+ * @author         Adam Kadlec https://www.ipublikuj.eu
  * @package        iPublikuj:MobileDetect!
  * @subpackage     Helpers
  * @since          1.0.0
@@ -18,7 +18,6 @@ namespace IPub\MobileDetect\Helpers;
 
 use Nette;
 
-use IPub;
 use IPub\MobileDetect\Exceptions;
 
 /**
@@ -76,7 +75,7 @@ final class CookieSettings
 	 *
 	 * @throws Exceptions\InvalidArgumentException
 	 */
-	public function __construct(string $name, string $domain = NULL, string $expireAfter = NULL, string $path = '/',  bool $secure = FALSE, bool $httpOnly = TRUE)
+	public function __construct(string $name, ?string $domain = NULL, ?string $expireAfter = NULL, string $path = '/',  bool $secure = FALSE, bool $httpOnly = TRUE)
 	{
 		// from PHP source code
 		if (preg_match("/[=,; \t\r\n\013\014]/", $name)) {
@@ -116,7 +115,7 @@ final class CookieSettings
 	 *
 	 * @return string|NULL
 	 */
-	public function getDomain()
+	public function getDomain() : ?string
 	{
 		return $this->domain;
 	}

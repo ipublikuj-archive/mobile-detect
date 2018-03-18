@@ -3,8 +3,8 @@
  * OnRequestHandler.php
  *
  * @copyright      More in license.md
- * @license        http://www.ipublikuj.eu
- * @author         Adam Kadlec http://www.ipublikuj.eu
+ * @license        https://www.ipublikuj.eu
+ * @author         Adam Kadlec https://www.ipublikuj.eu
  * @package        iPublikuj:MobileDetect!
  * @subpackage     Events
  * @since          1.0.0
@@ -33,13 +33,13 @@ use IPub\MobileDetect\Helpers;
  */
 final class OnRequestHandler
 {
-	const REDIRECT = 'redirect';
-	const NO_REDIRECT = 'noRedirect';
-	const REDIRECT_WITHOUT_PATH = 'redirectWithoutPath';
+	private const REDIRECT = 'redirect';
+	private const NO_REDIRECT = 'noRedirect';
+	private const REDIRECT_WITHOUT_PATH = 'redirectWithoutPath';
 
-	const MOBILE = 'mobile';
-	const TABLET = 'tablet';
-	const PHONE = 'phone';
+	private const MOBILE = 'mobile';
+	private const TABLET = 'tablet';
+	private const PHONE = 'phone';
 
 	/**
 	 * @var array

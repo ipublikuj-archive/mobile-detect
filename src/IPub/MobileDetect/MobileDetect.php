@@ -3,8 +3,8 @@
  * MobileDetect.php
  *
  * @copyright      More in license.md
- * @license        http://www.ipublikuj.eu
- * @author         Adam Kadlec http://www.ipublikuj.eu
+ * @license        https://www.ipublikuj.eu
+ * @author         Adam Kadlec https://www.ipublikuj.eu
  * @package        iPublikuj:MobileDetect!
  * @subpackage     common
  * @since          1.0.0
@@ -19,7 +19,6 @@ namespace IPub\MobileDetect;
 use Nette;
 use Nette\Http;
 
-use IPub;
 use IPub\MobileDetect\Helpers;
 use IPub\MobileDetect\Templating;
 
@@ -83,18 +82,18 @@ final class MobileDetect extends Agent\Agent
 	}
 
 	/**
-	 * @return float|string
+	 * @return string
 	 */
-	public function browserVersion()
+	public function browserVersion() : string
 	{
-		return $this->version($this->browser());
+		return (string) $this->version($this->browser());
 	}
 
 	/**
-	 * @return float|string
+	 * @return string
 	 */
-	public function platformVersion()
+	public function platformVersion() : string
 	{
-		return $this->version($this->platform());
+		return (string) $this->version($this->platform());
 	}
 }

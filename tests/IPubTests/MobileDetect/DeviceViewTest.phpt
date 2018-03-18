@@ -4,8 +4,8 @@
  * @testCase
  *
  * @copyright      More in license.md
- * @license        http://www.ipublikuj.eu
- * @author         Adam Kadlec http://www.ipublikuj.eu
+ * @license        https://www.ipublikuj.eu
+ * @author         Adam Kadlec https://www.ipublikuj.eu
  * @package        iPublikuj:MobileDetect!
  * @subpackage     Tests
  * @since          1.0.0
@@ -22,7 +22,6 @@ use Nette;
 use Tester;
 use Tester\Assert;
 
-use IPub;
 use IPub\MobileDetect;
 use IPub\MobileDetect\Helpers;
 
@@ -30,7 +29,7 @@ require __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'bootstrap.
 
 class DeviceViewTest extends Tester\TestCase
 {
-	public function testRequestHasSwitchParam()
+	public function testRequestHasSwitchParam() : void
 	{
 		$query = [
 			'myparam'     => 'myvalue',
@@ -44,7 +43,7 @@ class DeviceViewTest extends Tester\TestCase
 		Assert::equal(Helpers\DeviceView::VIEW_MOBILE, $deviceView->getSwitchParameterValue());
 	}
 
-	public function testDeviceIsMobile()
+	public function testDeviceIsMobile() : void
 	{
 		$query = [
 			'myparam'     => 'myvalue',
@@ -59,7 +58,7 @@ class DeviceViewTest extends Tester\TestCase
 		Assert::false($deviceView->isFullView());
 	}
 
-	public function testMobileViewType()
+	public function testMobileViewType() : void
 	{
 		$query = [
 			'myparam'     => 'myvalue',
@@ -72,7 +71,7 @@ class DeviceViewTest extends Tester\TestCase
 		Assert::equal(Helpers\DeviceView::VIEW_MOBILE, $deviceView->getViewType());
 	}
 
-	public function testSetMobileViewType()
+	public function testSetMobileViewType() : void
 	{
 		$query = [
 			'myparam'     => 'myvalue',
@@ -95,7 +94,7 @@ class DeviceViewTest extends Tester\TestCase
 	 */
 	private function getHelper($query = []) : Helpers\DeviceView
 	{
-		$url = new Nette\Http\UrlScript('http://www.ipublikuj.eu');
+		$url = new Nette\Http\UrlScript('https://www.ipublikuj.eu');
 		$url->setQuery($query);
 
 		$httpRequest = new Nette\Http\Request($url);

@@ -3,8 +3,8 @@
  * Macros.php
  *
  * @copyright      More in license.md
- * @license        http://www.ipublikuj.eu
- * @author         Adam Kadlec http://www.ipublikuj.eu
+ * @license        https://www.ipublikuj.eu
+ * @author         Adam Kadlec https://www.ipublikuj.eu
  * @package        iPublikuj:MobileDetect!
  * @subpackage     Latte
  * @since          1.0.0
@@ -24,7 +24,6 @@ use Latte\MacroNode;
 use Latte\PhpWriter;
 use Latte\Macros\MacroSet;
 
-use IPub;
 use IPub\MobileDetect\Exceptions;
 
 /**
@@ -321,7 +320,7 @@ final class Macros extends MacroSet
 	 */
 	public static function prepareMacroArguments($macro) : array
 	{
-		$arguments = array_map(function ($value) {
+		$arguments = array_map(function ($value) : string {
 			return trim($value);
 		}, explode(',', $macro));
 

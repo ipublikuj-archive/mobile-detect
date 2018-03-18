@@ -3,8 +3,8 @@
  * MobileDetectExtension.php
  *
  * @copyright      More in license.md
- * @license        http://www.ipublikuj.eu
- * @author         Adam Kadlec http://www.ipublikuj.eu
+ * @license        https://www.ipublikuj.eu
+ * @author         Adam Kadlec https://www.ipublikuj.eu
  * @package        iPublikuj:MobileDetect!
  * @subpackage     DI
  * @since          1.0.0
@@ -21,8 +21,10 @@ use Nette\Bridges;
 use Nette\DI;
 use Nette\PhpGenerator as Code;
 
-use IPub;
+use Tracy;
+
 use IPub\MobileDetect;
+use IPub\MobileDetect\Diagnostics;
 use IPub\MobileDetect\Events;
 use IPub\MobileDetect\Helpers;
 use IPub\MobileDetect\Templating;
@@ -41,7 +43,7 @@ final class MobileDetectExtension extends DI\CompilerExtension
 	 * @var array
 	 */
 	private $defaults = [
-		'redirect'         => [
+		'redirect'            => [
 			'mobile'               => [
 				'isEnabled'  => FALSE,
 				'host'       => NULL,
@@ -63,11 +65,11 @@ final class MobileDetectExtension extends DI\CompilerExtension
 			'detectPhoneAsMobile'  => FALSE,
 			'detectTabletAsMobile' => FALSE,
 		],
-		'switchDeviceView' => [
+		'switchDeviceView'    => [
 			'saveRefererPath' => TRUE
 		],
 		'switchParameterName' => 'device_view',
-		'deviceViewCookie' => [
+		'deviceViewCookie'    => [
 			'name'        => 'device_view',
 			'domain'      => NULL,
 			'expireAfter' => '+1 month',
@@ -75,7 +77,7 @@ final class MobileDetectExtension extends DI\CompilerExtension
 			'secure'      => FALSE,
 			'httpOnly'    => TRUE,
 		],
-		'debugger' => '%debugMode%'
+		'debugger'            => '%debugMode%'
 	];
 
 	/**
@@ -90,14 +92,14 @@ final class MobileDetectExtension extends DI\CompilerExtension
 
 		// Install mobile detect service
 		$mobileDetect = $builder->addDefinition($this->prefix('mobileDetect'))
-			->setClass(MobileDetect\MobileDetect::class);
+			->setType(MobileDetect\MobileDetect::class);
 
 		$builder->addDefinition($this->prefix('deviceView'))
-			->setClass(Helpers\DeviceView::class)
+			->setType(Helpers\DeviceView::class)
 			->setArguments(['setSwitchParameterName' => $configuration['switchParameterName']]);
 
 		$builder->addDefinition($this->prefix('cookieSettings'))
-			->setClass(Helpers\CookieSettings::class)
+			->setType(Helpers\CookieSettings::class)
 			->setArguments([
 				'name'        => $configuration['deviceViewCookie']['name'],
 				'domain'      => $configuration['deviceViewCookie']['domain'],
@@ -107,24 +109,24 @@ final class MobileDetectExtension extends DI\CompilerExtension
 				'httpOnly'    => $configuration['deviceViewCookie']['httpOnly'],
 			]);
 
-		if ($configuration['debugger'] && interface_exists('Tracy\IBarPanel')) {
+		if ($configuration['debugger'] && interface_exists(Tracy\IBarPanel::class)) {
 			$builder->addDefinition($this->prefix('panel'))
-				->setClass('IPub\MobileDetect\Diagnostics\Panel');
+				->setType(Diagnostics\Panel::class);
 
 			$mobileDetect->addSetup('?->register(?)', [$this->prefix('@panel'), '@self']);
 		}
 
 		$builder->addDefinition($this->prefix('onRequestHandler'))
-			->setClass(Events\OnRequestHandler::class)
+			->setType(Events\OnRequestHandler::class)
 			->addSetup('$redirectConf', [$configuration['redirect']])
 			->addSetup('$isFullPath', [$configuration['switchDeviceView']['saveRefererPath']]);
 
 		$builder->addDefinition($this->prefix('onResponseHandler'))
-			->setClass(Events\OnResponseHandler::class);
+			->setType(Events\OnResponseHandler::class);
 
 		// Register template helpers
 		$builder->addDefinition($this->prefix('helpers'))
-			->setClass(Templating\Helpers::class)
+			->setType(Templating\Helpers::class)
 			->setAutowired(FALSE);
 
 		$application = $builder->getDefinition('application');
@@ -166,7 +168,7 @@ final class MobileDetectExtension extends DI\CompilerExtension
 	 *
 	 * @return void
 	 */
-	public static function register(Nette\Configurator $config, string $extensionName = 'mobileDetect')
+	public static function register(Nette\Configurator $config, string $extensionName = 'mobileDetect') : void
 	{
 		$config->onCompile[] = function (Nette\Configurator $config, Nette\DI\Compiler $compiler) use ($extensionName) : void {
 			$compiler->addExtension($extensionName, new MobileDetectExtension());
