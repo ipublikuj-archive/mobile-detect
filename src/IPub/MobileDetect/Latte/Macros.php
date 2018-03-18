@@ -4,7 +4,7 @@
  *
  * @copyright      More in license.md
  * @license        https://www.ipublikuj.eu
- * @author         Adam Kadlec https://www.ipublikuj.eu
+ * @author         Adam Kadlec <adam.kadlec@ipublikuj.eu>
  * @package        iPublikuj:MobileDetect!
  * @subpackage     Latte
  * @since          1.0.0
@@ -16,9 +16,6 @@ declare(strict_types = 1);
 
 namespace IPub\MobileDetect\Latte;
 
-use Nette;
-
-use Latte;
 use Latte\Compiler;
 use Latte\MacroNode;
 use Latte\PhpWriter;

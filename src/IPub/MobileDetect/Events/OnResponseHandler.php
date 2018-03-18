@@ -4,7 +4,7 @@
  *
  * @copyright      More in license.md
  * @license        https://www.ipublikuj.eu
- * @author         Adam Kadlec https://www.ipublikuj.eu
+ * @author         Adam Kadlec <adam.kadlec@ipublikuj.eu>
  * @package        iPublikuj:MobileDetect!
  * @subpackage     Events
  * @since          1.0.0
@@ -17,7 +17,6 @@ declare(strict_types = 1);
 namespace IPub\MobileDetect\Events;
 
 use Nette\Application;
-use Nette\Http;
 
 use IPub\MobileDetect\Helpers\DeviceView;
 
@@ -74,8 +73,6 @@ final class OnResponseHandler
 		if ($this->needModifyResponse && $this->modifyResponseClosure instanceof \Closure) {
 			$modifyClosure = $this->modifyResponseClosure;
 			$modifyClosure($this->deviceView);
-
-			return;
 		}
 	}
 }

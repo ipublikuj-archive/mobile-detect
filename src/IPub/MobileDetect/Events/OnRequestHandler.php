@@ -4,7 +4,7 @@
  *
  * @copyright      More in license.md
  * @license        https://www.ipublikuj.eu
- * @author         Adam Kadlec https://www.ipublikuj.eu
+ * @author         Adam Kadlec <adam.kadlec@ipublikuj.eu>
  * @package        iPublikuj:MobileDetect!
  * @subpackage     Events
  * @since          1.0.0
@@ -299,7 +299,7 @@ final class OnRequestHandler
 	private function needPhoneResponseModify() : bool
 	{
 		if (($this->deviceView->getViewType() === NULL || $this->deviceView->isPhoneView()) && $this->mobileDetect->isMobile() && !$this->mobileDetect->isTablet()) {
-			$this->onResponseHandler->modifyResponseClosure = function ($deviceView) {
+			$this->onResponseHandler->modifyResponseClosure = function (Helpers\DeviceView $deviceView) : Http\IResponse {
 				return $deviceView->modifyPhoneResponse();
 			};
 
@@ -317,7 +317,7 @@ final class OnRequestHandler
 	private function needTabletResponseModify() : bool
 	{
 		if (($this->deviceView->getViewType() === NULL || $this->deviceView->isTabletView()) && $this->mobileDetect->isTablet()) {
-			$this->onResponseHandler->modifyResponseClosure = function (Helpers\DeviceView $deviceView) {
+			$this->onResponseHandler->modifyResponseClosure = function (Helpers\DeviceView $deviceView) : Http\IResponse {
 				return $deviceView->modifyTabletResponse();
 			};
 
@@ -335,7 +335,7 @@ final class OnRequestHandler
 	private function needMobileResponseModify() : bool
 	{
 		if (($this->deviceView->getViewType() === NULL || $this->deviceView->isMobileView()) && $this->mobileDetect->isMobile()) {
-			$this->onResponseHandler->modifyResponseClosure = function (Helpers\DeviceView $deviceView) {
+			$this->onResponseHandler->modifyResponseClosure = function (Helpers\DeviceView $deviceView) : Http\IResponse {
 				return $deviceView->modifyMobileResponse();
 			};
 
@@ -353,7 +353,7 @@ final class OnRequestHandler
 	private function needNotMobileResponseModify() : bool
 	{
 		if ($this->deviceView->getViewType() === NULL || $this->deviceView->isNotMobileView()) {
-			$this->onResponseHandler->modifyResponseClosure = function (Helpers\DeviceView $deviceView) {
+			$this->onResponseHandler->modifyResponseClosure = function (Helpers\DeviceView $deviceView) : Http\IResponse {
 				return $deviceView->modifyNotMobileResponse();
 			};
 
@@ -391,12 +391,12 @@ final class OnRequestHandler
 
 	/**
 	 * Gets the device RedirectResponse
-	 * 
+	 *
 	 * @param string $device
 	 *
-	 * @return Responses\RedirectResponse
+	 * @return Responses\RedirectResponse|NULL
 	 */
-	private function getDeviceRedirectResponse(string $device) : Responses\RedirectResponse
+	private function getDeviceRedirectResponse(string $device) : ?Responses\RedirectResponse
 	{
 		if ($host = $this->getRedirectUrl($device)) {
 			return $this->deviceView->getMobileRedirectResponse(
@@ -404,6 +404,8 @@ final class OnRequestHandler
 				$this->redirectConf[$device]['statusCode']
 			);
 		}
+
+		return NULL;
 	}
 
 	/**
@@ -411,9 +413,9 @@ final class OnRequestHandler
 	 *
 	 * @param string $platform
 	 *
-	 * @return string
+	 * @return string|NULL
 	 */
-	private function getRedirectUrl(string $platform) : string
+	private function getRedirectUrl(string $platform) : ?string
 	{
 		if ($routingOption = $this->getRoutingOption($platform)) {
 			switch ($routingOption) {
@@ -424,6 +426,8 @@ final class OnRequestHandler
 					return $this->redirectConf[$platform]['host'];
 			}
 		}
+
+		return NULL;
 	}
 
 	/**

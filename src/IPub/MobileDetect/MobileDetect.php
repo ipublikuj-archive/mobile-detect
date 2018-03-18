@@ -4,7 +4,7 @@
  *
  * @copyright      More in license.md
  * @license        https://www.ipublikuj.eu
- * @author         Adam Kadlec https://www.ipublikuj.eu
+ * @author         Adam Kadlec <adam.kadlec@ipublikuj.eu>
  * @package        iPublikuj:MobileDetect!
  * @subpackage     common
  * @since          1.0.0
@@ -16,11 +16,9 @@ declare(strict_types = 1);
 
 namespace IPub\MobileDetect;
 
-use Nette;
 use Nette\Http;
 
 use IPub\MobileDetect\Helpers;
-use IPub\MobileDetect\Templating;
 
 use Jenssegers\Agent;
 
