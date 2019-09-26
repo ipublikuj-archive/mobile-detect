@@ -203,7 +203,7 @@ final class DeviceView
 	 */
 	public function getSwitchParameterValue() : string
 	{
-		return $this->httpRequest->getQuery($this->switchParameterName, self::VIEW_FULL);
+		return $this->httpRequest->getQuery($this->switchParameterName) ?? self::VIEW_FULL;
 	}
 
 	/**
