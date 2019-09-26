@@ -80,7 +80,7 @@ final class DeviceView
 
 		$this->switchParameterName = $setSwitchParameterName;
 
-		if ($this->httpRequest->getQuery($this->switchParameterName, FALSE)) {
+		if ($this->httpRequest->getQuery($this->switchParameterName) ?? false) {
 			$this->viewType = $this->httpRequest->getQuery($this->switchParameterName);
 
 		} elseif ($this->httpRequest->getCookie($this->cookieSettings->getName())) {
@@ -203,7 +203,7 @@ final class DeviceView
 	 */
 	public function getSwitchParameterValue() : string
 	{
-		return $this->httpRequest->getQuery($this->switchParameterName, self::VIEW_FULL);
+		return $this->httpRequest->getQuery($this->switchParameterName) ?? self::VIEW_FULL;
 	}
 
 	/**
@@ -213,7 +213,7 @@ final class DeviceView
 	 */
 	public function hasSwitchParameter() : bool
 	{
-		return $this->httpRequest->getQuery($this->switchParameterName, FALSE) ? TRUE : FALSE;
+		return ($this->httpRequest->getQuery($this->switchParameterName) ?? false) ? true : false;
 	}
 
 	/**

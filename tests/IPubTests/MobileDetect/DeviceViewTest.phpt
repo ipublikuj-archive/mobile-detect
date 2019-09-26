@@ -94,13 +94,15 @@ class DeviceViewTest extends Tester\TestCase
 	 */
 	private function getHelper($query = []) : Helpers\DeviceView
 	{
-		$url = new Nette\Http\UrlScript('https://www.ipublikuj.eu');
+		$url = new Nette\Http\Url('https://www.ipublikuj.eu');
 		$url->setQuery($query);
 
-		$httpRequest = new Nette\Http\Request($url);
+		$urlScript = new Nette\Http\UrlScript($url);
+
+		$httpRequest = new Nette\Http\Request($urlScript);
 		$httpResponse = new Nette\Http\Response();
 
-		$cookieSettings = new Helpers\CookieSettings('device_view', NULL, '+1 month', '/', FALSE, TRUE);
+		$cookieSettings = new Helpers\CookieSettings('device_view', NULL, '+1 month', '/', false, true);
 
 		// Get helper
 		return new Helpers\DeviceView('device_view', $cookieSettings, $httpRequest, $httpResponse);

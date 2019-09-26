@@ -75,7 +75,7 @@ final class CookieSettings
 	 *
 	 * @throws Exceptions\InvalidArgumentException
 	 */
-	public function __construct(string $name, ?string $domain = NULL, ?string $expireAfter = NULL, string $path = '/',  bool $secure = FALSE, bool $httpOnly = TRUE)
+	public function __construct(string $name, ?string $domain = null, ?string $expireAfter = null, string $path = '/',  bool $secure = false, bool $httpOnly = true)
 	{
 		// from PHP source code
 		if (preg_match("/[=,; \t\r\n\013\014]/", $name)) {
@@ -88,7 +88,7 @@ final class CookieSettings
 
 		$expire = new \DateTime;
 
-		if ($expireAfter !== NULL) {
+		if ($expireAfter !== null) {
 			$expire->modify($expireAfter);
 		}
 
