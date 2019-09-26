@@ -213,7 +213,7 @@ final class DeviceView
 	 */
 	public function hasSwitchParameter() : bool
 	{
-		return $this->httpRequest->getQuery($this->switchParameterName) ? true : false;
+		return ($this->httpRequest->getQuery($this->switchParameterName) ?? false) ? true : false;
 	}
 
 	/**
