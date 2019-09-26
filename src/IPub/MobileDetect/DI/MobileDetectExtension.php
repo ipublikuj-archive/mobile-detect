@@ -44,37 +44,37 @@ final class MobileDetectExtension extends DI\CompilerExtension
 	private $defaults = [
 		'redirect'            => [
 			'mobile'               => [
-				'isEnabled'  => FALSE,
-				'host'       => NULL,
+				'isEnabled'  => false,
+				'host'       => null,
 				'statusCode' => 301,
 				'action'     => 'noRedirect',    // redirect/noRedirect/redirectWithoutPath
 			],
 			'phone'                => [
-				'isEnabled'  => FALSE,
-				'host'       => NULL,
+				'isEnabled'  => false,
+				'host'       => null,
 				'statusCode' => 301,
 				'action'     => 'noRedirect',    // redirect/noRedirect/redirectWithoutPath
 			],
 			'tablet'               => [
-				'isEnabled'  => FALSE,
-				'host'       => NULL,
+				'isEnabled'  => false,
+				'host'       => null,
 				'statusCode' => 301,
 				'action'     => 'noRedirect',    // redirect/noRedirect/redirectWithoutPath
 			],
-			'detectPhoneAsMobile'  => FALSE,
-			'detectTabletAsMobile' => FALSE,
+			'detectPhoneAsMobile'  => false,
+			'detectTabletAsMobile' => false,
 		],
 		'switchDeviceView'    => [
-			'saveRefererPath' => TRUE
+			'saveRefererPath' => true
 		],
 		'switchParameterName' => 'device_view',
 		'deviceViewCookie'    => [
 			'name'        => 'device_view',
-			'domain'      => NULL,
+			'domain'      => null,
 			'expireAfter' => '+1 month',
 			'path'        => '/',
-			'secure'      => FALSE,
-			'httpOnly'    => TRUE,
+			'secure'      => false,
+			'httpOnly'    => true,
 		],
 		'debugger'            => '%debugMode%'
 	];
@@ -86,8 +86,12 @@ final class MobileDetectExtension extends DI\CompilerExtension
 	{
 		// Get container builder
 		$builder = $this->getContainerBuilder();
+
+        // Set the default configuration
+		$this->validateConfig($this->defaults);
+
 		// Get extension configuration
-		$configuration = $this->getConfig($this->defaults);
+		$configuration = $this->getConfig();
 
 		// Install mobile detect service
 		$mobileDetect = $builder->addDefinition($this->prefix('mobileDetect'))
@@ -145,7 +149,7 @@ final class MobileDetectExtension extends DI\CompilerExtension
 		// Install extension latte macros
 		$latteFactory = $builder->getDefinition($builder->getByType(Bridges\ApplicationLatte\ILatteFactory::class) ?: 'nette.latteFactory');
 
-		$latteFactory
+		$latteFactory->getResultDefinition()
 			->addSetup('IPub\MobileDetect\Latte\Macros::install(?->getCompiler())', ['@self'])
 			->addSetup('addFilter', ['isMobile', [$this->prefix('@helpers'), 'isMobile']])
 			->addSetup('addFilter', ['isPhone', [$this->prefix('@helpers'), 'isPhone']])

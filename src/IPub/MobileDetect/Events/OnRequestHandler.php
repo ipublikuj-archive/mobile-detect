@@ -49,7 +49,7 @@ final class OnRequestHandler
 	/**
 	 * @var bool
 	 */
-	public $isFullPath = TRUE;
+	public $isFullPath = true;
 
 	/**
 	 * @var Http\IRequest
@@ -207,27 +207,27 @@ final class OnRequestHandler
 	private function hasPhoneRedirect() : bool
 	{
 		if (!$this->redirectConf['phone']['isEnabled']) {
-			return FALSE;
+			return false;
 		}
 
 		$isPhone = $this->mobileDetect->isPhone();
 
-		if ($this->redirectConf['detectPhoneAsMobile'] === FALSE) {
+		if ($this->redirectConf['detectPhoneAsMobile'] === false) {
 			$isPhoneHost = ($this->getCurrentHost() === $this->redirectConf['phone']['host']);
 
 			if ($isPhone && !$isPhoneHost && ($this->getRoutingOption(self::PHONE) != self::NO_REDIRECT)) {
-				return TRUE;
+				return true;
 			}
 
 		} else {
 			$isMobileHost = ($this->getCurrentHost() === $this->redirectConf['mobile']['host']);
 
 			if ($isPhone && !$isMobileHost && ($this->getRoutingOption(self::PHONE) != self::NO_REDIRECT)) {
-				return TRUE;
+				return true;
 			}
 		}
 
-		return FALSE;
+		return false;
 	}
 
 	/**
@@ -238,27 +238,27 @@ final class OnRequestHandler
 	private function hasTabletRedirect() : bool
 	{
 		if (!$this->redirectConf['tablet']['isEnabled']) {
-			return FALSE;
+			return false;
 		}
 
 		$isTablet = $this->mobileDetect->isTablet();
 
-		if ($this->redirectConf['detectTabletAsMobile'] === FALSE) {
+		if ($this->redirectConf['detectTabletAsMobile'] === false) {
 			$isTabletHost = ($this->getCurrentHost() === $this->redirectConf['tablet']['host']);
 
 			if ($isTablet && !$isTabletHost && ($this->getRoutingOption(self::TABLET) != self::NO_REDIRECT)) {
-				return TRUE;
+				return true;
 			}
 
 		} else {
 			$isMobileHost = ($this->getCurrentHost() === $this->redirectConf['mobile']['host']);
 
 			if ($isTablet && !$isMobileHost && ($this->getRoutingOption(self::TABLET) != self::NO_REDIRECT)) {
-				return TRUE;
+				return true;
 			}
 		}
 
-		return FALSE;
+		return false;
 	}
 
 	/**
@@ -269,13 +269,13 @@ final class OnRequestHandler
 	private function hasMobileRedirect() : bool
 	{
 		if (!$this->redirectConf['mobile']['isEnabled']) {
-			return FALSE;
+			return false;
 		}
 
-		if ($this->redirectConf['detectPhoneAsMobile'] === FALSE) {
+		if ($this->redirectConf['detectPhoneAsMobile'] === false) {
 			$isMobile = ($this->mobileDetect->isTablet() || ($this->mobileDetect->isMobile()) && !$this->mobileDetect->isPhone());
 
-		} elseif ($this->redirectConf['detectTabletAsMobile'] === FALSE) {
+		} elseif ($this->redirectConf['detectTabletAsMobile'] === false) {
 			$isMobile = ($this->mobileDetect->isPhone() || ($this->mobileDetect->isMobile()) && !$this->mobileDetect->isTablet());
 
 		} else {
@@ -285,10 +285,10 @@ final class OnRequestHandler
 		$isMobileHost = ($this->getCurrentHost() === $this->redirectConf['mobile']['host']);
 
 		if ($isMobile && !$isMobileHost && ($this->getRoutingOption(self::MOBILE) != self::NO_REDIRECT)) {
-			return TRUE;
+			return true;
 		}
 
-		return FALSE;
+		return false;
 	}
 
 	/**
@@ -298,15 +298,15 @@ final class OnRequestHandler
 	 */
 	private function needPhoneResponseModify() : bool
 	{
-		if (($this->deviceView->getViewType() === NULL || $this->deviceView->isPhoneView()) && $this->mobileDetect->isMobile() && !$this->mobileDetect->isTablet()) {
+		if (($this->deviceView->getViewType() === null || $this->deviceView->isPhoneView()) && $this->mobileDetect->isMobile() && !$this->mobileDetect->isTablet()) {
 			$this->onResponseHandler->modifyResponseClosure = function (Helpers\DeviceView $deviceView) : Http\IResponse {
 				return $deviceView->modifyPhoneResponse();
 			};
 
-			return TRUE;
+			return true;
 		}
 
-		return FALSE;
+		return false;
 	}
 
 	/**
@@ -316,15 +316,15 @@ final class OnRequestHandler
 	 */
 	private function needTabletResponseModify() : bool
 	{
-		if (($this->deviceView->getViewType() === NULL || $this->deviceView->isTabletView()) && $this->mobileDetect->isTablet()) {
+		if (($this->deviceView->getViewType() === null || $this->deviceView->isTabletView()) && $this->mobileDetect->isTablet()) {
 			$this->onResponseHandler->modifyResponseClosure = function (Helpers\DeviceView $deviceView) : Http\IResponse {
 				return $deviceView->modifyTabletResponse();
 			};
 
-			return TRUE;
+			return true;
 		}
 
-		return FALSE;
+		return false;
 	}
 
 	/**
@@ -334,15 +334,15 @@ final class OnRequestHandler
 	 */
 	private function needMobileResponseModify() : bool
 	{
-		if (($this->deviceView->getViewType() === NULL || $this->deviceView->isMobileView()) && $this->mobileDetect->isMobile()) {
+		if (($this->deviceView->getViewType() === null || $this->deviceView->isMobileView()) && $this->mobileDetect->isMobile()) {
 			$this->onResponseHandler->modifyResponseClosure = function (Helpers\DeviceView $deviceView) : Http\IResponse {
 				return $deviceView->modifyMobileResponse();
 			};
 
-			return TRUE;
+			return true;
 		}
 
-		return FALSE;
+		return false;
 	}
 
 	/**
@@ -352,15 +352,15 @@ final class OnRequestHandler
 	 */
 	private function needNotMobileResponseModify() : bool
 	{
-		if ($this->deviceView->getViewType() === NULL || $this->deviceView->isNotMobileView()) {
+		if ($this->deviceView->getViewType() === null || $this->deviceView->isNotMobileView()) {
 			$this->onResponseHandler->modifyResponseClosure = function (Helpers\DeviceView $deviceView) : Http\IResponse {
 				return $deviceView->modifyNotMobileResponse();
 			};
 
-			return TRUE;
+			return true;
 		}
 
-		return FALSE;
+		return false;
 	}
 
 	/**
@@ -371,12 +371,12 @@ final class OnRequestHandler
 	private function getRedirectResponseBySwitchParam() : Responses\RedirectResponse
 	{
 		// Generate full url path
-		if ($this->isFullPath === TRUE) {
+		if ($this->isFullPath === true) {
 			// Get actual url
 			$url = $this->httpRequest->getUrl();
 
 			// Remove switch param
-			$url->setQueryParameter($this->deviceView->getSwitchParameterName(), NULL);
+			$url->setQueryParameter($this->deviceView->getSwitchParameterName(), null);
 
 			// Create full path url
 			$redirectUrl = $this->getCurrentHost() . $url->getRelativeUrl();
@@ -405,7 +405,7 @@ final class OnRequestHandler
 			);
 		}
 
-		return NULL;
+		return null;
 	}
 
 	/**
@@ -427,7 +427,7 @@ final class OnRequestHandler
 			}
 		}
 
-		return NULL;
+		return null;
 	}
 
 	/**
@@ -439,14 +439,14 @@ final class OnRequestHandler
 	 */
 	private function getRoutingOption(string $name) : ?string
 	{
-		$option = NULL;
+		$option = null;
 
 		// Get actual route
 		$request = $this->router->match($this->httpRequest);
 
 		if ($request instanceof Application\Request) {
 			$params = $request->getParameters();
-			$option = isset($params[$name]) ? $params[$name] : NULL;
+			$option = isset($params[$name]) ? $params[$name] : null;
 		}
 
 		if (!$option) {
@@ -457,7 +457,7 @@ final class OnRequestHandler
 			return $option;
 		}
 
-		return NULL;
+		return null;
 	}
 
 	/**

@@ -100,7 +100,7 @@ class DeviceViewTest extends Tester\TestCase
 		$httpRequest = new Nette\Http\Request($url);
 		$httpResponse = new Nette\Http\Response();
 
-		$cookieSettings = new Helpers\CookieSettings('device_view', NULL, '+1 month', '/', FALSE, TRUE);
+		$cookieSettings = new Helpers\CookieSettings('device_view', NULL, '+1 month', '/', false, true);
 
 		// Get helper
 		return new Helpers\DeviceView('device_view', $cookieSettings, $httpRequest, $httpResponse);

@@ -33,7 +33,7 @@ final class OnResponseHandler
 	/**
 	 * @var bool
 	 */
-	private $needModifyResponse = FALSE;
+	private $needModifyResponse = false;
 
 	/**
 	 * @var DeviceView
@@ -60,7 +60,7 @@ final class OnResponseHandler
 	 */
 	public function needModifyResponse() : void
 	{
-		$this->needModifyResponse = TRUE;
+		$this->needModifyResponse = true;
 	}
 
 	/**
